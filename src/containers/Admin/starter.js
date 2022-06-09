@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Controller from './controller';
 import TableData from './table';
 import Userroles from './userroles';
+// import Media from "./media";
 // import Settings from './settings';
 function Starter(props) {
   const {
@@ -70,6 +71,8 @@ function Starter(props) {
     setrowData,
     setActivePageNumber,
     filteredItems,
+    setCurrentActivity,
+    setModalShowh5p,
     setSearchKey,
   } = props;
   return (
@@ -125,32 +128,37 @@ function Starter(props) {
         setSearchKey={setSearchKey}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
-      {subTypeState === 'Manage Roles' ? (
-        <Userroles permissionRender={permissionRender} />
-      ) : (
-        <TableData
-          tableHead={tableHead}
-          sortCol={sortCol}
-          handleSort={handleSort}
-          activePage={activePage}
-          setActivePage={setActivePage}
-          searchAlertToggler={searchAlertToggler}
-          searchAlertTogglerStats={searchAlertTogglerStats}
-          type={type}
-          jobType={jobType}
-          data={data}
-          subType={subType}
-          changeIndexValue={changeIndexValue}
-          setAllProjectIndexTab={setAllProjectIndexTab}
-          subTypeState={subTypeState}
-          setCurrentTab={setCurrentTab}
-          setAllProjectTab={setAllProjectTab}
-          setModalShow={setModalShow}
-          setModalShowTeam={setModalShowTeam}
-          setrowData={setrowData}
-          setActivePageNumber={setActivePageNumber}
-        />
-      )}
+      {/* {subTypeState === "Media" && <Media />} */}
+      {
+        subTypeState === 'Manage Roles' ? (
+          <Userroles permissionRender={permissionRender} />
+        ) : (
+          <TableData
+            tableHead={tableHead}
+            sortCol={sortCol}
+            handleSort={handleSort}
+            activePage={activePage}
+            setActivePage={setActivePage}
+            searchAlertToggler={searchAlertToggler}
+            searchAlertTogglerStats={searchAlertTogglerStats}
+            type={type}
+            jobType={jobType}
+            data={data}
+            subType={subType}
+            changeIndexValue={changeIndexValue}
+            setAllProjectIndexTab={setAllProjectIndexTab}
+            subTypeState={subTypeState}
+            setCurrentTab={setCurrentTab}
+            setAllProjectTab={setAllProjectTab}
+            setModalShow={setModalShow}
+            setModalShowTeam={setModalShowTeam}
+            setrowData={setrowData}
+            setActivePageNumber={setActivePageNumber}
+            setCurrentActivity={setCurrentActivity}
+            setModalShowh5p={setModalShowh5p}
+          />
+        )
+      }
     </>
   );
 }

@@ -242,6 +242,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {platform === "Brightcove" && !editVideo && (
@@ -269,6 +270,7 @@ const PreviewLayoutModel = (props) => {
                       reverseType={reverseType}
                       playlistId={playlist?.id || undefined}
                       submitForm={submitForm}
+                      activityPreview={activityPreview}
                     />
                   </div>
                 )}
@@ -288,6 +290,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {/* Vimeo */}
@@ -307,6 +310,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
 
@@ -326,6 +330,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {editVideo && (
@@ -346,6 +351,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
               </>
