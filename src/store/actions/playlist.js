@@ -113,7 +113,7 @@ export const lmsPlaylist = (projectId) => async (dispatch) => {
   return { playlists };
 };
 
-export const changePlaylistTitleAction = (projectId, playlistId, title) => async (dispatch) => {
+export const changePlaylistTitleAction = (projectId, playlistId, title, is_column_summary) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_REQUEST,
@@ -121,6 +121,7 @@ export const changePlaylistTitleAction = (projectId, playlistId, title) => async
 
     const playlist = await playlistService.update(projectId, playlistId, {
       title,
+      is_column_summary
     });
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_SUCCESS,

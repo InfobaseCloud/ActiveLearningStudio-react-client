@@ -28,6 +28,7 @@ class PlaylistCard extends React.Component {
 
     this.state = {
       editMode: false,
+      isColumnSummary: false,
     };
   }
   handleDelete = (e) => {
@@ -101,7 +102,8 @@ class PlaylistCard extends React.Component {
     });
 
     if (playlist.title !== title) {
-      changePlaylistTitle(projectId, playlist.id, title).catch((err) => {
+      const summaryCheckbox = this.state.isColumnSummary;
+      changePlaylistTitle(projectId, playlist.id, title, summaryCheckbox).catch((err) => {
         if (err.errors) {
           if (err.errors.title.length > 0) {
             Swal.fire({
@@ -166,20 +168,19 @@ class PlaylistCard extends React.Component {
               <div className="list-header" {...provided.dragHandleProps}>
                 <h2 className="playlist-header-name d-flex align-items-center">
                   <div
-                    className={`playlist-title-wrapper d-flex align-items-center ${
-                      editMode ? "hide" : "show"
-                    }`}
+                    className={`playlist-title-wrapper d-flex align-items-center ${editMode ? "hide" : "show"
+                      }`}
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
                     {(Object.keys(teamPermission).length
                       ? teamPermission?.Team?.includes("team:edit-playlist")
                       : permission?.Playlist?.includes("playlist:edit")) && (
-                      <FontAwesomeIcon
-                        icon="pencil-alt"
-                        className="ml-2 edit-icon"
-                      />
-                    )}
+                        <FontAwesomeIcon
+                          icon="pencil-alt"
+                          className="ml-2 edit-icon"
+                        />
+                      )}
                   </div>
 
                   <textarea
@@ -192,6 +193,13 @@ class PlaylistCard extends React.Component {
                     onKeyPress={this.onEnterPress}
                     defaultValue={playlist.title}
                   />
+                  <input
+                    type="checkbox"
+                    name="playlist-summary"
+                    className={editMode ? "show-summary-checkbox" : "hide-summary-checkbox"}
+                    id="playlist-summary-checkbox"
+                    onChange={(e) => this.setState({ isColumnSummary: e.target.checked })}
+                  />
 
                   <PlaylistCardDropdown
                     playlist={playlist}
@@ -201,6 +209,7 @@ class PlaylistCard extends React.Component {
                     setProjectId={setProjectId}
                     setProjectPlaylistId={setProjectPlaylistId}
                     setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+                    setIsColumnSummary={this.state}
                   />
                 </h2>
               </div>
@@ -226,49 +235,49 @@ class PlaylistCard extends React.Component {
               {(Object.keys(teamPermission).length
                 ? teamPermission?.Team?.includes("team:add-activity")
                 : permission?.Activity?.includes("activity:create") ||
-                  permission?.Activity?.includes("activity:upload")) && (
-                <div className="playlist-add-res-button">
-                  <button
-                    type="button"
-                    className="add-resource-to-playlist-btn"
-                    onClick={() => {
-                      const { clearSearchform } = this.props;
-                      // this.handleAddNewResourceClick();
-                      this.props.clear();
-                      this.props.openActivity(playlist, projectId);
-                      clearSearchform();
+                permission?.Activity?.includes("activity:upload")) && (
+                  <div className="playlist-add-res-button">
+                    <button
+                      type="button"
+                      className="add-resource-to-playlist-btn"
+                      onClick={() => {
+                        const { clearSearchform } = this.props;
+                        // this.handleAddNewResourceClick();
+                        this.props.clear();
+                        this.props.openActivity(playlist, projectId);
+                        clearSearchform();
 
-                      this.props.clearEditState();
-                    }}
-                  >
-                    {/* <img src={UploadLogo} alt="logo" className="mr-2" /> */}
-                    <svg
-                      width="17"
-                      height="16"
-                      viewBox="0 0 17 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="mr-2"
+                        this.props.clearEditState();
+                      }}
                     >
-                      <path
-                        d="M1.5 8C1.51004 8 10.8375 8.00009 15.5 8.00014"
-                        stroke={primaryColor}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.5 15C8.5 14.99 8.5 5.66248 8.5 0.999999"
-                        stroke={primaryColor}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    Create or upload activity
-                  </button>
-                </div>
-              )}
+                      {/* <img src={UploadLogo} alt="logo" className="mr-2" /> */}
+                      <svg
+                        width="17"
+                        height="16"
+                        viewBox="0 0 17 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="mr-2"
+                      >
+                        <path
+                          d="M1.5 8C1.51004 8 10.8375 8.00009 15.5 8.00014"
+                          stroke={primaryColor}
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M8.5 15C8.5 14.99 8.5 5.66248 8.5 0.999999"
+                          stroke={primaryColor}
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      Create or upload activity
+                    </button>
+                  </div>
+                )}
             </div>
           </div>
         )}
@@ -300,8 +309,8 @@ const mapDispatchToProps = (dispatch) => ({
   showDeletePopup: (id, title, deleteType) =>
     dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
-  changePlaylistTitle: (projectId, id, title) =>
-    dispatch(changePlaylistTitleAction(projectId, id, title)),
+  changePlaylistTitle: (projectId, id, title, summaryCheckbox) =>
+    dispatch(changePlaylistTitleAction(projectId, id, title, summaryCheckbox)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
   clearEditState: () =>
