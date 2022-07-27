@@ -12,7 +12,7 @@ const BouncyDiv = styled.div`
   animation: 0.5s ${bounceAnimation};
 `;
 function CreatePlaylistPopup(props) {
-  const { handleCreatePlaylistSubmit, handleHideCreatePlaylistModal, onPlaylistTitleChange } = props;
+  const { handleCreatePlaylistSubmit, handleHideCreatePlaylistModal, onPlaylistTitleChange, onPlaylistColumnSummaryChange } = props;
 
   // remove popup when escape is pressed
   const escFunction = useCallback(
@@ -102,6 +102,24 @@ function CreatePlaylistPopup(props) {
                       }}
                     />
                     <div style={{ color: 'red' }}>{errors.playlistName && touched.playlistName && errors.playlistName}</div>
+                    <div class="custom-control custom-checkbox pt-3">
+                      <input
+                        type="checkbox"
+                        name="columnSummaryConfirmation"
+                        className="form-control custom-control-input"
+                        id="columnSummaryConfirmation"
+                        onChange={(e) => {
+                          onPlaylistColumnSummaryChange(e);
+                          setFieldValue('columnSummaryConfirmation', e.target.checked);
+                        }}
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="columnSummaryConfirmation"
+                      >
+                        Do you want Column Summary after every video?
+                      </label>
+                    </div>
                     <div className="modal-footer">
                       <button type="submit" className="add-playlist-btn">
                         <div className="add-playlist-btn-text">Add Playlist</div>
@@ -122,6 +140,7 @@ CreatePlaylistPopup.propTypes = {
   handleCreatePlaylistSubmit: PropTypes.func.isRequired,
   handleHideCreatePlaylistModal: PropTypes.func.isRequired,
   onPlaylistTitleChange: PropTypes.func.isRequired,
+  onPlaylistColumnSummaryChange: PropTypes.func.isRequired,
 };
 
 export default CreatePlaylistPopup;
