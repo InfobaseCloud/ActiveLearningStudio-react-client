@@ -7,11 +7,11 @@ import socketConnection from 'services/http.service';
 import playlistService from 'services/playlist.service';
 import * as actionTypes from '../actionTypes';
 
-export const createPlaylistAction = (projectId, title) => async (dispatch) => {
+export const createPlaylistAction = (projectId, title, columnSummary) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_PLAYLIST_REQUEST });
 
-    const { playlist } = await playlistService.create(projectId, { title });
+    const { playlist } = await playlistService.create(projectId, { title, columnSummary });
 
     dispatch({
       type: actionTypes.CREATE_PLAYLIST_SUCCESS,
@@ -113,7 +113,7 @@ export const lmsPlaylist = (projectId) => async (dispatch) => {
   return { playlists };
 };
 
-export const changePlaylistTitleAction = (projectId, playlistId, title) => async (dispatch) => {
+export const changePlaylistTitleAction = (projectId, playlistId, title, is_column_summary) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_REQUEST,
@@ -121,6 +121,7 @@ export const changePlaylistTitleAction = (projectId, playlistId, title) => async
 
     const playlist = await playlistService.update(projectId, playlistId, {
       title,
+      is_column_summary
     });
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_SUCCESS,

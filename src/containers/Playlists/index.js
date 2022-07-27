@@ -92,6 +92,7 @@ function PlaylistsPage(props) {
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
+  const [columnSummary, setColumnSummary] = useState(false);
   const [
     selectedProjectPlaylistActivityId,
     setSelectedProjectPlaylistActivityId,
@@ -304,11 +305,16 @@ function PlaylistsPage(props) {
     if (e.target.value) setError(null);
   };
 
+  const onPlaylistColumnSummaryChange = (e) => {
+    setColumnSummary(e.target.checked);
+    if (e.target.checked) setError(null);
+  };
+
   const handleCreatePlaylistSubmit = async () => {
     // e.preventDefault();
     if (!/^ *$/.test(title) && title) {
       try {
-        await createPlaylist(projectIdFilter, title);
+        await createPlaylist(projectIdFilter, title, columnSummary);
         // history.push(
         //   `/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`
         // );
@@ -1060,6 +1066,7 @@ function PlaylistsPage(props) {
           handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
           handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
           onPlaylistTitleChange={onPlaylistTitleChange}
+          onPlaylistColumnSummaryChange={onPlaylistColumnSummaryChange}
           error={error}
         />
       )}
@@ -1160,7 +1167,7 @@ PlaylistsPage.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  createPlaylist: (id, title) => dispatch(createPlaylistAction(id, title)),
+  createPlaylist: (id, title, columnSummary) => dispatch(createPlaylistAction(id, title, columnSummary)),
   deletePlaylist: (projectId, id) => dispatch(deletePlaylistAction(projectId, id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),

@@ -99,6 +99,7 @@ function PlaylistPreview(props) {
   }
 
   const allPlaylists = playlist.playlists;
+  localStorage.setItem('isColumnSummary', selectedPlaylist.is_column_summary)
 
   return (
     <section className="curriki-playlist-preview">
@@ -125,7 +126,7 @@ function PlaylistPreview(props) {
                 to={
                   projectPreview === 'true'
                     ? // eslint-disable-next-line no-restricted-globals
-                      { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
+                    { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
                     : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
                 }
               >
