@@ -21,10 +21,11 @@ import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 
 import HeaderLogo from 'assets/images/GCLogo.png';
-
+import H5PIVSidebar from '../../../containers/H5PIVSidebar'
 import './playlistPreview.scss';
 
 const H5PPreview = lazy(() => import('../../H5PPreview'));
+const H5PIVPreview = lazy(() => import('../../H5PIVPreview'));
 
 function PlaylistPreview(props) {
   const { loading, projectId, playlistId, activityId, playlist, loadHP, loadPlaylist, loadProjectPlaylists } = props;
@@ -32,6 +33,7 @@ function PlaylistPreview(props) {
   const { teamPermission } = useSelector((state) => state.team);
   const [openPlaylistMenu, setPlaylistMenu] = useState(true);
   const query = QueryString.parse(window.location.search);
+  const [currentActiveId, setCurrentActiveId] = useState();
 
   const projectPreview = localStorage.getItem('projectPreview');
   // const history = useHistory();
@@ -78,6 +80,8 @@ function PlaylistPreview(props) {
     }
   }
 
+  console.log({ currentActivity });
+
   useEffect(() => {
     if (loading && currentActivityId) {
       loadH5pResourceSettings(currentActivityId)
@@ -99,7 +103,6 @@ function PlaylistPreview(props) {
   }
 
   const allPlaylists = playlist.playlists;
-  localStorage.setItem('isColumnSummary', selectedPlaylist.is_column_summary)
 
   return (
     <section className="curriki-playlist-preview">
@@ -113,25 +116,14 @@ function PlaylistPreview(props) {
           <div className={query.view !== 'activity' ? 'left-activity-view' : 'left-activity-view extra-padding'}>
             <div className="activity-metadata">
               <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`}>
-                <img src={projectIcon} alt="" />
+
                 Project: {selectedPlaylist.project.name}
               </Link>
               <FontAwesomeIcon icon="chevron-right" />
               <Link>
-                <img src={listIcon} alt="" />
                 Playlist:{selectedPlaylist.title}
               </Link>
-              <Link
-                className="close-icon"
-                to={
-                  projectPreview === 'true'
-                    ? // eslint-disable-next-line no-restricted-globals
-                    { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
-                    : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
-                }
-              >
-                <FontAwesomeIcon icon="times" />
-              </Link>
+
             </div>
             {localStorage.getItem('lti_activity') === 'false' && (
               <Link to={`/project/${selectedPlaylist.project.id}/shared`}>
@@ -145,17 +137,39 @@ function PlaylistPreview(props) {
                   <span>{parser.parseFromString(currentActivity.title, 'text/html').body.textContent}</span>
                 </h1>
               )}
-              <div className="controller">
+              <div className="controller ctrl-btns">
                 <PreviousLink viewType={query.view} projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
                 <NextLink viewType={query.view} projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
               </div>
             </div>
+            <hr className="full-width header-divider"></hr>
 
             <div className="main-item-wrapper">
               <div className="item-container">
                 {currentActivity && (
                   <Suspense fallback={<div>Loading</div>}>
-                    <H5PPreview showLtiPreview activityId={currentActivity.id} />
+                    {!selectedPlaylist.project.project_type ?
+                      (
+                        <div className="row">
+                          <div className="col-md-4 sidebar-wrap">
+                            <H5PIVSidebar
+                              allPlaylists={allPlaylists}
+                              activeActivityId={currentActiveId ? currentActiveId : currentActivity.id}
+                              setCurrentActiveId={setCurrentActiveId}
+                              viewType={query.view}
+                              projectId={projectId}
+                              playlistId={playlistId}
+                              nextResource={nextResource}
+                            />
+                          </div>
+                          <div className="col-md-8 right-content-wrap">
+                            <H5PIVPreview showLtiPreview activityId={currentActiveId ? currentActiveId : currentActivity.id} selectedPlaylist={selectedPlaylist} />
+                          </div>
+                        </div>
+                      ) : (
+                        <H5PPreview showLtiPreview activityId={currentActivity.id} />
+                      )
+                    }
                   </Suspense>
                 )}
               </div>

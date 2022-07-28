@@ -481,3 +481,7 @@ export const EDIT_BRIGHTCOVE = 'EDIT_BRIGHTCOVE';
 // Existing activity insert into h5p
 export const SELECT_EXISTING_ACTIVITY = 'SELECT_EXISTING_ACTIVITY';
 export const RESET_EXISTING_ACTIVITY = 'RESET_EXISTING_ACTIVITY';
+
+/** H5p Records*/
+export const SAVE_H5P_RECORD = "SAVE_H5P_RECORD";
+export const LOAD_H5P_RECORD = "LOAD_H5P_RECORD";

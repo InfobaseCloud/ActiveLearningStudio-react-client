@@ -1,0 +1,72 @@
+.sidebar-accordion {
+  .accordion-header-wrapper {
+    display: block;
+    border-radius: 0;
+    border: 0;
+    width: 100%;
+    text-align: left;
+    padding: 15px 50px 15px 50px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #084892;
+    cursor: pointer;
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      right: 24px;
+      top: 19px;
+      height: 11px;
+      width: 11px;
+      border-top: 2px solid #084892;
+      border-right: 2px solid #084892;
+      transform: rotate(135deg);
+      transition: all ease-in-out 0.3s;
+    }
+
+    &.active {
+      &:after {
+        transform: rotate(-45deg);
+        transition: all ease-in-out 0.3s;
+      }
+    }
+
+    svg {
+      display: none;
+    }
+  }
+
+  .sidebar-links {
+    a {
+      color: #515151;
+      font-size: 16px;
+      display: block;
+      padding: 15px 25px 15px 55px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: none;
+        background: rgba(8, 72, 146, 0.05);
+      }
+    }
+
+    &.active {
+      a {
+        background: rgba(8, 72, 146, 0.05);
+      }
+    }
+  }
+
+  &.accordion {
+    margin-top: 15px;
+
+    .card-body {
+      padding: 0px 0 0px 0px;
+    }
+
+    .card {
+      margin-bottom: 0;
+    }
+  }
+}
