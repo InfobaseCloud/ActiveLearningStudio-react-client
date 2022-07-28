@@ -296,6 +296,18 @@ const searchPreviewActivity = (subOrgId, activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+const saveH5pRecord = (h5pRecord) =>
+  httpService
+    .post(`/${apiVersion}/h5p-record`, h5pRecord)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
+const loadH5pRecord = (h5pRecordId) =>
+  httpService
+    .get(`/${apiVersion}/playlists/${h5pRecordId}/h5p-record`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -333,4 +345,6 @@ export default {
   getAllLayout,
   getSingleLayout,
   searchPreviewActivity,
+  saveH5pRecord,
+  loadH5pRecord
 };

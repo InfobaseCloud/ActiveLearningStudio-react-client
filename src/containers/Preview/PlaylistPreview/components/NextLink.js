@@ -43,7 +43,7 @@ function NextLink(props) {
   }
 
   return (
-    <div className="slider-hover-section">
+    <div className="slider-hover-section next">
       <Link
         onClick={() => {
           if (setH5pCurrentActivity) {
@@ -52,8 +52,8 @@ function NextLink(props) {
         }}
         to={setH5pCurrentActivity ? void 0 : nextLink}
       >
-        <FontAwesomeIcon icon="chevron-right" />
         Next
+        <FontAwesomeIcon icon="chevron-right" />
       </Link>
 
       <div className={`hover-control-caption pointer-cursor${nextResource ? '' : ' no-data'}`}>

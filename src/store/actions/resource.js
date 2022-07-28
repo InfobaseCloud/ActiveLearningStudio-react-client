@@ -202,6 +202,24 @@ export const loadH5pResourceXapi = (xapiData) => async () => {
   resourceService.getXapi({ statement: xapiData });
 };
 
+export const saveH5pRecordAction = (h5pRecord) => async (dispatch) => {
+  const result = await resourceService.saveH5pRecord(h5pRecord);
+  dispatch({
+    type: actionTypes.SAVE_H5P_RECORD,
+    payload: result,
+  });
+  return result;
+};
+
+export const loadH5pRecordAction = (h5pRecordId) => async (dispatch) => {
+  const result = await resourceService.loadH5pRecord(h5pRecordId);
+  dispatch({
+    type: actionTypes.LOAD_H5P_RECORD,
+    payload: result,
+  });
+  return result;
+};
+
 export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
 export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
@@ -822,8 +840,8 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
 
 export const formatSelectBoxData = (data) => {
   let ids = [];
-  if(data.length > 0){
-    data?.map(datum=>{
+  if (data.length > 0) {
+    data?.map((datum) => {
       ids.push(datum.value);
     });
   }

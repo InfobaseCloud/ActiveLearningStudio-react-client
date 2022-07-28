@@ -49,12 +49,12 @@
     display: flex;
     align-self: center;
     align-items: center;
-    margin-bottom: 22px;
+    margin-bottom: 0px;
     padding-right: 15px;
     a {
-      font-family: 'rubic';
+      font-family: "rubic";
       font-style: normal;
-      font-weight: 400;
+      font-weight: 500;
       font-size: 14px;
       line-height: 20px;
       background: #f7faff;
@@ -76,10 +76,10 @@
       }
     }
     svg {
-      margin: 8px;
+      margin: -4px 8px 0px 8px;
       font-style: normal;
       font-weight: 400;
-      font-size: 14px;
+      font-size: 18px;
       line-height: 20px;
       color: #084892;
 
@@ -106,10 +106,10 @@
 
   // activity controller
   .activity-controller {
-    padding: 16px 32px;
-    background: #f7faff;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    padding: 0;
+    // background: #f7faff;
+    // border-radius: 8px;
+    margin-bottom: 45px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -117,9 +117,9 @@
     h1 {
       font-style: normal;
       font-weight: 500;
-      font-size: 18px;
+      font-size: 26px;
       line-height: 24px;
-      color: #084892;
+      color: #515151;
       margin: 0;
     }
 
@@ -131,17 +131,41 @@
         padding: 0;
 
         & a {
-          font-family: 'rubic';
+          display: inline-block;
+          border: 1px solid #515151;
+          padding: 10px 20px;
+          border-radius: 4px;
+          font-family: "rubic";
           font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
+          font-weight: 500;
+          font-size: 16px;
           line-height: 20px;
-          color: #084892;
+          color: #515151;
+
+          &:hover {
+            text-decoration: none;
+          }
 
           & svg {
             margin: 0 8px -1px;
           }
         }
+
+        &.prev {
+          svg {
+            margin-left: 0;
+          }
+        }
+
+        &.next {
+          svg {
+            margin-right: 0;
+          }
+        }
+      }
+
+      .slider-hover-section + .slider-hover-section a {
+        margin-left: 30px;
       }
     }
     @media (max-width: 1020px) {
@@ -177,7 +201,7 @@
     position: absolute;
     background: #fff;
     height: 50px;
-    content: '';
+    content: "";
     width: 28px;
     left: 13px;
     z-index: 1;
