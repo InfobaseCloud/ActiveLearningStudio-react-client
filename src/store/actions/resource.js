@@ -234,13 +234,24 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
     icon: '',
   });
   const insertedH5pResource = await resourceService.h5pToken(data);
+
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
-
+    let thumb_url = metadata?.thumb_url;
+    let duration = '';
+    console.log('metaData', insertedH5pResource);
+    if (data && data.library.includes('Column')) {
+      if (localStorage.getItem('VideoDuration')) {
+        duration = localStorage.getItem('VideoDuration');
+      }
+      if (localStorage.getItem('VideoThumbnail')) {
+        thumb_url = localStorage.getItem('VideoThumbnail');
+      }
+    }
     const activity = {
       h5p_content_id: resource.id,
       playlist_id: playlistId,
-      thumb_url: metadata?.thumb_url,
+      thumb_url: thumb_url,
       action: 'create',
       title: metadata?.title,
       type: 'h5p',
@@ -251,7 +262,9 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       description: metadata?.description || undefined,
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
+      duration: duration,
     };
+
     if (type === 'videoModal' && !reverseType) {
       const centralizedState = store.getState();
       const {
@@ -822,8 +835,8 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
 
 export const formatSelectBoxData = (data) => {
   let ids = [];
-  if(data.length > 0){
-    data?.map(datum=>{
+  if (data.length > 0) {
+    data?.map(datum => {
       ids.push(datum.value);
     });
   }
