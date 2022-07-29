@@ -16,6 +16,8 @@ import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
 import ResourceCard from "components/ResourceCard";
 import PlaylistCardDropdown from "./PlaylistCardDropdown";
 import UploadLogo from "../../../assets/images/upload-active.svg";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import "./style.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
@@ -141,6 +143,12 @@ class PlaylistCard extends React.Component {
     }
   };
 
+  renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      View Summary Option
+    </Tooltip>
+  );
+
   render() {
     const { editMode } = this.state;
     const {
@@ -193,13 +201,20 @@ class PlaylistCard extends React.Component {
                     onKeyPress={this.onEnterPress}
                     defaultValue={playlist.title}
                   />
-                  <input
-                    type="checkbox"
-                    name="playlist-summary"
-                    className={editMode ? "show-summary-checkbox" : "hide-summary-checkbox"}
-                    id="playlist-summary-checkbox"
-                    onChange={(e) => this.setState({ isColumnSummary: e.target.checked })}
-                  />
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={this.renderTooltip}
+                  >
+                    <input
+                      type="checkbox"
+                      name="playlist-summary"
+                      className={editMode ? "show" : "hide"}
+                      id="playlist-summary-checkbox"
+                      onChange={(e) => this.setState({ isColumnSummary: e.target.checked })}
+                      defaultChecked={playlist.is_column_summary}
+                    />
+                  </OverlayTrigger>
 
                   <PlaylistCardDropdown
                     playlist={playlist}
