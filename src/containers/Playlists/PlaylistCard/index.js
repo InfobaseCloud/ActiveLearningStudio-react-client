@@ -16,6 +16,8 @@ import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
 import ResourceCard from "components/ResourceCard";
 import PlaylistCardDropdown from "./PlaylistCardDropdown";
 import UploadLogo from "../../../assets/images/upload-active.svg";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import "./style.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
@@ -140,6 +142,12 @@ class PlaylistCard extends React.Component {
       );
     }
   };
+
+  renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      View Summary Option
+    </Tooltip>
+  );
 
   render() {
     const { editMode } = this.state;

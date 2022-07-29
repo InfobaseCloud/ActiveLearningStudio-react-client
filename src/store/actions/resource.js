@@ -255,10 +255,21 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
 
+    let thumb_url = metadata?.thumb_url;
+    let duration = '';
+    if (data && data.library.includes('Column')) {
+      if (localStorage.getItem('VideoDuration')) {
+        duration = localStorage.getItem('VideoDuration');
+      }
+      if (localStorage.getItem('VideoThumbnail')) {
+        thumb_url = localStorage.getItem('VideoThumbnail');
+      }
+    }
+
     const activity = {
       h5p_content_id: resource.id,
       playlist_id: playlistId,
-      thumb_url: metadata?.thumb_url,
+      thumb_url: thumb_url,
       action: 'create',
       title: metadata?.title,
       type: 'h5p',
@@ -269,6 +280,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       description: metadata?.description || undefined,
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
+      duration: duration,
     };
     if (type === 'videoModal' && !reverseType) {
       const centralizedState = store.getState();
