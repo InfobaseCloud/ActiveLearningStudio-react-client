@@ -209,7 +209,7 @@ class PlaylistCard extends React.Component {
                     <input
                       type="checkbox"
                       name="playlist-summary"
-                      className={editMode ? "show" : "hide"}
+                      className={editMode ? "show-summary-checkbox" : "hide-summary-checkbox"}
                       id="playlist-summary-checkbox"
                       onChange={(e) => this.setState({ isColumnSummary: e.target.checked })}
                       defaultChecked={playlist.is_column_summary}
