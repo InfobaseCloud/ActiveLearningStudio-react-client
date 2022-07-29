@@ -21,7 +21,8 @@ const SidebarItems = (props) => {
     activeActivityId,
     projectId,
     setCurrentActivePlaylist,
-    setH5pCurrentActivity
+    setH5pCurrentActivity,
+    selectedPlaylist
   } = props;
 
   const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
@@ -82,26 +83,30 @@ const SidebarItems = (props) => {
       <Accordion.Collapse eventKey={count + 1}>
         <Card.Body>
           {playlist.activities.map((activity, activityCount) => (
-            <div className={`sidebar-links ${activeActivityId === activity.id ? 'active' : ''}`}>
-              <Link
-                onClick={() => {
-                  if (setH5pCurrentActivity) {
-                    setH5pCurrentActivity(activity);
-                  }
-                }}
-                to={setH5pCurrentActivity ? void 0 : getNextLink(activity)}
-              >
-                {activity.title}
-              </Link>
-              {activityCount == playlist.activities.length - 1 && (
-                <H5PSummaryModal
-                  handleShow={handleShow}
-                  handleClose={handleClose}
-                  show={show}
-                  selectedPlaylistId={playlistId}
-                />
-              )}
-            </div>
+            <>
+              <div className={`sidebar-links ${activeActivityId === activity.id ? 'active' : ''}`}>
+                <Link
+                  onClick={() => {
+                    if (setH5pCurrentActivity) {
+                      setH5pCurrentActivity(activity);
+                    }
+                  }}
+                  to={setH5pCurrentActivity ? void 0 : getNextLink(activity)}
+                >
+                  {activity.title}
+                </Link>
+              </div>
+              <div className="summary-modal-link-wrapper sidebar-links">
+                {(activityCount == playlist.activities.length - 1 && selectedPlaylist.is_column_summary) && (
+                  <H5PSummaryModal
+                    handleShow={handleShow}
+                    handleClose={handleClose}
+                    show={show}
+                    selectedPlaylistId={playlistId}
+                  />
+                )}
+              </div>
+            </>
           ))}
         </Card.Body>
       </Accordion.Collapse>
@@ -147,6 +152,7 @@ SidebarItems.propTypes = {
   projectId: PropTypes.number.isRequired,
   setCurrentActivePlaylist: PropTypes.func.isRequired,
   setH5pCurrentActivity: PropTypes.func.isRequired,
+  selectedPlaylist: PropTypes.any.isRequired,
 };
 
 export default SidebarItems;

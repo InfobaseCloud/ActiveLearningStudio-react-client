@@ -10,12 +10,16 @@
   overflow: hidden;
 }
 
+.resource-modal {
+  .modal {
+    display: block !important;
+    opacity: 1 !important;
+  }
+}
 .modal {
   padding-top: 15px !important;
   padding-right: 15px !important;
-  // display: block !important;
   background-color: #263b4eeb !important;
-  // opacity: 1 !important;
 
   &.left .modal-dialog,
   &.right .modal-dialog {

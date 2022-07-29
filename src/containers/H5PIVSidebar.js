@@ -17,7 +17,8 @@ const H5PIVSidebar = (props) => {
     playlistId,
     nextResource,
     viewType,
-    setH5pCurrentActivity
+    setH5pCurrentActivity,
+    selectedPlaylist
   } = props;
   console.log({ act: activeActivityId });
   // const organization = useSelector((state) => state.organization);
@@ -57,6 +58,7 @@ const H5PIVSidebar = (props) => {
             projectId={projectId}
             setH5pCurrentActivity={setH5pCurrentActivity}
             setCurrentActivePlaylist={setCurrentActivePlaylist}
+            selectedPlaylist={selectedPlaylist}
           />
         ))}
       </Accordion>
@@ -66,6 +68,7 @@ const H5PIVSidebar = (props) => {
 
 H5PIVSidebar.propTypes = {
   activeActivityId: PropTypes.any.isRequired,
+  selectedPlaylist: PropTypes.any.isRequired,
   setCurrentActiveId: PropTypes.func.isRequired,
   showLti: PropTypes.bool,
   shared: PropTypes.bool,

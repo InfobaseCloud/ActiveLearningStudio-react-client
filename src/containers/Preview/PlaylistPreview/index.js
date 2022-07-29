@@ -160,6 +160,7 @@ function PlaylistPreview(props) {
                               projectId={projectId}
                               playlistId={playlistId}
                               nextResource={nextResource}
+                              selectedPlaylist={selectedPlaylist}
                             />
                           </div>
                           <div className="col-md-8 right-content-wrap">

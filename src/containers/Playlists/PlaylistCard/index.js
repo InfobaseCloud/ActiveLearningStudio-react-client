@@ -193,13 +193,20 @@ class PlaylistCard extends React.Component {
                     onKeyPress={this.onEnterPress}
                     defaultValue={playlist.title}
                   />
-                  <input
-                    type="checkbox"
-                    name="playlist-summary"
-                    className={editMode ? "show-summary-checkbox" : "hide-summary-checkbox"}
-                    id="playlist-summary-checkbox"
-                    onChange={(e) => this.setState({ isColumnSummary: e.target.checked })}
-                  />
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={this.renderTooltip}
+                  >
+                    <input
+                      type="checkbox"
+                      name="playlist-summary"
+                      className={editMode ? "show-summary-checkbox" : "hide-summary-checkbox"}
+                      id="playlist-summary-checkbox"
+                      onChange={(e) => this.setState({ isColumnSummary: e.target.checked })}
+                      defaultChecked={playlist.is_column_summary}
+                    />
+                  </OverlayTrigger>
 
                   <PlaylistCardDropdown
                     playlist={playlist}
