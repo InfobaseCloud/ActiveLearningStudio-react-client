@@ -148,7 +148,7 @@ function PlaylistPreview(props) {
               <div className="item-container">
                 {currentActivity && (
                   <Suspense fallback={<div>Loading</div>}>
-                    {!selectedPlaylist.project.project_type ?
+                    {selectedPlaylist.project.project_type ?
                       (
                         <div className="row">
                           <div className="col-md-4 sidebar-wrap">

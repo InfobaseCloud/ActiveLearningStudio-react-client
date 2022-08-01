@@ -347,6 +347,19 @@ function PlaylistsPage(props) {
       descriptionRef.current = e;
     }
   };
+  const handleProjectlayout = (e) => {
+    const projectTitle = titleRef.current.value;
+    dispatch(
+      updateProjectAction(selectedProject?.id, {
+        name: projectTitle,
+        description: e.target.value,
+        thumb_url: thumbUrl,
+        organization_visibility_type_id:
+          selectedProject.organization_visibility_type_id || 1,
+        project_type: e.target.checked,
+      }),
+    );
+  };
   const onBlur = (e) => {
     if (e.target.name === 'projectname') {
       titleRef.current.blur();
@@ -596,7 +609,7 @@ function PlaylistsPage(props) {
                   <div className="col playlist-page-project-title project-each-view">
                     <div className="flex-se project-headline-section">
                       <div style={{ width: '100%' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                           <div className="project-images">
                             <label style={{ display: 'none' }}>
                               <input
@@ -753,6 +766,25 @@ function PlaylistsPage(props) {
                             onKeyPress={onEnterPress}
                             style={{ display: editName ? 'block' : 'none' }}
                           />
+                          <div className="layout-option" style={{ display: editName ? 'block' : 'none' }}>
+                            <label
+                              htmlFor="project-layout"
+                              style={{ paddingRight: '15px' }}
+                            >
+                              Do you want Project layout?
+                            </label>
+                            <input
+                              className="project-layout"
+                              onChange={handleProjectlayout}
+                              type="checkbox"
+                              name="project-layout"
+                              id="project-layout"
+                              defaultChecked={
+                                /* eslint-disable */
+                                selectedProject.project_type === '1' ? true : false
+                              }
+                            />
+                          </div>
                           {!editName
                             && (Object.keys(teamPermission).length
                               ? teamPermission?.Team?.includes(
