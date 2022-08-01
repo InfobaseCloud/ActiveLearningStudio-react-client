@@ -5,9 +5,11 @@
   width: 470px;
   height: auto;
   background-color: #e5e5e5;
+
   h1 {
     margin: 0;
     font-family: $rubik, sans-serif;
+
     span {
       font-style: normal;
       font-weight: 500;
@@ -22,6 +24,7 @@
     // color: #165399;
     text-transform: capitalize;
   }
+
   .close-playlist-btn {
     float: right;
     background: none;
@@ -35,10 +38,12 @@
     right: 0;
     width: 470px;
   }
+
   .modal-body {
     .modal-title {
       padding-left: 0%;
     }
+
     .playlistName {
       padding-top: 36px;
       font-style: normal;
@@ -54,12 +59,14 @@
       margin: 4px 0px;
     }
   }
+
   .modal-footer {
     padding: 38px 0px;
     display: block;
     border-top: none;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
+
     .add-playlist-btn {
       display: flex;
       flex-direction: row;
@@ -89,7 +96,15 @@
       // }
     }
   }
+
   .modal {
     padding: 0 !important;
+  }
+}
+
+.playlist-modal {
+  .modal {
+    display: block;
+    opacity: 1;
   }
 }
