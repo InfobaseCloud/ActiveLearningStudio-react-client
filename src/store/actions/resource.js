@@ -298,6 +298,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         payload: insertedResource.activity,
       });
       hide();
+
     } else {
       const insertedResource = await resourceService.create(activity, playlistId);
       toast.dismiss();
@@ -323,6 +324,9 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         type: 'SET_ACTIVE_ACTIVITY_SCREEN',
         payload: '',
       });
+      console.log('here i am');
+      localStorage.removeItem('VideoDuration');
+      localStorage.removeItem('VideoThumbnail');
     }
   } else {
     dispatch({
