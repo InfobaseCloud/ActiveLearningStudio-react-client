@@ -645,14 +645,16 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     editorType,
   });
 
-  dispatch({
-    type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-  });
-  hide();
-  dispatch({
-    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-    payload: '',
-  });
+  if (hide) {
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+    });
+    hide();
+    dispatch({
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: '',
+    });
+  }
   return response;
   // } catch (e) {
   //   console.log(e);
