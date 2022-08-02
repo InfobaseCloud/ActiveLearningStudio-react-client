@@ -27,7 +27,7 @@ const H5PIVSidebar = (props) => {
     return () => {
       currentPlaylistIndex
     }
-  }, [])
+  }, [currentPlaylistIndex])
   // const currentPlaylistIndex = parseInt(allPlaylists.findIndex((p) => p.id === playlistId)) + 1;
   const [currentActivePlaylist, setCurrentActivePlaylist] = useState(currentPlaylistIndex);
 
@@ -44,7 +44,7 @@ const H5PIVSidebar = (props) => {
         </h3>
       </div>
 
-      <Accordion className="sidebar-accordion" activeKey={currentActivePlaylist}>
+      <Accordion className="sidebar-accordion">
         {allPlaylists.map((playlist, count) => (
           <SidebarItems
             playlist={playlist}

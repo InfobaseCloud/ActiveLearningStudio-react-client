@@ -48,12 +48,14 @@
       &:hover {
         text-decoration: none;
         background: rgba(8, 72, 146, 0.05);
+        color: #084892;
       }
     }
 
     &.active {
       a {
         background: rgba(8, 72, 146, 0.05);
+        color: #084892;
       }
     }
   }
