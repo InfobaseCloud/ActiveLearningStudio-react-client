@@ -6,6 +6,10 @@
   display: flex;
   align-items: center;
   padding-left: 24px;
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
 
   @media (max-width: 767px) {
     height: 48px;
@@ -23,6 +27,7 @@
     display: none;
   }
 }
+
 .curriki-activity-share {
   max-width: 100%;
   margin: 20px auto;
@@ -30,6 +35,7 @@
   @media (max-width: 1020px) {
     margin: 0px auto;
   }
+
   #curriki-h5p-wrapper {
     height: calc(100vh - 107px);
     margin: 0 auto;

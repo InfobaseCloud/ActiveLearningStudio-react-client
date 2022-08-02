@@ -113,7 +113,7 @@ function PlaylistPreview(props) {
         <div className="activity-preview-with-playlist-container">
           {/* <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}> */}
 
-          <div className={query.view !== 'activity' ? 'left-activity-view' : 'left-activity-view extra-padding'}>
+          <div className={query.view !== 'activity' ? 'left-activity-view' : 'left-activity-view'}>
             <div className="activity-metadata">
               <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`}>
 
@@ -148,10 +148,10 @@ function PlaylistPreview(props) {
               <div className="item-container">
                 {currentActivity && (
                   <Suspense fallback={<div>Loading</div>}>
-                    {selectedPlaylist.project.project_type ?
+                    {!selectedPlaylist.project.project_type ?
                       (
-                        <div className="row">
-                          <div className="col-md-4 sidebar-wrap">
+                        <div className="row no-space">
+                          <div className="col-md-4 sidebar-wrap no-space">
                             <H5PIVSidebar
                               allPlaylists={allPlaylists}
                               activeActivityId={currentActiveId ? currentActiveId : currentActivity.id}
@@ -163,7 +163,7 @@ function PlaylistPreview(props) {
                               selectedPlaylist={selectedPlaylist}
                             />
                           </div>
-                          <div className="col-md-8 right-content-wrap">
+                          <div className="col-md-8 right-content-wrap no-space">
                             <H5PIVPreview showLtiPreview activityId={currentActiveId ? currentActiveId : currentActivity.id} selectedPlaylist={selectedPlaylist} />
                           </div>
                         </div>

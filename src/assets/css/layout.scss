@@ -1,14 +1,26 @@
 .col-md-4.sidebar-wrap {
   padding-right: 0;
+  padding-left: 0;
+
+  .sidebar-wrapper {
+    border-top: 1px solid #EEE;
+    border-bottom: 1px solid #EEE;
+    padding-top: 15px;
+  }
+}
+
+.activity-preview-with-playlist-container .row.no-space {
+  margin: 0 0 0 -24px;
 }
 
 .col-md-8.right-content-wrap {
   padding-left: 0;
+  padding-right: 0;
 }
 
 hr.full-width {
   clear: both;
-  width: calc(100% + 50px);
+  width: calc(100% + 25px);
   margin-left: -25px;
 }
 

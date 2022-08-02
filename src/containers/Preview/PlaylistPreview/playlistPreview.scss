@@ -23,9 +23,11 @@
     display: none;
   }
 }
+
 .curriki-playlist-preview-container {
-  max-width: 1440px;
+  max-width: 1600px;
   margin: 24px auto;
+  margin-top: 0;
   background-color: #fff;
 
   @media (max-width: 1020px) {
@@ -35,15 +37,18 @@
   .activity-preview-with-playlist-container {
     display: flex;
     position: relative;
+
     @media (max-width: 1020px) {
       width: 100%;
     }
+
     .hideInMobile {
       @media (max-width: 1020px) {
         display: none;
       }
     }
   }
+
   // activity meta data
   .activity-metadata {
     display: flex;
@@ -51,13 +56,14 @@
     align-items: center;
     margin-bottom: 0px;
     padding-right: 15px;
+
     a {
       font-family: "rubic";
       font-style: normal;
       font-weight: 500;
-      font-size: 14px;
+      font-size: 12px;
       line-height: 20px;
-      background: #f7faff;
+      text-transform: uppercase;
       border-radius: 4px;
       padding: 6px 8px;
       text-align: center;
@@ -75,11 +81,16 @@
         display: none;
       }
     }
+
+    a[href=""] {
+      color: #515151;
+    }
+
     svg {
-      margin: -4px 8px 0px 8px;
+      margin: -1px 0px 0px 0px;
       font-style: normal;
       font-weight: 400;
-      font-size: 18px;
+      font-size: 13px;
       line-height: 20px;
       color: #084892;
 
@@ -87,18 +98,21 @@
         display: none;
       }
     }
+
     .close-icon {
       margin-left: auto;
 
       @media (max-width: 1020px) {
         display: block;
       }
+
       svg {
         @media (max-width: 1020px) {
           display: block;
         }
       }
     }
+
     @media (max-width: 1020px) {
       display: none;
     }
@@ -106,7 +120,7 @@
 
   // activity controller
   .activity-controller {
-    padding: 0;
+    padding: 0 24px 0 0;
     // background: #f7faff;
     // border-radius: 8px;
     margin-bottom: 45px;
@@ -138,9 +152,9 @@
           font-family: "rubic";
           font-style: normal;
           font-weight: 500;
-          font-size: 16px;
+          font-size: 13px;
           line-height: 20px;
-          color: #515151;
+          color: #515151 !important;
 
           &:hover {
             text-decoration: none;
@@ -162,12 +176,23 @@
             margin-right: 0;
           }
         }
+
       }
 
-      .slider-hover-section + .slider-hover-section a {
-        margin-left: 30px;
+      .slider-hover-section+.slider-hover-section {
+        a {
+          margin-left: 30px;
+        }
+
+        .hover-control-caption {
+          a {
+            margin-left: 0;
+
+          }
+        }
       }
     }
+
     @media (max-width: 1020px) {
       display: none;
     }
@@ -184,17 +209,22 @@
     #curriki-h5p-wrapper {
       min-height: calc(100vh - 300px);
       margin: 0 auto;
+
       @media (max-width: 1020px) {
         min-height: calc(100vh - 25px);
+
         @media (orientation: portrait) {
           min-height: calc(100vh - 55px);
         }
       }
     }
   }
+
   .left-activity-view.extra-padding {
     padding: 24px 24px 32px 24px;
-  } //all-activities-of-playlist
+  }
+
+  //all-activities-of-playlist
 
   .all-activities-of-playlist::before {
     box-shadow: -4px 5px 3px 0px #43434333;
@@ -207,6 +237,7 @@
     z-index: 1;
     top: 27px;
     border-radius: 50px 0px 0px 50px;
+
     @media (max-width: 1020px) {
       left: 13px;
     }
@@ -236,6 +267,7 @@
       border-radius: 50%;
       text-align: center;
       cursor: pointer;
+
       @media (max-width: 1020px) {
         left: 20px;
       }
@@ -243,6 +275,7 @@
 
     .all-activities {
       padding-top: 24px;
+
       @media (max-width: 1020px) {
         padding-top: 8px;
       }
@@ -259,6 +292,7 @@
       @media (max-width: 1020px) {
         padding: 8px;
       }
+
       a {
         display: flex;
         align-items: center;
@@ -271,6 +305,7 @@
         line-height: 20px;
         margin: 0;
         color: #084892;
+
         @media (max-width: 1020px) {
           font-weight: 400;
           font-size: 10px;
@@ -286,6 +321,7 @@
         // }
       }
     }
+
     .thumbnail {
       width: 48px;
       height: 48px;
@@ -295,6 +331,7 @@
       margin-right: 12px;
       display: flex;
       flex-shrink: 0;
+
       @media (max-width: 1020px) {
         width: 32px;
         height: 32px;
@@ -309,11 +346,13 @@
       position: relative;
       margin-left: 40px;
       min-height: 100%;
+
       @media (max-width: 1020px) {
         min-height: 100vh;
         padding: 8px;
         max-width: 100%;
       }
+
       // transition: 0.7s ease-in-out;
     }
 
@@ -326,6 +365,7 @@
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
       margin-left: 40px;
       height: 100%;
+
       .each-activity {
         display: flex;
         justify-content: center;
@@ -337,11 +377,13 @@
         border-bottom: 1px solid #dddddd;
         padding: 12px 0px;
         margin: 0;
+
         .thumbnail {
           margin: 0;
           flex-shrink: inherit;
         }
       }
+
       @media (max-width: 1020px) {
         height: 100vh;
         position: relative;
@@ -349,15 +391,18 @@
         max-width: 10px;
         padding: 0px 5px;
       }
+
       //  transition: 0.7s ease-in-out;
     }
 
     .nav-tabs {
       margin: 0;
       border-bottom: 1px solid #084892;
+
       @media (max-width: 1020px) {
         border: none;
       }
+
       a {
         font-style: normal;
         font-weight: 500;
@@ -368,6 +413,7 @@
 
         color: #084892;
         border-color: #084892 #084892 #fff;
+
         @media (max-width: 1020px) {
           border: none;
           padding: 8px 0px 0px 8px;
@@ -375,27 +421,33 @@
       }
     }
   }
+
   .all-activities-of-playlist.active::before {
     left: 13px;
   }
+
   .all-activities-of-playlist.active {
     @media (max-width: 1020px) {
       overflow-y: auto;
       overflow-x: hidden;
       width: 100%;
     }
+
     .each-activity {
       border: 1px solid #dddddd;
       box-sizing: border-box;
       border-radius: 4px;
     }
+
     .each-activity.active {
       box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
+
       p {
-        color: #084892 !important ;
+        color: #084892 !important;
       }
     }
   }
+
   .all-activities-of-playlist.active .list-button {
     @media (max-width: 1020px) {
       left: 20px;
@@ -449,5 +501,9 @@
   img {
     max-width: 70px;
     margin-bottom: 15px;
+  }
+
+  &.no-data {
+    padding: 0 5px 5px 5px;
   }
 }
