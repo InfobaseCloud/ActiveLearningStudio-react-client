@@ -33,7 +33,7 @@ const SidebarItems = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const getNextLink = (activity) => {
+  const getNextLink = (playlistId, activity) => {
     let nextLink = '#';
     if (activity) {
       nextLink = `/playlist/${playlistId}/activity/${activity.id}/preview`;
@@ -91,7 +91,7 @@ const SidebarItems = (props) => {
                       setH5pCurrentActivity(activity);
                     }
                   }}
-                  to={setH5pCurrentActivity ? void 0 : getNextLink(activity)}
+                  to={setH5pCurrentActivity ? void 0 : getNextLink(playlist.id, activity)}
                 >
                   {activity.title}
                 </Link>
