@@ -257,7 +257,8 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
 
     let thumb_url = metadata?.thumb_url;
     let duration = '';
-    if (data && data.library.includes('Column')) {
+
+    if (data && data.library.includes('Column') || data.library.includes('InteractiveBook')) {
       if (localStorage.getItem('VideoDuration')) {
         duration = localStorage.getItem('VideoDuration');
       }
@@ -324,7 +325,6 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         type: 'SET_ACTIVE_ACTIVITY_SCREEN',
         payload: '',
       });
-      console.log('here i am');
       localStorage.removeItem('VideoDuration');
       localStorage.removeItem('VideoThumbnail');
     }
