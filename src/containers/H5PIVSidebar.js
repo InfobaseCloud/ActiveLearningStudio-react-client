@@ -22,14 +22,12 @@ const H5PIVSidebar = (props) => {
   } = props;
   console.log({ act: activeActivityId });
   // const organization = useSelector((state) => state.organization);
-  const currentPlaylistIndex = parseInt(allPlaylists.findIndex((p) => p.id === playlistId)) + 1;
+  const [currentActivePlaylist, setCurrentActivePlaylist] = useState();
   useEffect(() => {
-    return () => {
-      currentPlaylistIndex
-    }
-  }, [currentPlaylistIndex])
+    const currentPlaylistIndex = parseInt(allPlaylists.findIndex((p) => p.id === playlistId)) + 1;
+    setCurrentActivePlaylist(currentPlaylistIndex)
+  }, [])
   // const currentPlaylistIndex = parseInt(allPlaylists.findIndex((p) => p.id === playlistId)) + 1;
-  const [currentActivePlaylist, setCurrentActivePlaylist] = useState(currentPlaylistIndex);
 
   return (
     <div className="sidebar-wrapper">
@@ -44,7 +42,7 @@ const H5PIVSidebar = (props) => {
         </h3>
       </div>
 
-      <Accordion className="sidebar-accordion">
+      <Accordion className="sidebar-accordion" activeKey={currentActivePlaylist}>
         {allPlaylists.map((playlist, count) => (
           <SidebarItems
             playlist={playlist}
