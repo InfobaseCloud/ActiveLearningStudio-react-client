@@ -70,9 +70,8 @@ function ProjectPreview(props) {
   useEffect(() => {
     if (organization?.currentOrganization?.id) dispatch(loadMyProjectsActionPreview(match.params.projectId));
   }, [dispatch, match.params.projectId, organization?.currentOrganization?.id]);
-
+  console.log('-->', currentProject);
   let playlists;
-
   if (currentProject) {
     playlists =
       playlistState.playlists &&
@@ -89,7 +88,7 @@ function ProjectPreview(props) {
                   key={activity.id}
                   playlist={playlist}
                   teamPermission={teamPermission || {}}
-                  project_type={playlist.project.project_type}
+                  project_type={currentProject.project_type}
                 />
               )
           );
