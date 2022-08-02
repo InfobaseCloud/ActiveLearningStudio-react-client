@@ -39,7 +39,9 @@ const H5PEditor = (props) => {
   }
   const dispatch = useDispatch();
   const [submitAction, setSubmitAction] = useState(defaultState);
+  const [saveButton, setSaveButton] = useState(false);
   const [h5pFile, setH5pFile] = useState(null);
+  let saveButtonFlag = true;
 
   const setH5pFileUpload = (e) => {
     setH5pFile(e.target.files[0]);
@@ -58,6 +60,12 @@ const H5PEditor = (props) => {
       loadH5pSettings();
     }
   }, [loadH5pSettings]);
+
+  useEffect(() => {
+    const libraryName = h5pLib;
+    if (libraryName.includes('H5P.InteractiveBook'))
+      setSaveButton(true);
+  }, [h5pLib])
 
   const onSubmitActionRadioChange = (e) => {
     setSubmitAction(e.currentTarget.value);
@@ -82,7 +90,15 @@ const H5PEditor = (props) => {
     const { metadata } = parameters;
     if (metadata?.title !== undefined) {
       if (editActivity) {
-        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, { ...formData, title: metadata?.title || formData.title }, hide, projectId));
+        dispatch(editResourceAction(
+          playlistId,
+          h5pLib,
+          h5pLibType,
+          activityId,
+          { ...formData, title: metadata?.title || formData.title },
+          saveButtonFlag && hide,
+          projectId
+        ));
       } else if (editVideo) {
         await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
         setOpenVideo(false);
@@ -216,15 +232,17 @@ const H5PEditor = (props) => {
               >
                 Save & Close
               </div>
-              {/* <Buttons
-              text="Save"
-              width="97px"
-              className="save-btn"
-              onClick={() => {
-                props.onHide();
-                props.setSuccessMessage(true);
-              }}
-            /> */}
+              {saveButton && (
+                <div
+                  className="saveclosemodel"
+                  onClick={() => {
+                    saveButtonFlag = false;
+                    submitResource();
+                  }}
+                >
+                  Save
+                </div>
+              )}
             </div>
           </div>
         </fieldset>
