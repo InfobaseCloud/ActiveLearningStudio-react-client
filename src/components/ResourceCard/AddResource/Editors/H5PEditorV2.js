@@ -30,6 +30,8 @@ const H5PEditor = (props) => {
     settingId,
     reverseType,
     submitForm,
+    saveButtonCheck,
+    saveOnlyHandlerClose
   } = props;
 
   const uploadFile = useRef();
@@ -41,6 +43,7 @@ const H5PEditor = (props) => {
   const [submitAction, setSubmitAction] = useState(defaultState);
   const [saveButton, setSaveButton] = useState(false);
   const [h5pFile, setH5pFile] = useState(null);
+  const [saveOnlyHandler, setSaveOnlyHandler] = useState({});
   let saveButtonFlag = true;
 
   const setH5pFileUpload = (e) => {
@@ -48,7 +51,12 @@ const H5PEditor = (props) => {
   };
   useEffect(() => {
     submitForm.current = submitResource;
+    saveButtonCheck.current = handleSaveButtonOnClose;
   }, [formData]);
+
+  useEffect(() => {
+    saveOnlyHandlerClose.current = saveOnlyHandler;
+  }, [saveOnlyHandler])
 
   useEffect(() => {
 
@@ -81,9 +89,10 @@ const H5PEditor = (props) => {
     return ids;
   }
 
+  const handleSaveButtonOnClose = () => saveButtonFlag = true;
+
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
-    console.log('formData', formData);
     formData.subject_id = formatSelectBoxData(formData.subject_id);
     formData.education_level_id = formatSelectBoxData(formData.education_level_id);
     formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
@@ -102,22 +111,42 @@ const H5PEditor = (props) => {
       } else if (editVideo) {
         await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
         setOpenVideo(false);
+      } else if (saveOnlyHandler.activity || saveOnlyHandlerClose.current.activity) {
+        dispatch(editResourceAction(
+          playlistId,
+          h5pLib,
+          h5pLibType,
+          saveOnlyHandler?.activity?.id || saveOnlyHandlerClose.current?.activity?.id,
+          { ...formData, title: metadata?.title || formData.title },
+          hide,
+          projectId
+        ));
       } else {
         const payload = {
           event,
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType, setSaveOnlyHandler);
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
-  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {
+  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType, setSaveOnlyHandler) => {
     // try {
-
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId, reverseType));
+      await dispatch(createResourceAction(
+        currentPlaylistId,
+        editor,
+        editorType,
+        formData,
+        saveButtonFlag && hide,
+        type,
+        accountId,
+        settingId,
+        reverseType,
+        setSaveOnlyHandler,
+      ));
       if (type === 'videoModal') {
         if (setOpenVideo) {
           setOpenVideo(false);

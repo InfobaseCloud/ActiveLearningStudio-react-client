@@ -234,7 +234,7 @@ export const resourceSaved = (saved) => async (dispatch) => {
   });
 };
 
-export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type, accountId, settingId, reverseType) => async (dispatch) => {
+export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type, accountId, settingId, reverseType, setSaveOnlyHandler) => async (dispatch) => {
   const data = {
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
@@ -298,7 +298,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         type: actionTypes.ADD_NEW_VIDEO,
         payload: insertedResource.activity,
       });
-      hide();
+      hide && hide();
 
     } else {
       const insertedResource = await resourceService.create(activity, playlistId);
@@ -317,14 +317,18 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         editor,
         editorType,
       });
-      dispatch({
-        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-      });
-      hide();
-      dispatch({
-        type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-        payload: '',
-      });
+      if (hide) {
+        dispatch({
+          type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+        });
+        hide();
+        dispatch({
+          type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+          payload: '',
+        });
+      } else {
+        setSaveOnlyHandler(insertedResource)
+      }
       localStorage.removeItem('VideoDuration');
       localStorage.removeItem('VideoThumbnail');
     }

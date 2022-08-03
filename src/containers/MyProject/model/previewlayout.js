@@ -41,6 +41,8 @@ const PreviewLayoutModel = (props) => {
   //   }
   // }, []);
   const submitForm = useRef(null);
+  const saveButtonCheck = useRef(null);
+  const saveOnlyHandlerClose = useRef(null);
   useEffect(() => {
     var replaceH5p;
     if (editVideo) {
@@ -186,6 +188,7 @@ const PreviewLayoutModel = (props) => {
                   },
                 }).then(async (result) => {
                   if (result.isConfirmed) {
+                    saveButtonCheck.current();
                     submitForm.current();
                   } else if (result.isDenied) {
                     onHide();
@@ -353,20 +356,20 @@ const PreviewLayoutModel = (props) => {
                     <Tabs text="1. Select  layout" tabActive={true} />
                     {
                       ((counter = 0),
-                      layout?.map((data) => {
-                        if (data.id === selectedLayout?.id && counter == 0) {
-                          counter++;
-                          return (
-                            <>
-                              <Tabs
-                                text="2. Describe and  create layout"
-                                className="ml-10"
-                                tabActive={true}
-                              />
-                            </>
-                          );
-                        }
-                      }))
+                        layout?.map((data) => {
+                          if (data.id === selectedLayout?.id && counter == 0) {
+                            counter++;
+                            return (
+                              <>
+                                <Tabs
+                                  text="2. Describe and  create layout"
+                                  className="ml-10"
+                                  tabActive={true}
+                                />
+                              </>
+                            );
+                          }
+                        }))
                     }
                     {counter === 0 && (
                       <>
@@ -389,10 +392,10 @@ const PreviewLayoutModel = (props) => {
                   h5pLib={
                     activity
                       ? activity.h5p_content.library.name +
-                        " " +
-                        activity.h5p_content.library.major_version +
-                        "." +
-                        activity.h5p_content.library.minor_version
+                      " " +
+                      activity.h5p_content.library.major_version +
+                      "." +
+                      activity.h5p_content.library.minor_version
                       : selectedLayout?.h5pLib
                   }
                   h5pLibType={activity?.type || selectedLayout?.type}
@@ -408,13 +411,15 @@ const PreviewLayoutModel = (props) => {
                   editActivity={activity ? true : false}
                   activityId={activity?.id}
                   submitForm={submitForm}
+                  saveButtonCheck={saveButtonCheck}
+                  saveOnlyHandlerClose={saveOnlyHandlerClose}
                 />
               </>
             )}
           </div>
         </Modal.Body>
       </Modal>
-      {showActivitySearch && <ExistingActivitySearchContainer insertActivityCallback={insertActivityCallback} libraries={insertActivityLibraries} closeModal={() => handleExistingActivitySearchEvent('close') }/>}
+      {showActivitySearch && <ExistingActivitySearchContainer insertActivityCallback={insertActivityCallback} libraries={insertActivityLibraries} closeModal={() => handleExistingActivitySearchEvent('close')} />}
     </>
   );
 };
