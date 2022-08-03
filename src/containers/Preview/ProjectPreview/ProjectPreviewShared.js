@@ -147,7 +147,7 @@ function ProjectPreviewShared(props) {
       </div>
     );
   }
-  console.log('project', project);
+
   return (
     <div className="white-backgroud">
       <div className="project-share-preview-nav">
