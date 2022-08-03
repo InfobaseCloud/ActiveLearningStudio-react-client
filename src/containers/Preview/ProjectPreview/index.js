@@ -119,7 +119,7 @@ function ProjectPreview(props) {
                   }
                 }}
               >
-                {currentProject.project_type === '' &&
+                {currentProject.project_type !== 'Column Layout' &&
                   <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
                 }
                 {editTitle && playlist ? (
@@ -165,7 +165,7 @@ function ProjectPreview(props) {
     <div>
       {currentProject && (
         <>
-          {currentProject.project_type ?
+          {currentProject.project_type === 'Column Layout' ?
             <div className="container">
               <div className="banner-block">
                 <div className="custom-container">
@@ -267,7 +267,7 @@ function ProjectPreview(props) {
             </div>
           }
           {
-            currentProject.project_type ?
+            currentProject.project_type === 'Column Layout' ?
               <div className="container">
                 <div className="playlist-div playlist-card-background">
                   <div className='custom-container'>

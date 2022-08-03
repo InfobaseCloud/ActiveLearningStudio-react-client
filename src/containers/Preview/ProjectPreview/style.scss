@@ -884,7 +884,7 @@ img {
 .card.project-card {
   .card-footer {
     p {
-      display: inline-flex;
+      // display: inline-flex;
       align-items: center;
 
       svg {
@@ -1057,3 +1057,23 @@ img {
 .slick-track{
   float: left;
 }
+.playlist-div {
+	.custom-container {
+		.all-playlist.check-custom {
+			.slick-slide {
+				div.card-footer {
+					p {
+						.card-footer-desc {
+							min-height: 48px;
+						}
+						.card-footer-duration {
+							position: absolute;
+							bottom: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

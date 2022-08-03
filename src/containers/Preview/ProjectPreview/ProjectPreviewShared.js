@@ -122,7 +122,7 @@ function ProjectPreviewShared(props) {
                 }
               }}
             >
-              {project.selectedProject && project.selectedProject.project_type ?
+              {project.selectedProject && project.selectedProject.project_type === 'Column Layout' ?
                 playlist.title :
                 <>
                   <FontAwesomeIcon icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} style={{ fontSize: '12px' }} />
@@ -153,7 +153,7 @@ function ProjectPreviewShared(props) {
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
-      {project.selectedProject && project.selectedProject.project_type ?
+      {project.selectedProject && project.selectedProject.project_type === 'Column Layout' ?
         <div className="site-container-preview shared">
           {currentProject && currentProject.status === 'error' ? (
             <Unauthorized text="Project is not Public" />
