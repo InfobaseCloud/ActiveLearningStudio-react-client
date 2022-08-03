@@ -70,7 +70,7 @@ function ProjectPreview(props) {
   useEffect(() => {
     if (organization?.currentOrganization?.id) dispatch(loadMyProjectsActionPreview(match.params.projectId));
   }, [dispatch, match.params.projectId, organization?.currentOrganization?.id]);
-  console.log('-->', currentProject);
+
   let playlists;
   if (currentProject) {
     playlists =
@@ -101,7 +101,6 @@ function ProjectPreview(props) {
             </div>
           );
         }
-        console.log(editTitle);
         return (
           (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view')) && (
             <div className="check-each" key={playlist.id}>
@@ -173,7 +172,7 @@ function ProjectPreview(props) {
                   <div className='row'>
                     <div className='col-md-9'>
                       <div className="project-title-desc">
-                        <div onClick={() => console.log('curr', currentProject.project_type)} className="project-title">
+                        <div className="project-title">
                           <h2>{currentProject.name}</h2>
                         </div>
                         <div className="project description">
@@ -185,7 +184,7 @@ function ProjectPreview(props) {
                       <div className="scene-img">
                         <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
                           {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
-                            <img onClick={() => console.log('curr', currentProject)} src={currentProject.thumb_url} alt="thumbnail" />
+                            <img src={currentProject.thumb_url} alt="thumbnail" />
                           ) : (
                             <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
                           )}
@@ -203,14 +202,14 @@ function ProjectPreview(props) {
                   <div className="scene-img">
                     <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
                       {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
-                        <img onClick={() => console.log('curr', currentProject)} src={currentProject.thumb_url} alt="thumbnail" />
+                        <img src={currentProject.thumb_url} alt="thumbnail" />
                       ) : (
                         <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
                       )}
                     </Link>
                   </div>
                   <div className="project-title-desc">
-                    <div onClick={() => console.log('curr', currentProject.project_type)} className="project-title">
+                    <div className="project-title">
                       <h2>{currentProject.name}</h2>
                     </div>
                     <div className="project description">
