@@ -1,17 +1,18 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
-
 import { loadMyProjectsPreviewSharedAction, searchPreviewProjectAction } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
 import Unauthorized from 'components/Unauthorized';
 import HeaderLogo from 'assets/images/GCLogo.png';
 import './project-share-preview.scss';
+import './style.scss';
+import '../../App/style.scss';
 
 function ProjectPreviewShared(props) {
   const { match, sampleId, loadMyProjectsPreviewShared, setModalShow, setCurrentActivity, searchPreviewProject, mainPageProjectView } = props;
@@ -42,11 +43,10 @@ function ProjectPreviewShared(props) {
   const settings = {
     dots: false,
     arrows: true,
-    infinite: true,
-    speed: 500,
-    slidesToScroll: 1,
-    variableWidth: true,
     infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
   };
 
   useEffect(() => {
@@ -87,6 +87,7 @@ function ProjectPreviewShared(props) {
               setCurrentActivity={setCurrentActivity}
               lti
               shared
+              project_type={project.selectedProject.project_type}
             />
           ));
         } else {
@@ -106,7 +107,7 @@ function ProjectPreviewShared(props) {
               ref={(el) => {
                 accordion.current[counter] = el;
               }}
-              className={counter === 0 ? 'active activity-slider-button' : 'activity-slider-button'}
+              className={counter === 0 ? 'active activity-slider-button accordion' : ' accordion'}
               onClick={() => {
                 accordion.current[counter].classList.toggle('active');
                 accordion.current.forEach((el) => {
@@ -121,15 +122,20 @@ function ProjectPreviewShared(props) {
                 }
               }}
             >
-              <FontAwesomeIcon icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} style={{ fontSize: '12px' }} />
-              {playlist.title}
-              <FontAwesomeIcon className="mobile" icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} />
+              {project.selectedProject && project.selectedProject.project_type ?
+                playlist.title :
+                <>
+                  <FontAwesomeIcon icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} style={{ fontSize: '12px' }} />
+                  {playlist.title}
+                  <FontAwesomeIcon className="mobile" icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} />
+                </>
+              }
             </button>
 
             <div className="panel preview-activity-style">
               <ul>{windowDimenion > 768 ? <Slider {...settings}>{activities}</Slider> : activities}</ul>
             </div>
-          </div>
+          </div >
         );
       });
   } else {
@@ -147,45 +153,109 @@ function ProjectPreviewShared(props) {
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
-      <div className="project-share-preview">
-        {currentProject && currentProject.status === 'error' ? (
-          <Unauthorized text="Project is not Public" />
-        ) : (
-          <>
-            {currentProject ? (
-              <div>
-                <div className="project-meta-data">
-                  <div
-                    className="project-thumbnail"
-                    style={{
-                      backgroundImage: currentProject.thumb_url?.includes('pexels.com')
-                        ? `url(${currentProject.thumb_url})`
-                        : `url(${global.config.resourceUrl}${currentProject.thumb_url})`,
-                    }}
-                  ></div>
-                  <div className="project-description">
-                    <h1>{currentProject.name}</h1>
-                    <p>{currentProject.description}</p>
+      {project.selectedProject && project.selectedProject.project_type ?
+        <div className="site-container-preview shared">
+          {currentProject && currentProject.status === 'error' ? (
+            <Unauthorized text="Project is not Public" />
+          ) : (
+            <>
+              {currentProject ? (
+                <div>
+                  <div className="container">
+                    <div className="banner-block">
+                      <div className="custom-container">
+                        <div className='row'>
+                          <div className='col-md-9'>
+                            <div className="project-title-desc">
+                              <div className="project-title">
+                                <h2>{currentProject.name}</h2>
+                              </div>
+                              <div className="project description">
+                                <p className="expandiv">{currentProject.description}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className='col-md-3'>
+                            <div className="scene-img">
+                              {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
+                                <img onClick={() => console.log('curr', currentProject)} src={currentProject.thumb_url} alt="thumbnail" />
+                              ) : (
+                                <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="container">
+                    <div className="playlist-div playlist-card-background">
+                      <div className='custom-container'>
+                        <div className="playlist-title-div">
+                          <div className="title-md playlist-title-card">Playlists</div>
+                        </div>
+                        <div className="all-playlist check-custom">
+                          <div className="slider-block" id="custom_accordi">
+                            {playlists}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="all-shared-playlist">
-                  <h2>Playlists</h2>
+              ) : project.isSharedProject === false ? (
+                <Alert variant="danger" style={{ marginTop: '40px', fontSize: '1.5em' }}>
+                  Project is not sharable.
+                </Alert>
+              ) : (
+                <Alert variant="primary" style={{ marginTop: '20px' }}>
+                  Loading ...
+                </Alert>
+              )}
+            </>
+          )}
+        </div>
+        :
+        <div className="project-share-preview">
+          {currentProject && currentProject.status === 'error' ? (
+            <Unauthorized text="Project is not Public" />
+          ) : (
+            <>
+              {currentProject ? (
+                <div>
+                  <div className="project-meta-data">
+                    <div
+                      className="project-thumbnail"
+                      style={{
+                        backgroundImage: currentProject.thumb_url?.includes('pexels.com')
+                          ? `url(${currentProject.thumb_url})`
+                          : `url(${global.config.resourceUrl}${currentProject.thumb_url})`,
+                      }}
+                    ></div>
+                    <div className="project-description">
+                      <h1>{currentProject.name}</h1>
+                      <p>{currentProject.description}</p>
+                    </div>
+                  </div>
+                  <div className="all-shared-playlist">
+                    <h2>Playlists</h2>
 
-                  <div className="accoridion-playlist">{playlists}</div>
+                    <div className="accoridion-playlist">{playlists}</div>
+                  </div>
                 </div>
-              </div>
-            ) : project.isSharedProject === false ? (
-              <Alert variant="danger" style={{ marginTop: '40px', fontSize: '1.5em' }}>
-                Project is not sharable.
-              </Alert>
-            ) : (
-              <Alert variant="primary" style={{ marginTop: '20px' }}>
-                Loading ...
-              </Alert>
-            )}
-          </>
-        )}
-      </div>
+              ) : project.isSharedProject === false ? (
+                <Alert variant="danger" style={{ marginTop: '40px', fontSize: '1.5em' }}>
+                  Project is not sharable.
+                </Alert>
+              ) : (
+                <Alert variant="primary" style={{ marginTop: '20px' }}>
+                  Loading ...
+                </Alert>
+              )}
+            </>
+          )}
+        </div>}
+
     </div>
   );
 }
