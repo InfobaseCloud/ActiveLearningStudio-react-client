@@ -196,7 +196,7 @@ const H5PIVPreview = (props) => {
         }
         counter += 1;
       });
-    } else if (activityState.h5pObject.externalDispatcher && !selectedPlaylist.project.project_type) {
+    } else if (activityState.h5pObject.externalDispatcher && selectedPlaylist.project.project_type == "Column Layout") {
       activityState.h5pObject.externalDispatcher.on('xAPI', (event) => {
         if (counter > 0) {
           if ((event.getVerb() === 'completed' || event.getVerb() === 'answered') && (event.data.statement.result && !event.getVerifiedStatementValue(['context', 'contextActivities', 'parent']))) {
@@ -210,7 +210,6 @@ const H5PIVPreview = (props) => {
             const getH5pRecords = localStorage.getItem('h5pRecords');
             if (getH5pRecords) {
               let h5pRecords = JSON.parse(getH5pRecords)
-              console.log({ compl: h5pRecords });
               newH5pRecord = {
                 [selectedPlaylist.id.toString()]: {
                   ...h5pRecords[selectedPlaylist.id.toString()],
@@ -231,7 +230,6 @@ const H5PIVPreview = (props) => {
                 }
               };
             }
-            console.log({ newH5pRecord });
             localStorage.setItem('h5pRecords', JSON.stringify(newH5pRecord))
             if (Object.keys(newH5pRecord[selectedPlaylist.id.toString()]).length - 1 === newH5pRecord[selectedPlaylist.id.toString()].totalActivityCount) {
               let apiPayload = convertH5pRecords(newH5pRecord[selectedPlaylist.id.toString()], selectedPlaylist.id)
@@ -240,7 +238,6 @@ const H5PIVPreview = (props) => {
                   if (Object.hasOwnProperty.call(response, recordNumber)) {
                     const element = response[recordNumber];
                     saveH5pRecord(element);
-                    console.log({ element });
                   }
                 }
                 localStorage.removeItem('h5pRecords');
