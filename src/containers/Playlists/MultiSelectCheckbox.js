@@ -13,7 +13,7 @@ const MultiSelectCheckbox = ({ projectType, selectedProject, handleProjectlayout
   }, [selectedProject]);
 
   function getDropdownButtonLabel({ placeholderButtonLabel, value }) {
-    return `${placeholderButtonLabel}: ${selectedProject.project_type} selected`;
+    return `${selectedProject.project_type}`;
   }
 
   function onChange(value, event) {
