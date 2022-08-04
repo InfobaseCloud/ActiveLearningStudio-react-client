@@ -612,6 +612,17 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     icon: '',
   });
 
+  let thumb_url = metadata?.thumb_url;
+  let duration = '';
+
+  if (h5pdata && h5pdata.library.includes('Column') || h5pdata.library.includes('InteractiveBook')) {
+    if (localStorage.getItem('VideoDuration')) {
+      duration = localStorage.getItem('VideoDuration');
+    }
+    if (localStorage.getItem('VideoThumbnail')) {
+      thumb_url = localStorage.getItem('VideoThumbnail');
+    }
+  }
   //try {
   const dataUpload = {
     data: h5pdata,
@@ -619,7 +630,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     //h5p_content_id: h5pid.h5p_content.id,
 
     playlist_id: playlistId,
-    thumb_url: metadata?.thumb_url,
+    thumb_url: thumb_url,
     action: 'create',
     title: metadata?.title,
     type: 'h5p',
@@ -630,6 +641,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     author_tag_id: metadata.author_tag_id,
     source_type: metadata?.source_type || undefined,
     source_url: metadata?.source_url || undefined,
+    duration: duration,
   };
   const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload, playlistId);
   await dispatch(loadProjectPlaylistsAction(projectid));
@@ -649,16 +661,18 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     editorType,
   });
 
-  if (hide) {
-    dispatch({
-      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-    });
-    hide();
-    dispatch({
-      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-      payload: '',
-    });
-  }
+  // if (hide) {
+  dispatch({
+    type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+  });
+  // hide();
+  dispatch({
+    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+    payload: '',
+  });
+  // }
+  localStorage.removeItem('VideoDuration');
+  localStorage.removeItem('VideoThumbnail');
   return response;
   // } catch (e) {
   //   console.log(e);
@@ -672,7 +686,6 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
 };
 
 export const editResourceMetaDataAction = (activity, metadata) => async (dispatch) => {
-  console.log(metadata);
   const h5pdata = {
     library: `${activity.library_name} ${activity.major_version}.${activity.minor_version}`,
     parameters: activity.h5p,
