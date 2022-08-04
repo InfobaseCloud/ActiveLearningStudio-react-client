@@ -80,8 +80,6 @@ function PlaylistPreview(props) {
     }
   }
 
-  console.log({ currentActivity });
-
   useEffect(() => {
     if (loading && currentActivityId) {
       loadH5pResourceSettings(currentActivityId)
@@ -148,7 +146,7 @@ function PlaylistPreview(props) {
               <div className="item-container">
                 {currentActivity && (
                   <Suspense fallback={<div>Loading</div>}>
-                    {selectedPlaylist.project.project_type ?
+                    {selectedPlaylist.project.project_type === "Column Layout" ?
                       (
                         <div className="row no-space">
                           <div className="col-md-4 sidebar-wrap no-space">

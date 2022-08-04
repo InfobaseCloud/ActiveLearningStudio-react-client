@@ -64,6 +64,8 @@ import EditResource from 'components/ResourceCard/EditResource';
 import Correct from 'assets/images/svg/Correct.svg';
 import './style.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import HeadingText from 'utils/HeadingText/headingtext';
+import MultiSelectCheckbox from './MultiSelectCheckbox';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
@@ -99,6 +101,10 @@ function PlaylistsPage(props) {
   ] = useState(0);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const { screenState } = useSelector((s) => s.myactivities);
+  const [projectType, setProjectType] = useState([{
+    value: 'Column Layout',
+    label: 'Column Layout',
+  }]);
   const {
     match,
     history,
@@ -348,15 +354,16 @@ function PlaylistsPage(props) {
     }
   };
   const handleProjectlayout = (e) => {
+    const layoutType = e?.option?.value;
     const projectTitle = titleRef.current.value;
     dispatch(
       updateProjectAction(selectedProject?.id, {
         name: projectTitle,
-        description: e.target.value,
+        description: selectedProject.description,
         thumb_url: thumbUrl,
         organization_visibility_type_id:
           selectedProject.organization_visibility_type_id || 1,
-        project_type: e.target.checked,
+        project_type: layoutType || null,
       }),
     );
   };
@@ -767,23 +774,17 @@ function PlaylistsPage(props) {
                             style={{ display: editName ? 'block' : 'none' }}
                           />
                           <div className="layout-option" style={{ display: editName ? 'block' : 'none' }}>
-                            <label
-                              htmlFor="project-layout"
-                              style={{ paddingRight: '15px' }}
-                            >
-                              Do you want Project layout?
-                            </label>
-                            <input
-                              className="project-layout"
-                              onChange={handleProjectlayout}
-                              type="checkbox"
-                              name="project-layout"
-                              id="project-layout"
-                              defaultChecked={
-                                /* eslint-disable */
-                                selectedProject.project_type === '1' ? true : false
-                              }
-                            />
+                            <div className="formik-select">
+                              <HeadingText
+                                text="Project Type"
+                                className="formik-select-title"
+                              />
+                              <MultiSelectCheckbox
+                                projectType={projectType}
+                                selectedProject={selectedProject}
+                                handleProjectlayout={handleProjectlayout}
+                              />
+                            </div>
                           </div>
                           {!editName
                             && (Object.keys(teamPermission).length
