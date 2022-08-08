@@ -14,7 +14,7 @@ app.get('/*', (req, res) => {
     if (err) {
       return console.log(err);
     }
-    data = data.replace('<title>CurrikiStudio</title>', `<title>${window.__RUNTIME_CONFIG__.META_IMAGE}</title>`);
+    data = data.replace('<title>imSparked</title>', `<title>${window.__RUNTIME_CONFIG__.META_IMAGE}</title>`);
     data = data.replace(/__META_IMAGE__/g, window.__RUNTIME_CONFIG__.META_IMAGE);
 
     res.send(data);
