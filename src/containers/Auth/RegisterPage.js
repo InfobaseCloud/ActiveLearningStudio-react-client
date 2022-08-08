@@ -101,7 +101,7 @@ class RegisterPage extends React.Component {
           title: 'YOU ARE REGISTERED!',
           html: message,
           showConfirmButton: true,
-          confirmButtonText: 'Login to CurrikiStudio',
+          confirmButtonText: 'Login to imSparked',
         }).then((result) => {
           if (result.isConfirmed) {
             history.push(`/login/${domain?.domain}`);
@@ -193,7 +193,7 @@ class RegisterPage extends React.Component {
               <div className="d-flex align-items-center justify-content-between">
                 <h1 className="auth-title mb2">
                   Welcome
-                  {!clicked ? ` to ${window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}` : `, ${firstName}`}
+                  {!clicked ? ` to ${window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'imSparked'}` : `, ${firstName}`}
                 </h1>
 
                 {/* <strong>OR</strong> */}

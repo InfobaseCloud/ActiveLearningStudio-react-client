@@ -69,7 +69,7 @@ const BrandingPage = ({ getShow }) => {
                         strokeWidth="2"
                       />
                     </svg>
-                    <div className="header-icon-text">Currikistudio</div>
+                    <div className="header-icon-text">imSparked</div>
                   </div>
                 </li>
                 <li>

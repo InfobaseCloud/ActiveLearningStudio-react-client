@@ -105,7 +105,7 @@ class LoginPage extends React.Component {
 
         <div className="auth-container">
           <div className="d-flex align-items-center justify-content-between">
-            <h1 className="auth-title mb-0">Login to CurrikiStudio</h1>
+            <h1 className="auth-title mb-0">Login to imSparked</h1>
 
             <strong>OR</strong>
 

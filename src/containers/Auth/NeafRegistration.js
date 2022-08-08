@@ -86,7 +86,7 @@ class NeafRegister extends React.Component {
         title: 'YOU ARE REGISTERED!',
         html: message,
         showConfirmButton: true,
-        confirmButtonText: 'Login to CurrikiStudio',
+        confirmButtonText: 'Login to imSparked',
       })
         .then((result) => {
           if (result.isConfirmed) {
@@ -143,7 +143,7 @@ class NeafRegister extends React.Component {
 
         <div className="auth-container">
           <div className="d-flex align-items-center justify-content-between">
-            <h1 className="auth-title mb-0">Register for CurrikiStudio</h1>
+            <h1 className="auth-title mb-0">Register for imSparked</h1>
 
             <strong>OR</strong>
 
