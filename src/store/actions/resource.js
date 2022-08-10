@@ -266,7 +266,6 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         thumb_url = localStorage.getItem('VideoThumbnail');
       }
     }
-
     const activity = {
       h5p_content_id: resource.id,
       playlist_id: playlistId,
@@ -282,6 +281,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
       duration: duration,
+      tag_id: metadata?.tag_id || undefined
     };
     if (type === 'videoModal' && !reverseType) {
       const centralizedState = store.getState();

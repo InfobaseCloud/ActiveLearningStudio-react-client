@@ -92,6 +92,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         subjects: action.payload,
       };
+    case actionTypes.GET_TAGS:
+      return {
+        ...state,
+        tags: action.payload,
+      };
     case actionTypes.GET_EDUCATION_LEVEL:
       return {
         ...state,

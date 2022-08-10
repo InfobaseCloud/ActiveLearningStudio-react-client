@@ -72,9 +72,9 @@ function SearchIndex(props) {
         });
         dispatch(reorderPlaylistsAction(match.params.projectId, origPlaylist, updatedOrder));
         setPlaylist({ ...playlist, activities: items });
-      // eslint-disable-next-line
-      } }
-    else if (source.droppableId === 'droppable') {
+        // eslint-disable-next-line
+      }
+    } else if (source.droppableId === 'droppable') {
       const resultHorizantal = move(
         search,
         playlist.activities,
@@ -106,7 +106,7 @@ function SearchIndex(props) {
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  // style={getListStyle(snapshot.isDraggingOver)}
+                // style={getListStyle(snapshot.isDraggingOver)}
                 >
                   {searchBuilder.searchQuery ? (
                     <>
@@ -191,7 +191,7 @@ function SearchIndex(props) {
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  // style={getListStyle(snapshot.isDraggingOver)}
+                // style={getListStyle(snapshot.isDraggingOver)}
                 >
                   <div className="playlist-host">
                     <h6>{!!playlist && playlist.title}</h6>

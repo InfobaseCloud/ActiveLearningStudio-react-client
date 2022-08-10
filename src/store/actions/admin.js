@@ -200,6 +200,15 @@ export const getSubjects = (subOrgId, page = '', size = '', query = '', column =
   return result;
 };
 
+export const getTags = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getTags(subOrgId, page, size, query, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_TAGS,
+    payload: result,
+  });
+  return result;
+};
+
 export const getEducationLevel = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getEducationLevel(subOrgId, page, size, query, column, orderBy);
   dispatch({

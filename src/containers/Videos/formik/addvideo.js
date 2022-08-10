@@ -554,6 +554,7 @@ const FormikVideo = ({
                             `{"name":"files","type":"video","label":"Add a video","importance":"high","description":"Click below to add a video you wish to use in your interactive video. You can add a video link or upload video files. It is possible to add several versions of the video with different qualities. To ensure maximum support in browsers at least add a version in webm and mp4 formats.","extraAttributes":["metadata"],"enableCustomQualityLabel":true}`
                           );
                           const result = await videoService.uploadvideoDirect(formData);
+
                           Swal.close();
                           if (result.success == false) {
                             Swal.fire({

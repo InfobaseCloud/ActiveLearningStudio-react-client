@@ -42,7 +42,7 @@ function ExistingActivitySearch(props) {
   const [activetab, setActiveTab] = useState('activities');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
-  
+
   useEffect(() => {
     if (localStorage.getItem('refreshPage') === 'true' && currentOrganization && searchType) {
       let dataSend;
@@ -171,7 +171,7 @@ function ExistingActivitySearch(props) {
     activityTypesState?.data?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
-  
+
   return (
     <>
       <div>
@@ -771,8 +771,8 @@ function ExistingActivitySearch(props) {
                                                 res.model === 'Activity'
                                                   ? `/activity/${res.id}/preview`
                                                   : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview/lti`
-                                                  : `/project/${res.id}/preview`
+                                                    ? `/playlist/${res.id}/preview/lti`
+                                                    : `/project/${res.id}/preview`
                                               }
                                               target="_blank"
                                               rel="noreferrer"

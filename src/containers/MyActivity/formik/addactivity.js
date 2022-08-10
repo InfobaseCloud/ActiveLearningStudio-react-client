@@ -15,9 +15,11 @@ import UploadFile from "utils/uploadselectfile/uploadfile";
 import { useSelector, useDispatch } from "react-redux";
 import { editResourceMetaDataAction } from "store/actions/resource";
 import * as actionTypes from "store/actionTypes";
-import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
+import { getSubjects, getEducationLevel, getAuthorTag, getTags } from "store/actions/admin";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import TagsInput from "react-tagsinput";
+import ReactTags from "react-tag-autocomplete";
 
 const AddActivity = (props) => {
   const {
@@ -41,44 +43,69 @@ const AddActivity = (props) => {
   const [existingActivity, setExistingActivity] = useState(false);
   const [formData, setFormData] = useState("");
   const [subjects, setSubjects] = useState(null);
+  const [allTags, setAllTags] = useState([]);
   const [authorTags, setAuthorTags] = useState(null);
   const [educationLevels, setEducationLevels] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [tagId, setTagId] = useState([]);
+
+  function onDelete(i) {
+    console.log("tag", i);
+  }
+
+  useEffect(() => {
+    console.log('tags', tags);
+  }, [tags]);
+
   const formRef = useRef();
   var counter;
   const parser = new DOMParser()
 
   const formatApiData = (data) => {
     let ids = [];
-    data.map(datum=>{
+    data.map(datum => {
       ids.push(datum.id);
     });
     return ids;
   }
-  
-  useEffect(()=> {
-    if(!subjects) {
+
+  useEffect(() => {
+    if (!subjects) {
       const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
       result_sub.then((data) => {
         let subj_array = [];
-        data?.data.map((subject)=> {
-          let sub = {value: subject.id, label: subject.name};
+        data?.data.map((subject) => {
+          let sub = { value: subject.id, label: subject.name };
           subj_array.push(sub);
         })
         setSubjects(subj_array);
       });
     }
   }, [subjects]);
-  
-  useEffect(()=> {
-    if(!educationLevels) {
+
+  useEffect(() => {
+    const result_sub = dispatch(getTags(organization?.activeOrganization?.id));
+    result_sub.then((data) => {
+      let subj_array = [];
+      data?.data.map((subject) => {
+        let sub = { id: subject.id, name: subject.name };
+        subj_array.push(sub);
+      })
+      console.log('subj_array', subj_array);
+      setAllTags(subj_array);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!educationLevels) {
       const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
       result_edu.then((data) => {
         let edu_array = [];
-        data?.data.map((edu_lvl)=> {
-          let edu = {value: edu_lvl.id, label: edu_lvl.name};
+        data?.data.map((edu_lvl) => {
+          let edu = { value: edu_lvl.id, label: edu_lvl.name };
           edu_array.push(edu);
         });
         setEducationLevels(edu_array);
@@ -86,13 +113,13 @@ const AddActivity = (props) => {
     }
   }, [educationLevels]);
 
-  useEffect(()=> {    
-    if(!authorTags) {
+  useEffect(() => {
+    if (!authorTags) {
       const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
       result_tag.then((data) => {
         let tag_array = [];
-        data?.data.map((tag)=> {
-          let auth_tag = {value: tag.id, label: tag.name};
+        data?.data.map((tag) => {
+          let auth_tag = { value: tag.id, label: tag.name };
           tag_array.push(auth_tag);
         });
         setAuthorTags(tag_array);
@@ -100,17 +127,17 @@ const AddActivity = (props) => {
     }
   }, [authorTags]);
 
-  useEffect(()=>{
-    if(activity?.subjects && !selectedSubjects){
+  useEffect(() => {
+    if (activity?.subjects && !selectedSubjects) {
       let output = subjects?.filter((obj) => formatApiData(activity?.subjects).indexOf(obj.value) !== -1);
       setSelectedSubjects(output);
     }
-    if(activity?.author_tags && !selecteAuthorTags){
+    if (activity?.author_tags && !selecteAuthorTags) {
       let output = authorTags?.filter((obj) => formatApiData(activity?.author_tags).indexOf(obj.value) !== -1);
       setSelecteAuthorTags(output);
     }
-    
-    if(activity?.education_levels && !selectedEducationLevel){
+
+    if (activity?.education_levels && !selectedEducationLevel) {
       let output = educationLevels?.filter((obj) => formatApiData(activity?.education_levels).indexOf(obj.value) !== -1);
       setSelectedEducationLevel(output);
     }
@@ -151,20 +178,20 @@ const AddActivity = (props) => {
             <Tabs text="1. Select  layout" tabActive={true} />
             {
               ((counter = 0),
-              layout?.map((data) => {
-                if (data.id === selectedLayout?.id && counter == 0) {
-                  counter++;
-                  return (
-                    <>
-                      <Tabs
-                        text="2. Describe and  create layout"
-                        className="ml-10"
-                        tabActive={true}
-                      />
-                    </>
-                  );
-                }
-              }))
+                layout?.map((data) => {
+                  if (data.id === selectedLayout?.id && counter == 0) {
+                    counter++;
+                    return (
+                      <>
+                        <Tabs
+                          text="2. Describe and  create layout"
+                          className="ml-10"
+                          tabActive={true}
+                        />
+                      </>
+                    );
+                  }
+                }))
             }
             {counter === 0 && (
               <>
@@ -290,8 +317,8 @@ const AddActivity = (props) => {
                 author_tag_id: selecteAuthorTags || "",
                 education_level_id: selectedEducationLevel || "",
                 subject_id: selectedSubjects || "",
-                thumb_url: activity?.thumb_url || 
-                'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
+                thumb_url: activity?.thumb_url ||
+                  'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || "",
               }}
               enableReinitialize
@@ -361,9 +388,9 @@ const AddActivity = (props) => {
                         name="subject_id"
                         hideSearch
                         options={subjects}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                           setFieldValue("subject_id", e)
-                          }}
+                        }}
                         value={values.subject_id}
                       />
                     </div>
@@ -374,9 +401,9 @@ const AddActivity = (props) => {
                         name="education_level_id"
                         hideSearch
                         options={educationLevels}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                           setFieldValue("education_level_id", e)
-                          }}
+                        }}
                         value={values.education_level_id}
                       />
                     </div>
@@ -387,13 +414,43 @@ const AddActivity = (props) => {
                         name="author_tag_id"
                         hideSearch
                         options={authorTags}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                           setFieldValue("author_tag_id", e)
-                          }}
+                        }}
                         value={values.author_tag_id}
                       />
                     </div>
                   </div>
+
+                  <div className="layout-formik-select"	>
+                    <div>
+                      <HeadingText
+                        text="Tags"
+                        className="formik-select-title"
+                      />
+                      <ReactTags
+                        tags={tags}
+                        allowNew
+                        suggestions={allTags}
+                        onDelete={onDelete}
+                        onAddition={(tag) => {
+                          if (tag.id) {
+                            setTagId([tag.id])
+                            setTags([...tags, tag]);
+                            setFieldValue("tag_id", [...tagId, tag.id]);
+                          } else {
+                            // tag.id = allTags[allTags.length - 1].id + 1;
+                            // setTags([...tags, tag]);
+                          }
+                        }}
+                      />
+                      {/* <TagsInput value={tags} onChange={(e) => {
+                        setFieldValue("tags", e);
+                        setTags(e);
+                      }} /> */}
+                    </div>
+                  </div>
+
                   <div className="formik-uploadimage">
                     <UploadImageV2
                       formRef={formRef}
@@ -411,8 +468,8 @@ const AddActivity = (props) => {
                 activtyMethod === "upload"
                   ? "Upload existing activity"
                   : activity
-                  ? "Edit layout"
-                  : "Create layout"
+                    ? "Edit layout"
+                    : "Create layout"
               }
               color="#084892"
               className="layout-add-activity-title"
@@ -423,8 +480,8 @@ const AddActivity = (props) => {
                 activtyMethod === "upload"
                   ? "Upload an activity from an existing H5P file. "
                   : activity
-                  ? "Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results."
-                  : "Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."
+                    ? "Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results."
+                    : "Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."
               }
               color="#515151"
             />

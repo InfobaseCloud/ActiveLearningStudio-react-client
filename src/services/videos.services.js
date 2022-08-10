@@ -9,8 +9,7 @@ const { apiVersion } = config;
 const getAll = (orgId, page = 1, size = 16) =>
   httpService
     .get(
-      `/${apiVersion}/suborganizations/${orgId}/stand-alone-activity?page=${page}${
-        size ? `&size=${size}` : ""
+      `/${apiVersion}/suborganizations/${orgId}/stand-alone-activity?page=${page}${size ? `&size=${size}` : ""
       }`
     )
     .then(({ data }) => data)

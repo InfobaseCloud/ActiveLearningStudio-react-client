@@ -31,20 +31,26 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   // }
   const activeGrades = [];
   if (values.gradeArray) {
-      values.gradeArray.forEach((grade) => {
-        activeGrades.push(grade);
+    values.gradeArray.forEach((grade) => {
+      activeGrades.push(grade);
     });
   }
   const activeSubjects = [];
   if (values.subjectArray) {
-      values.subjectArray.forEach((subject) => {
-        activeSubjects.push(subject);
+    values.subjectArray.forEach((subject) => {
+      activeSubjects.push(subject);
     });
   }
   const activeAuthTags = [];
   if (values.authorTagsArray) {
-      values.authorTagsArray.forEach((tag) => {
-        activeAuthTags.push(tag);
+    values.authorTagsArray.forEach((tag) => {
+      activeAuthTags.push(tag);
+    });
+  }
+  const searchTags = [];
+  if (values.tags) {
+    values.tags.forEach((tag) => {
+      searchTags.push(tag);
     });
   }
   let sendData;
@@ -61,6 +67,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
         authorTagIds: activeAuthTags,
+        tagsId: searchTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
@@ -78,6 +85,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         author: values.author || undefined,
         educationLevelIds: activeGrades,
         authorTagIds: activeAuthTags,
+        tagsId: searchTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
@@ -98,6 +106,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
         authorTagIds: activeAuthTags,
+        tagsId: searchTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
@@ -115,6 +124,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
         authorTagIds: activeAuthTags,
+        tagsIds: searchTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,

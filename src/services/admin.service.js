@@ -330,6 +330,14 @@ const getSubjects = (subOrgId, page, size, query, column = '', orderBy = '') => 
     Promise.reject(err.response.data);
   });
 
+const getTags = (subOrgId, page, size, query, column = '', orderBy = '') => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
 const createSubject = (subOrgId, values) => httpService
   .post(`${apiVersion}/suborganizations/${subOrgId}/subjects`, values)
   .then(({ data }) => data)
@@ -500,6 +508,7 @@ export default {
   addUserToOrg,
   removeUser,
   getSubjects,
+  getTags,
   createSubject,
   updateSubject,
   deleteSubject,
