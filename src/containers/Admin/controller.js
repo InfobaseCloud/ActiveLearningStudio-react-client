@@ -5,23 +5,17 @@ import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import {
-  // forgetAllFailedJobs,
-  // retryAllFailedJobs,
-  setActiveAdminForm,
-} from 'store/actions/admin';
+import { setActiveAdminForm } from 'store/actions/admin';
 import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
 import loader from 'assets/images/dotsloader.gif';
-// import csv from "assets/images/csv.png";
-// import pdf from "assets/images/pdf.png";
-// import bulk from 'assets/images/bulk.png';
-// import InviteUser from 'containers/ManageOrganization/inviteAdmin';
-// import AddUser from 'containers/ManageOrganization/addUser';
+import * as actionTypes from 'store/actionTypes';
+import indActivityService from 'services/indActivities.service';
 import adminService from 'services/admin.service';
 import { getRoles, roleDetail, searchUserInOrganization } from 'store/actions/organization';
 import { toolTypeArray } from 'utils';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
+import Filter from './filter';
 
 function Controller(props) {
   const {
@@ -31,10 +25,7 @@ function Controller(props) {
     btnText,
     btnAction,
     importUser,
-    // jobType,
-    // SetJobType,
-    // logType,
-    // SetLogType,
+
     subTypeState,
     filter,
     activeRole,
@@ -355,6 +346,52 @@ function Controller(props) {
           </div>
         )}
 
+        {!!search && type === 'IndActivities' && (
+          <div className="search-bar">
+            <input
+              className=""
+              type="text"
+              placeholder="Search"
+              value={searchQueryProject}
+              onChange={(e) => {
+                dispatch({
+                  type: actionTypes.CLEAR_IND_ACTIVITIES,
+                });
+                dispatch({
+                  type: actionTypes.CLEAR_ADMIN_EXPORTED_ACTIVITIES,
+                });
+                if (e.target.value) {
+                  setActivePage(1);
+                  setSearchQueryProject(e.target.value);
+                  // searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
+                } else if (e.target.value === '') {
+                  setActivePage(1);
+                  setSearchQueryProject('');
+                  // searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
+                }
+              }}
+            />
+
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)}
+            >
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
         {!!search && type === 'Organization' && (
           <div className="search-bar">
             <input type="text" placeholder="Search Organization" onChange={searchQueryChangeHandler} />
@@ -513,6 +550,18 @@ function Controller(props) {
             </span>
           </div>
         )}
+        {/* Ind. activity Start */}
+        {type === 'IndActivities' && subType === 'All independent activities' && (
+          <Filter
+            setProjectFilterObj={setProjectFilterObj}
+            projectFilterObj={projectFilterObj}
+            setLibraryReqSelected={setLibraryReqSelected}
+            resetProjectFilter={resetProjectFilter}
+            filterSearch={filterSearch}
+          />
+        )}
+
+        {/* Ind. Activity End  */}
         {/* FILTER FOR PROJECT TABS */}
         {type === 'Projects' && subType === 'All Projects' && (
           <div className="filter-dropdown-project">
@@ -539,24 +588,24 @@ function Controller(props) {
                     <div className="author-list">
                       {authorsArray?.length > 0
                         ? authorsArray?.map((author) => (
-                            <div
-                              className="single-author"
-                              onClick={() => {
-                                setProjectFilterObj({
-                                  ...projectFilterObj,
-                                  author_id: author.id,
-                                });
-                                setAuthorName(`${author.first_name} ${author.last_name}`);
-                                setAuthorsArray([]);
-                              }}
-                            >
-                              <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
-                              <div>
-                                <div className="username-filter-project">{author.first_name}</div>
-                                <div className="email-filter-project">{author.email}</div>
-                              </div>
+                          <div
+                            className="single-author"
+                            onClick={() => {
+                              setProjectFilterObj({
+                                ...projectFilterObj,
+                                author_id: author.id,
+                              });
+                              setAuthorName(`${author.first_name} ${author.last_name}`);
+                              setAuthorsArray([]);
+                            }}
+                          >
+                            <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                            <div>
+                              <div className="username-filter-project">{author.first_name}</div>
+                              <div className="email-filter-project">{author.email}</div>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : 'No user found.'}
                     </div>
                   )}
@@ -760,7 +809,37 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
-        {type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
+        {type === 'Projects' && subType === 'All Projects' && (
+          <button
+            className="switch-libreq"
+            type="button"
+            style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
+            onClick={() => {
+              // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
+              setLibraryReqSelected(!libraryReqSelected);
+            }}
+          >
+            {/* <img src={eye} alt="eye" /> */}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
+              <path
+                d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
+                stroke={primaryColor}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8 9.875C9.03553 9.875 9.875 9.03553 9.875 8C9.875 6.96447 9.03553 6.125 8 6.125C6.96447 6.125 6.125 6.96447 6.125 8C6.125 9.03553 6.96447 9.875 8 9.875Z"
+                stroke={primaryColor}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Library request to review
+          </button>
+        )}
+        {subType === 'All independent activities' && (
           <button
             className="switch-libreq"
             type="button"
@@ -961,60 +1040,6 @@ function Controller(props) {
             </span>
           </div>
         )}
-        {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
-          <Dropdown name="jobType" id="jobType">
-            <Dropdown.Toggle id="dropdown-basic">{jobType.display_name}</Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item value="1" name="Pending" onClick={() => SetJobType({ value: 1, display_name: 'Pending' })}>
-                Pending
-              </Dropdown.Item>
-              <Dropdown.Item value="2" name="Failed" onClick={() => SetJobType({ value: 2, display_name: 'Failed' })}>
-                Failed
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )} */}
-        {/* {type === 'Stats' && subTypeState === 'Queues: Logs' && (
-          <Dropdown name="logType" id="logType">
-            <Dropdown.Toggle id="dropdown-basic">{logType.display_name}</Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item value="all" name="All" onClick={() => SetLogType({ value: 'all', display_name: 'All' })}>
-                All
-              </Dropdown.Item>
-              <Dropdown.Item value="1" name="Running" onClick={() => SetLogType({ value: 1, display_name: 'Running' })}>
-                Running
-              </Dropdown.Item>
-              <Dropdown.Item value="2" name="Failed" onClick={() => SetLogType({ value: 2, display_name: 'Failed' })}>
-                Failed
-              </Dropdown.Item>
-              <Dropdown.Item value="3" name="Completed" onClick={() => SetLogType({ value: 3, display_name: 'Completed' })}>
-                Completed
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )} */}
-        {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && jobType.value === 2 && (
-          <div className="retryandforget">
-            <button
-              type="button"
-              className="retry"
-              onClick={() => {
-                dispatch(retryAllFailedJobs());
-              }}
-            >
-              Retry All
-            </button>
-            <button
-              type="button"
-              className="forget"
-              onClick={() => {
-                dispatch(forgetAllFailedJobs());
-              }}
-            >
-              Forget All
-            </button>
-          </div>
-        )} */}
 
         {/* ROW PER PAGE */}
       </div>
@@ -1058,6 +1083,56 @@ function Controller(props) {
                   const formData = new FormData();
                   formData.append('project', e.target.files[0]);
                   const response = adminService.importProject(activeOrganization.id, formData);
+                  response.then((res) => {
+                    Swal.fire({
+                      icon: 'success',
+                      html: res?.message,
+                    });
+                  });
+                }
+              }}
+            />
+          </div>
+        )}
+
+        {!!importUser && type === 'IndActivities' && subType === 'All independent activities' && permission['Independent Activity']?.includes('independent-activity:import') && (
+          <div
+            className="import-user"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              importProject.current.click();
+            }}
+          >
+            <FontAwesomeIcon icon="sign-in-alt" />
+            <div>Import activity</div>
+            <input
+              type="file"
+              ref={importProject}
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                if (e.target.files.length === 0) {
+                  return true;
+                }
+                if (!e.target.files[0].type.includes('zip')) {
+                  Swal.fire({
+                    title: 'Invalid File',
+                    icon: 'error',
+                    text: 'please select zip file',
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'Importing Project',
+                    icon: 'info',
+                    text: 'please wait...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                      Swal.showLoading();
+                    },
+                    button: false,
+                  });
+                  const formData = new FormData();
+                  formData.append('independent_activity', e.target.files[0]);
+                  const response = indActivityService.importIndAvtivity(activeOrganization.id, formData);
                   response.then((res) => {
                     Swal.fire({
                       icon: 'success',
@@ -1281,50 +1356,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {/* {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
-          <div className="btn-text">
-            <div className="add-user-btn">
-              <Dropdown drop="down" id="dropdown-button-drop-down">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Invite external user
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <InviteUser />
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          </div>
-        )} */}
-
-        {/* {permission?.Organization?.includes('organization:view-user') && type === 'Users' && subTypeState === 'All Users' && (
-          <div className="btn-text">
-            <div className="add-user-btn">
-              <Dropdown drop="down" id="dropdown-button-drop-down">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Add internal user
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <AddUser setAllUsersAdded={setAllUsersAdded} allUsersAdded={allUsersAdded} method="create" />
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          </div>
-        )} */}
       </div>
-
-      {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
-        <div className="btn-text">
-          <button
-            onClick={async () => {
-              await dispatch(getOrganization(currentOrganization?.id));
-              dispatch(clearOrganizationState());
-              dispatch(getRoles());
-            }}
-          >
-            Go to root organization
-          </button>
-        </div>
-      )} */}
     </div>
   );
 }
@@ -1335,37 +1367,32 @@ Controller.propTypes = {
   btnAction: PropTypes.string,
   importUser: PropTypes.bool,
   filteredItems: PropTypes.object,
-  // jobType: PropTypes.object,
-  // SetJobType: PropTypes.func,
-  // logType: PropTypes.object,
-  // SetLogType: PropTypes.func,
+
   subTypeState: PropTypes.string,
   filter: PropTypes.bool,
   activeRole: PropTypes.string,
   setActiveRole: PropTypes.func,
   setActivePage: PropTypes.func,
   type: PropTypes.string,
-  // searchQueryActivities: PropTypes.string,
-  // setSearchQueryActivities: PropTypes.func,
+
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
   setSearchQueryTeam: PropTypes.func,
-  // setSearchQueryStats: PropTypes.func,
+
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
   searchProjectQueryChangeHandler: PropTypes.func,
-  // searchActivitiesQueryHandler: PropTypes.func,
-  // searchUserReportQueryHandler: PropTypes.func,
+
   size: PropTypes.number,
   setSize: PropTypes.func,
   roles: PropTypes.array,
   subType: PropTypes.string,
   setChangeIndexValue: PropTypes.func,
-  // selectedActivityType: PropTypes.string,
+
   libraryReqSelected: PropTypes.bool,
   setLibraryReqSelected: PropTypes.func,
-  // setSubTypeState: PropTypes.func,
+
   projectFilterObj: PropTypes.object,
   setProjectFilterObj: PropTypes.func,
   filterSearch: PropTypes.func,
@@ -1378,10 +1405,7 @@ Controller.defaultProps = {
   btnText: '',
   btnAction: '',
   importUser: false,
-  // jobType: PropTypes.object,
-  // SetJobType: PropTypes.func,
-  // logType: PropTypes.object,
-  // SetLogType: PropTypes.func,
+
   subTypeState: '',
   filter: '',
   activeRole: '',
@@ -1389,28 +1413,25 @@ Controller.defaultProps = {
   setActivePage: {},
   filteredItems: {},
   type: '',
-  // searchQueryActivities: '',
-  // setSearchQueryActivities: {},
+
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
   setSearchQueryTeam: {},
-  // searchQueryStats: PropTypes.string,
-  // setSearchQueryStats: PropTypes.func,
+
   setSearchQuery: {},
   searchQueryChangeHandler: {},
   searchProjectQueryChangeHandler: {},
-  // searchActivitiesQueryHandler: {},
-  // searchUserReportQueryHandler: PropTypes.func,
+
   size: 10,
   setSize: {},
   roles: [],
   subType: '',
   setChangeIndexValue: {},
-  // selectedActivityType: '',
+
   libraryReqSelected: false,
   setLibraryReqSelected: {},
-  // setSubTypeState: {},
+
   projectFilterObj: {},
   setProjectFilterObj: {},
   filterSearch: {},

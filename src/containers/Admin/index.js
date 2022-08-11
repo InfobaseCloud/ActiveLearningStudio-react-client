@@ -32,6 +32,8 @@ import CreateAuthorTag from './formik/createAuthorTag';
 import CreateActivityLayout from './formik/createActivityLayout';
 import EditTeamModel from './model/EditTeamModel';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
+import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -41,18 +43,20 @@ function AdminPanel({ showSSO }) {
   const [users, setUsers] = useState(null);
   const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
+  const [modalShowh5p, setModalShowh5p] = useState(false);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
   const [modalShow, setModalShow] = useState(false);
   const [modalShowTeam, setModalShowTeam] = useState(false);
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
+  const [currentActivity, setCurrentActivity] = useState(null);
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -149,25 +153,43 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
+                  {/* Ind.Activity Start */}
+                  {(permission?.['Independent Activity']?.includes('independent-activity:view') ||
+                    permission?.['Independent Activity']?.includes('independent-activity:view-export')) && (
+                      <Tab eventKey="IndActivities" title="Ind. activities">
+                        <div className="module-content">
+                          <Pills
+                            setCurrentActivity={setCurrentActivity}
+                            setModalShowh5p={setModalShowh5p}
+                            modules={[
+                              permission?.['Independent Activity']?.includes('independent-activity:view') && 'All independent activities',
+                              permission?.['Independent Activity']?.includes('independent-activity:view-export') && 'Exported activities',
+                            ]}
+                            type="IndActivities"
+                          />
+                        </div>
+                      </Tab>
+                    )}
+                  {/* Ind.Activity End*/}
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
                     permission?.Organization?.includes('organization:view-activity-type')) && (
-                    <Tab eventKey="Activities" title="Activities">
-                      <div className="module-content">
-                        <Pills
-                          modules={[
-                            'Activity Layouts',
-                            permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
-                            permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
-                            'Subjects',
-                            'Education Level',
-                            'Author Tags',
-                          ]}
-                          type="Activities"
-                        />
-                      </div>
-                    </Tab>
-                  )}
+                      <Tab eventKey="Activities" title="Activities">
+                        <div className="module-content">
+                          <Pills
+                            modules={[
+                              'Activity Layouts',
+                              permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
+                              permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                              'Subjects',
+                              'Education Level',
+                              'Author Tags',
+                            ]}
+                            type="Activities"
+                          />
+                        </div>
+                      </Tab>
+                    )}
                   {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
@@ -474,6 +496,7 @@ function AdminPanel({ showSSO }) {
           <Alert variant="danger">You are not authorized to view this page.</Alert>
         </div>
       )}
+      <MyVerticallyCenteredModal show={modalShowh5p} onHide={() => setModalShowh5p(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={true} />
     </div>
   );
 }
