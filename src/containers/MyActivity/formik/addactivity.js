@@ -49,6 +49,7 @@ const AddActivity = (props) => {
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const [selectedTags, setSelectedTags] = useState(null);
   const [tags, setTags] = useState([]);
   const [tagId, setTagId] = useState([]);
 
@@ -128,6 +129,7 @@ const AddActivity = (props) => {
   }, [authorTags]);
 
   useEffect(() => {
+    console.log({ activity });
     if (activity?.subjects && !selectedSubjects) {
       let output = subjects?.filter((obj) => formatApiData(activity?.subjects).indexOf(obj.value) !== -1);
       setSelectedSubjects(output);
@@ -141,6 +143,10 @@ const AddActivity = (props) => {
       let output = educationLevels?.filter((obj) => formatApiData(activity?.education_levels).indexOf(obj.value) !== -1);
       setSelectedEducationLevel(output);
     }
+    if (activity?.tag_id && !selectedTags) {
+      let output = tags?.filter((obj) => formatApiData(activity?.tag_id).indexOf(obj.value) !== -1);
+      setSelectedTags(output);
+    }
   })
   useEffect(() => {
     if (selectedLayout) {
@@ -152,6 +158,9 @@ const AddActivity = (props) => {
       setActivityMethod("create");
     }
   }, [activity]);
+  useEffect(() => {
+    console.log({ values: formRef.current.values });
+  }, [formRef])
   successMessage &&
     setInterval(() => {
       setSuccessMessage(false);
@@ -320,6 +329,7 @@ const AddActivity = (props) => {
                 thumb_url: activity?.thumb_url ||
                   'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || "",
+                tag_id: selectedTags || "",
               }}
               enableReinitialize
               innerRef={formRef}
@@ -334,6 +344,7 @@ const AddActivity = (props) => {
                 return errors;
               }}
               onSubmit={(values) => {
+                console.log({ another: values });
                 setFormData(values);
               }}
             >
@@ -438,9 +449,6 @@ const AddActivity = (props) => {
                             setTagId([tag.id])
                             setTags([...tags, tag]);
                             setFieldValue("tag_id", [...tagId, tag.id]);
-                          } else {
-                            // tag.id = allTags[allTags.length - 1].id + 1;
-                            // setTags([...tags, tag]);
                           }
                         }}
                       />

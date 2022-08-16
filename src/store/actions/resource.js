@@ -715,6 +715,7 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     subject_id: formatSelectBoxData(metadata.subject_id),
     education_level_id: formatSelectBoxData(metadata.education_level_id),
     author_tag_id: formatSelectBoxData(metadata.author_tag_id),
+    tag_id: metadata?.tag_id
   };
   const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
   await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));

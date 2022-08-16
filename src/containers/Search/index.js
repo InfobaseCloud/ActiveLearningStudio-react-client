@@ -642,7 +642,7 @@ function SearchInterface(props) {
                                         };
                                       }
                                       const result = await dispatch(simpleSearchAction(dataSend));
-                                      setTotalCount(result.meta?.total);
+                                      setTotalCount(result?.meta?.total);
                                       const tempEducation = [];
                                       const tempSubject = [];
                                       const tempTag = [];
@@ -959,7 +959,7 @@ function SearchInterface(props) {
                                       let selectedTag = tagType.filter(word => word !== data.id)
                                       setTagType(selectedTag);
                                     } else {
-                                      setTagType([...tagType, data.id]);
+                                      tagType.length > 0 ? setTagType([...tagType, data.id]) : setTagType([data.id]);
                                     }
                                   }}
                                 >
