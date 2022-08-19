@@ -126,6 +126,7 @@ export const loadProjectAction = (projectId, signal) => async (dispatch) => {
 };
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
+  console.log('update data', data);
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -267,6 +268,57 @@ export const loadMyFavProjectsAction = () => async (dispatch) => {
   });
 };
 
+export const loadMyTeacherProjectsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+  const { projects } = await projectService.getAllTeacher(currentOrganization?.id);
+  dispatch({
+    type: actionTypes.SIDEBAR_TEACHER_PROJECT,
+    data: { projects },
+  });
+};
+
+export const loadMyTeacherOneProjectsAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+
+  projectService.getOneTeacher(projectId, currentOrganization?.id || 1).then((data) => {
+    dispatch({
+      type: actionTypes.LOAD_ONE_TEACHER_PROJECT,
+      data: { data },
+    });
+  })
+};
+
+export const loadMyStudentProjectsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+  const { projects } = await projectService.getAllStudent(currentOrganization?.id);
+  dispatch({
+    type: actionTypes.SIDEBAR_STUDENT_PROJECT,
+    data: { projects },
+  });
+};
+
+export const loadMyStudentOneProjectsAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+  projectService.getOneStudent(projectId, currentOrganization?.id || 1).then((data) => {
+    dispatch({
+      type: actionTypes.LOAD_ONE_STUDENT_PROJECT,
+      data: { data },
+    });
+  })
+};
+
 /* eslint-disable */
 export const loadMyReorderProjectsAction = (projectId, projectDivider) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -357,42 +409,42 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
 
 export const toggleProjectShareAction =
   (projectId, ProjectName, adminPanel = false) =>
-  async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    const { project } = await projectService.share(projectId, activeOrganization?.id);
+    async (dispatch) => {
+      const centralizedState = store.getState();
+      const {
+        organization: { activeOrganization },
+      } = centralizedState;
+      const { project } = await projectService.share(projectId, activeOrganization?.id);
 
-    dispatch({
-      type: actionTypes.SHARE_PROJECT,
-      payload: { project },
-    });
-    if (adminPanel) return project;
-    const protocol = `${window.location.href.split('/')[0]}//`;
-    const url = `${protocol + window.location.host}/project/${projectId}/shared`;
-    return SharePreviewPopup(url, ProjectName);
-  };
+      dispatch({
+        type: actionTypes.SHARE_PROJECT,
+        payload: { project },
+      });
+      if (adminPanel) return project;
+      const protocol = `${window.location.href.split('/')[0]}//`;
+      const url = `${protocol + window.location.host}/project/${projectId}/shared`;
+      return SharePreviewPopup(url, ProjectName);
+    };
 
 export const toggleProjectShareRemovedAction =
   (projectId, projectName, adminPanel = false) =>
-  async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
+    async (dispatch) => {
+      const centralizedState = store.getState();
+      const {
+        organization: { activeOrganization },
+      } = centralizedState;
+      const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
-    dispatch({
-      type: actionTypes.SHARE_PROJECT,
-      payload: { project },
-    });
-    if (adminPanel) return project;
-    Swal.fire({
-      title: `You stopped sharing <strong>"${projectName}"</strong> !`,
-      html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
-    });
-  };
+      dispatch({
+        type: actionTypes.SHARE_PROJECT,
+        payload: { project },
+      });
+      if (adminPanel) return project;
+      Swal.fire({
+        title: `You stopped sharing <strong>"${projectName}"</strong> !`,
+        html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+      });
+    };
 
 export const deleteFavObj = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();

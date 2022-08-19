@@ -14,11 +14,13 @@ const INITIAL_STATE = {
   visibilityTypes: [],
   currentVisibilityType: null,
   searchPreviewProject: null,
+  teacherProject: [],
+  studentProject: [],
 };
+
 
 export default (state = INITIAL_STATE, action) => {
   const { projects } = state;
-
   switch (action.type) {
     case actionTypes.CREATE_PROJECT_REQUEST:
       return {
@@ -194,6 +196,18 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         searchPreviewProject: action.payload,
         projectSelect: action.payload,
+      };
+
+    case actionTypes.LOAD_ONE_TEACHER_PROJECT:
+      return {
+        ...state,
+        teacherProject: action.data.data,
+      };
+
+    case actionTypes.LOAD_ONE_STUDENT_PROJECT:
+      return {
+        ...state,
+        studentProject: action.data.data,
       };
     default:
       return state;

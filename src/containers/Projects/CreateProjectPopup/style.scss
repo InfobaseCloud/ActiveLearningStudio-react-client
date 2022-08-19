@@ -267,3 +267,16 @@
   margin-top: 16px;
   margin-bottom: 0px !important;
 }
+.drop-down-tabs button {
+  color: #515151 !important;
+  background: #ffffff;
+  border: 1px solid #515151 !important;
+  border-radius: 4px;
+  text-indent: 10px;
+  box-shadow: none;
+  margin-top: 10px;
+  width: 100%;
+}
+.drop-down-tabs button + div {
+  width: 100%;
+}
