@@ -161,8 +161,8 @@ export default function CreateOrg(prop) {
       <Formik
         enableReinitialize
         initialValues={{
-          image: editMode ? activeEdit.image : 'https://dev.currikistudio.org/api/storage/organizations/H01h34rZGV6gyMayurX8dwpkXZd4X3c0n8NJiUXu.png',
-          favicon: editMode ? activeEdit?.favicon : 'https://dev.currikistudio.org/api/storage/organizations/QqwMYyeWq7WxQHzy7LDdI0mRBBA3g2qnLm2wd4Ib.svg',
+          image: editMode ? activeEdit.image : 'https://content.imsparked.com/api/storage/organizations/JIvszCFYeMckdkElPyXjf1wu91gREJymqDXnJ2EP.png',
+          favicon: editMode ? activeEdit?.favicon : 'https://imsparked-curriki.aws.infobase.com/api/storage/organizations/MNUYusfKyk0u0rsppknB6bJPh7cWxZaJSvaKgzCb.png',
           name: editMode ? activeEdit?.name : '',
           description: editMode ? activeEdit?.description : '',
           domain: editMode ? activeEdit?.domain : '',
@@ -278,6 +278,7 @@ export default function CreateOrg(prop) {
               },
               button: false,
             });
+            console.log('values----', values);
             const response = await dispatch(createOrganizationNew(activeOrganization.id, values));
             if (response) {
               Swal.fire({
@@ -372,7 +373,7 @@ export default function CreateOrg(prop) {
                                 }
                               }}
                               onBlur={handleBlur}
-                              // value={values.admin}
+                            // value={values.admin}
                             />
                             <img
                               src={loader}
