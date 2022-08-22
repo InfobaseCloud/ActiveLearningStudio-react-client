@@ -276,3 +276,19 @@ export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMedias
 
   return result;
 };
+
+export const uploadBulkUsers = (file) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await adminService.uploadBulkUsers(file, activeOrganization?.id);
+  dispatch({
+    type: actionTypes.CLEAR_USERS_STATE,
+  });
+  dispatch({
+    type: actionTypes.BULK_UPLOAD,
+    payload: result,
+  });
+  return result;
+}

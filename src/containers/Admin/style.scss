@@ -808,7 +808,13 @@
 
     .btn-text {
       margin-left: 33px;
-
+      width: 360px;
+      .upload-sample-file {
+        color: #084892;
+        font-size: 22px;
+        margin-top: 3px;
+        cursor: pointer;
+      }
       .add-user-btn {
         max-width: 450px;
 

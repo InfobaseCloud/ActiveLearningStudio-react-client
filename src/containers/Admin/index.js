@@ -11,6 +11,7 @@ import CreateActivityType from './formik/createActivity';
 import CreateOrg from './formik/createOrg';
 import AddRole from './formik/addRole';
 import CreateUser from './CreateUser';
+import BulkUpload from './BulkUpload';
 import CreateUserForm from 'containers/Admin/formik/createuser';
 import BrightCove from './formik/createBrightCove';
 import Pills from './pills';
@@ -56,7 +57,7 @@ function AdminPanel({ showSSO }) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -160,40 +161,40 @@ function AdminPanel({ showSSO }) {
                   {/* Ind.Activity Start */}
                   {(permission?.['Independent Activity']?.includes('independent-activity:view') ||
                     permission?.['Independent Activity']?.includes('independent-activity:view-export')) && (
-                    <Tab eventKey="IndActivities" title="Ind. activities">
-                      <div className="module-content">
-                        <Pills
-                          setCurrentActivity={setCurrentActivity}
-                          setModalShowh5p={setModalShowh5p}
-                          modules={[
-                            permission?.['Independent Activity']?.includes('independent-activity:view') && 'All independent activities',
-                            permission?.['Independent Activity']?.includes('independent-activity:view-export') && 'Exported activities',
-                          ]}
-                          type="IndActivities"
-                        />
-                      </div>
-                    </Tab>
-                  )}
+                      <Tab eventKey="IndActivities" title="Ind. activities">
+                        <div className="module-content">
+                          <Pills
+                            setCurrentActivity={setCurrentActivity}
+                            setModalShowh5p={setModalShowh5p}
+                            modules={[
+                              permission?.['Independent Activity']?.includes('independent-activity:view') && 'All independent activities',
+                              permission?.['Independent Activity']?.includes('independent-activity:view-export') && 'Exported activities',
+                            ]}
+                            type="IndActivities"
+                          />
+                        </div>
+                      </Tab>
+                    )}
                   {/* Ind.Activity End*/}
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
                     permission?.Organization?.includes('organization:view-activity-type')) && (
-                    <Tab eventKey="Activities" title="Activities">
-                      <div className="module-content">
-                        <Pills
-                          modules={[
-                            'Activity Layouts',
-                            permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
-                            permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
-                            'Subjects',
-                            'Education Level',
-                            'Author Tags',
-                          ]}
-                          type="Activities"
-                        />
-                      </div>
-                    </Tab>
-                  )}
+                      <Tab eventKey="Activities" title="Activities">
+                        <div className="module-content">
+                          <Pills
+                            modules={[
+                              'Activity Layouts',
+                              permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
+                              permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                              'Subjects',
+                              'Education Level',
+                              'Author Tags',
+                            ]}
+                            type="Activities"
+                          />
+                        </div>
+                      </Tab>
+                    )}
                   {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
@@ -426,6 +427,8 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
+
+          {activeForm === 'bulk_upload' && <BulkUpload mode={activeForm} />}
 
           {activeForm === 'add_default_sso' && (
             <div className="form-new-popup-admin">
