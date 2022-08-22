@@ -1,0 +1,76 @@
+.create-user-modal-header {
+  background-color: white;
+  border-bottom: 0;
+}
+
+.create-user-modal-header .modal-title {
+  color: #084892;
+  text-decoration: underline #f8af2c;
+}
+
+.create-user-done {
+  text-align: center;
+  font-size: 3em;
+}
+
+.create-user-done .fa-check-circle {
+  color: #12b347;
+}
+
+.create-user-done h1 {
+  color: #084892;
+  font-weight: 300;
+}
+
+.create-user-done .btn-primary {
+  background-color: #084892;
+  border-radius: 50px;
+}
+
+input:read-only {
+  background-color: aliceblue;
+}
+
+.modal-user-upload {
+  position: relative;
+  max-width: 402px;
+  margin: 0 auto;
+  &:after {
+    content: "Browse";
+    width: 92px;
+    background: #cdcdcd;
+    height: 35px;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 37px;
+  }
+  input {
+    height: 35px;
+    background: #fff;
+    border: 1px solid #cdcdcd;
+    margin-right: 5px;
+    line-height: 29px;
+    float: left;
+  }
+
+  .btn {
+    background: #f8af2c;
+    font-size: 16px;
+    padding: 0 20px;
+    height: 35px;
+  }
+}
+.uploadUserModal {
+  .modal-dialog {
+    max-width: 549px !important;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

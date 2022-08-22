@@ -11,6 +11,7 @@ import CreateActivityType from './formik/createActivity';
 import CreateOrg from './formik/createOrg';
 import AddRole from './formik/addRole';
 import CreateUser from './CreateUser';
+import BulkUpload from './BulkUpload';
 import CreateUserForm from 'containers/Admin/formik/createuser';
 import BrightCove from './formik/createBrightCove';
 import Pills from './pills';
@@ -421,7 +422,7 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
-
+          {activeForm === 'bulk_upload' && <BulkUpload mode={activeForm} />}
           {activeForm === 'add_default_sso' && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon

@@ -31,6 +31,7 @@ const INITIAL_STATE = {
   exportedActivities: null,
   allMediaSources: {},
   orgMediaSources: {},
+  bulkUsers: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -278,6 +279,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         mediaSources: action.payload,
+      };
+    case actionTypes.BULK_UPLOAD:
+      return {
+        ...state,
+        bulkUsers: action.payload,
       };
     default:
       return state;
