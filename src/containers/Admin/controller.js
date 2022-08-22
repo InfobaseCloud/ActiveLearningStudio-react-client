@@ -62,7 +62,9 @@ function Controller(props) {
     resetProjectFilter,
     filteredItems,
     setSearchKey,
+    bulkUpload,
   } = props;
+  const { resourceUrl } = config;
   const importProject = useRef();
   const dispatch = useDispatch();
   // const [allUsersAdded, setAllUsersAdded] = useState([]);
@@ -1264,7 +1266,7 @@ function Controller(props) {
           </div>
         )}
         {!!btnText && subType === 'All Users' && permission?.Organization.includes('organization:add-user') && (
-          <div className="btn-text">
+          <div className="btn-text d-flex d-flex justify-content-around">
             <button
               type="button"
               onClick={() => {
@@ -1276,6 +1278,28 @@ function Controller(props) {
               <FontAwesomeIcon icon="plus" />
               {btnText}
             </button>
+            {bulkUpload && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setActiveAdminForm('bulk_upload'));
+                  }}
+                >
+                  <FontAwesomeIcon icon="plus" />
+                  {bulkUpload}
+                </button>
+                <a
+                  className="upload-sample-file"
+                  href={`${resourceUrl}/imSparked-bulk-upload.csv`}
+                >
+                  <FontAwesomeIcon
+                    icon="download"
+                    className="upload-sample-file-icon"
+                  />
+                </a>
+              </>
+            )}
           </div>
         )}
         {!!btnText && type === 'Organization' && permission?.Organization.includes('organization:create') && (

@@ -459,6 +459,13 @@ const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = ''
     errorCatcher(err.response.data);
     return Promise.reject();
   });
+const uploadBulkUsers = (file, orgID) => httpService
+  .post(`/${apiVersion}/admin/${orgID}/users/bulk/import`, file, { 'Content-Type': 'multipart/form-data' })
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -516,4 +523,5 @@ export default {
   updateActivityLayout,
   deleteActivityLayout,
   teamsActionAdminPanel,
+  uploadBulkUsers,
 };
