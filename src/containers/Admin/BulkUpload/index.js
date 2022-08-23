@@ -42,7 +42,14 @@ const BulkUpload = (props) => {
                     if (result.isConfirmed) {
                       const formData = new FormData();
                       formData.append('import_file', file);
-                      await uploadMultipleUsers(formData);
+                      const getUploadUserResponse = await uploadMultipleUsers(formData);
+                      // eslint-disable-next-line
+                      getUploadUserResponse &&
+                        Swal.fire(
+                          getUploadUserResponse?.message || getUploadUserResponse?.errors[0],
+                          getUploadUserResponse?.report,
+                          getUploadUserResponse?.message ? 'success' : 'error',
+                        );
                       dispatch(removeActiveAdminForm());
                     }
                   });
