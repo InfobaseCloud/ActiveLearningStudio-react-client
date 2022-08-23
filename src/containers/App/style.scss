@@ -4061,3 +4061,14 @@ body.collapsed {
   margin: 0 auto;
   height: calc(100vh - 200px);
 }
+.footer-img-section .img- img {
+  width: 71px;
+  height: 40px;
+  object-fit: contain;
+}
+.model-box-google img {
+  max-width: 100%;
+}
+.model-box-google .model-body {
+  max-width: 100% !important;
+}

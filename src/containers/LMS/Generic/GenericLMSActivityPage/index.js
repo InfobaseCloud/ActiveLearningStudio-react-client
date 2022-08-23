@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { Alert } from 'react-bootstrap';
 import { doLoginAction } from 'store/actions/LMS/genericLMS';
 import Activity from 'containers/LMS/Generic/GenericLMSActivity';
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/logo.png';
 // import './styles.scss';
 
 function GenericLMSActivityPage(props) {
