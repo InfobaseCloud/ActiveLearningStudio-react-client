@@ -34,7 +34,7 @@ export const columnData = {
   userall: ['Date', 'First Name', 'Last Name', 'Email', 'Organization', 'Org Type', 'Role'],
   userallSortCol: ['First Name'],
 
-  lmssettings: ['URL', 'Type', 'User', 'Email', 'Site Name', 'Description'],
+  lmssettings: ['URL', 'Type', 'User', 'Site Name', 'Description'],
   lmssettingsSortCol: ['Type'],
 
   organization: ['Name', 'Domain', 'Projects', 'Sub Org.', 'Users', 'Teams'],
