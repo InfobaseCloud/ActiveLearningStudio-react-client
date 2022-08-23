@@ -232,8 +232,8 @@ function Table(props) {
                     <tr key={counter} className="admin-panel-rows">
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
-                      <td>{row.user?.first_name + ' ' + row.user?.last_name}</td>
-                      <td>{row?.user?.email}</td>
+                      <td>{row.id}</td>
+                      {/* <td>{row?.user?.email}</td> */}
                       <td>{row?.site_name}</td>
                       <td>
                         <div className="admin-panel-dropdown">
