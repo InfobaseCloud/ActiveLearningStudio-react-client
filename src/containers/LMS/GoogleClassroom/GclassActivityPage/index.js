@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/logo.png';
 import {
   setStudentAuthAction,
   refreshStudentAuthTokenAction,

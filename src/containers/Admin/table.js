@@ -351,7 +351,7 @@ function Table(props) {
                         <div className="admin-name-img">
                           <div
                             style={{
-                              backgroundImage: row.image?.includes('dev.currikistudio') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
+                              backgroundImage: row.image?.includes('content.imsparked') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
                               backgroundPosition: 'center',
                               backgroundRepeat: 'no-repeat',
                               backgroundSize: 'cover',
