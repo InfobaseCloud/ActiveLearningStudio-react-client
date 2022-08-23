@@ -537,13 +537,13 @@ export const createResourceByH5PUploadAction = (
   editorType,
   payload,
   metadata,
-  activityPreview
+  // activityPreview
   // projectId,
 ) => async (dispatch) => {
-  const centralizedState = store.getState();
-  const {
-    organization: { activeOrganization },
-  } = centralizedState;
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
   try {
     toast.info('Uploading Activity ...', {
       className: 'project-loading',
@@ -558,80 +558,80 @@ export const createResourceByH5PUploadAction = (
     formData.append('action', 'upload');
 
     const responseUpload = await resourceService.h5pToken(formData);
-    metadata.subject_id = formatSelectBoxData(metadata.subject_id);
-    metadata.education_level_id = formatSelectBoxData(metadata.education_level_id);
-    metadata.author_tag_id = formatSelectBoxData(metadata.author_tag_id);
+    // metadata.subject_id = formatSelectBoxData(metadata.subject_id);
+    // metadata.education_level_id = formatSelectBoxData(metadata.education_level_id);
+    // metadata.author_tag_id = formatSelectBoxData(metadata.author_tag_id);
 
     if (responseUpload.id) {
-      if (activityPreview) {
-        const activity = {
-          h5p_content_id: responseUpload.id,
-          thumb_url: metadata?.thumb_url,
-          action: 'create',
-          title: metadata?.title,
-          type: 'h5p',
-          content: 'place_holder',
-          subject_id: metadata?.subject_id,
-          education_level_id: metadata?.education_level_id,
-          author_tag_id: metadata?.author_tag_id,
-          description: metadata?.description || undefined,
-          source_type: metadata?.source_type || undefined,
-          source_url: metadata?.source_url || undefined,
-          organization_visibility_type_id: 1,
-        };
+      // if (activityPreview) {
+      //   const activity = {
+      //     h5p_content_id: responseUpload.id,
+      //     thumb_url: metadata?.thumb_url,
+      //     action: 'create',
+      //     title: metadata?.title,
+      //     type: 'h5p',
+      //     content: 'place_holder',
+      //     subject_id: metadata?.subject_id,
+      //     education_level_id: metadata?.education_level_id,
+      //     author_tag_id: metadata?.author_tag_id,
+      //     description: metadata?.description || undefined,
+      //     source_type: metadata?.source_type || undefined,
+      //     source_url: metadata?.source_url || undefined,
+      //     organization_visibility_type_id: 1,
+      //   };
 
-        const result = await indResourceService.create(activeOrganization.id, activity);
-        toast.dismiss();
-        toast.success('Activity Created', {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 4000,
-        });
-        dispatch({
-          type: actionTypes.ADD_IND_ACTIVITIES,
-          payload: result['independent-activity'],
-        });
+      //   const result = await indResourceService.create(activeOrganization.id, activity);
+      //   toast.dismiss();
+      //   toast.success('Activity Created', {
+      //     position: toast.POSITION.BOTTOM_RIGHT,
+      //     autoClose: 4000,
+      //   });
+      //   dispatch({
+      //     type: actionTypes.ADD_IND_ACTIVITIES,
+      //     payload: result['independent-activity'],
+      //   });
 
-        dispatch({
-          type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-          payload: '',
-        });
-      } else {
-        const createActivityUpload = {
-          h5p_content_id: responseUpload.id,
-          playlist_id: playlistId,
-          thumb_url: metadata.thumb_url,
-          action: 'create',
-          title: metadata.title,
-          type: 'h5p',
-          content: 'place_holder',
-          subject_id: formatSelectBoxData(metadata.subject_id),
-          education_level_id: formatSelectBoxData(metadata.education_level_id),
-          author_tag_id: formatSelectBoxData(metadata.author_tag_id),
-          description: metadata?.description || undefined,
-        };
+      //   dispatch({
+      //     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      //     payload: '',
+      //   });
+      // } else {
+      const createActivityUpload = {
+        h5p_content_id: responseUpload.id,
+        playlist_id: playlistId,
+        thumb_url: metadata.thumb_url,
+        action: 'create',
+        title: metadata.title,
+        type: 'h5p',
+        content: 'place_holder',
+        subject_id: formatSelectBoxData(metadata.subject_id),
+        education_level_id: formatSelectBoxData(metadata.education_level_id),
+        author_tag_id: formatSelectBoxData(metadata.author_tag_id),
+        description: metadata?.description || undefined,
+      };
 
-        const responseActivity = await resourceService.create(createActivityUpload, playlistId);
-        toast.dismiss();
-        dispatch({
-          type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-          payload: '',
-        });
-        toast.success('Activity Uploaded', {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 4000,
-        });
+      const responseActivity = await resourceService.create(createActivityUpload, playlistId);
+      toast.dismiss();
+      dispatch({
+        type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+        payload: '',
+      });
+      toast.success('Activity Uploaded', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
 
-        dispatch({
-          type: actionTypes.CREATE_RESOURCE,
-          playlistId,
-          resource: responseActivity,
-          editor,
-          editorType,
-        });
-        dispatch({
-          type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-        });
-      }
+      dispatch({
+        type: actionTypes.CREATE_RESOURCE,
+        playlistId,
+        resource: responseActivity,
+        editor,
+        editorType,
+      });
+      dispatch({
+        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+      });
+      // }
     } else {
       throw new Error('Error occurred while creating resource');
     }
