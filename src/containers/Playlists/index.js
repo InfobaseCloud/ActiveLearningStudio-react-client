@@ -4,8 +4,8 @@
 import React, {
   useEffect, useState, useMemo, useRef,
 } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter, Link } from 'react-router-dom';
+import PropTypes, { element } from 'prop-types';
+import { withRouter, Link, useParams } from 'react-router-dom';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import computer from 'assets/images/svg/desktop.svg';
@@ -52,6 +52,8 @@ import {
   visibilityTypes,
   updateProjectAction,
   clearSelectedProject,
+  loadMyStudentOneProjectsAction,
+  loadMyTeacherOneProjectsAction,
 } from 'store/actions/project';
 import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
 // import Footer from 'components/Footer';
@@ -65,12 +67,14 @@ import Correct from 'assets/images/svg/Correct.svg';
 import './style.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import HeadingText from 'utils/HeadingText/headingtext';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import MultiSelectCheckbox from './MultiSelectCheckbox';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
 
 function PlaylistsPage(props) {
+  const teacherProjectId = useParams();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [title, setTitle] = useState(false);
@@ -132,6 +136,8 @@ function PlaylistsPage(props) {
     row,
     showFooter,
     getLmsSettings,
+    loadMyStudentOneProjectsActionData,
+    loadMyTeacherOneProjectsActionData,
   } = props;
   const changeScreenHandler = (payload) => {
     dispatch({
@@ -141,6 +147,38 @@ function PlaylistsPage(props) {
   };
   const projectIdFilter = Number(match?.params?.projectId || row?.id);
   const [thumbUrl, setThumbUrl] = useState(selectedProject.thumbUrl);
+
+  const [projectTabs, setProjectTabs] = useState([]);
+  const projectForOptions = [
+    { label: 'Student', value: 'student' },
+    { label: 'Teacher', value: 'teacher' },
+  ];
+  useEffect(() => {
+    console.log(projectState);
+    if (projectState.studentProject && projectState.studentProject.projects && projectState.studentProject.projects.length > 0) {
+      setProjectTabs((prevState) => [...prevState, { label: 'Student', value: 'student' }]);
+    }
+    if (projectState.teacherProject && projectState.teacherProject.projects && projectState.teacherProject.projects.length > 0) {
+      setProjectTabs((prevState) => [...prevState, { label: 'Teacher', value: 'teacher' }]);
+    }
+  }, []);
+
+  const updateProjectTabs = (e) => {
+    setProjectTabs(e);
+    const lables = [];
+    e.map((v) => (lables.push(v.value)));
+    dispatch(
+      updateProjectAction(selectedProject?.id, {
+        name: selectedProject.name,
+        description: selectedProject.description,
+        thumb_url: thumbUrl,
+        organization_visibility_type_id:
+          selectedProject.organization_visibility_type_id || 1,
+        project_for: lables,
+      }),
+    );
+  };
+
   useEffect(() => {
     if (
       Object.keys(teamPermission).length === 0
@@ -228,6 +266,14 @@ function PlaylistsPage(props) {
 
     setIndexStatus(state.indexing);
   }, [state]);
+
+  useEffect(() => {
+    loadMyStudentOneProjectsActionData(teacherProjectId.projectId);
+  }, [loadMyStudentOneProjectsActionData]);
+
+  useEffect(() => {
+    loadMyTeacherOneProjectsActionData(teacherProjectId.projectId);
+  }, [loadMyTeacherOneProjectsActionData]);
 
   const editVisibility = async (type) => {
     await dispatch(
@@ -906,6 +952,24 @@ function PlaylistsPage(props) {
                               </svg>
                             )}
                         </div>
+                        <div className="new-playlist drop-down-edit">
+                          <div className="dropdown">
+                            <Headings
+                              text="Project For:"
+                              headingType="body2"
+                              color="#515151"
+                            />
+                            <ReactMultiSelectCheckboxes
+                              name="project_for"
+                              hideSearch
+                              options={projectForOptions}
+                              onChange={(e) => {
+                                updateProjectTabs(e);
+                              }}
+                              value={projectTabs}
+                            />
+                          </div>
+                        </div>
                         <div className="new-playlist status-pref">
                           <div className="dropdown">
                             <Headings
@@ -1238,6 +1302,8 @@ const mapDispatchToProps = (dispatch) => ({
   getTeamPermissions: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
   closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
   getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
+  loadMyStudentOneProjectsActionData: (projectId) => dispatch(loadMyTeacherOneProjectsAction(projectId)),
+  loadMyTeacherOneProjectsActionData: (projectId) => dispatch(loadMyStudentOneProjectsAction(projectId)),
 });
 
 const mapStateToProps = (state) => ({

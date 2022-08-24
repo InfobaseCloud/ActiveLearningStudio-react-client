@@ -43,6 +43,8 @@ const SampleProjectCard = (props) => {
   const [selectFavId, setSelectFavId] = useState(null);
   const [selectSampleId, setSelectSampleId] = useState(null);
   const [selectTeamProjectId, setSelectedTeamProjectId] = useState(null);
+  const [selectTeacherProjectId, setSelectedTeacherProjectId] = useState(null);
+  const [selectStudentProjectId, setSelectedStudentProjectId] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
   const organization = useSelector((state) => state.organization);
@@ -85,6 +87,12 @@ const SampleProjectCard = (props) => {
                     } else if (type === "team") {
                       setSelectedTeamProjectId(project.id);
                       setSelectId(project.id);
+                    } else if (type === "teacher") {
+                      setSelectedTeacherProjectId(project.id);
+                      setSelectId(project.id);
+                    } else if (type === "student") {
+                      setSelectedStudentProjectId(project.id);
+                      setSelectId(project.id);
                     }
                   }}
                 >
@@ -122,6 +130,12 @@ const SampleProjectCard = (props) => {
                               } else if (type === "team") {
                                 setSelectedTeamProjectId(project.id);
                                 setSelectId(project.id);
+                              } else if (type === "teacher") {
+                                setSelectedTeacherProjectId(project.id);
+                                setSelectId(project.id);
+                              } else if (type === "student") {
+                                setSelectedStudentProjectId(project.id);
+                                setSelectId(project.id);
                               }
                             }}
                           >
@@ -148,6 +162,12 @@ const SampleProjectCard = (props) => {
                                   setSelectId(project.id);
                                 } else if (type === "team") {
                                   setSelectedTeamProjectId(project.id);
+                                  setSelectId(project.id);
+                                } else if (type === "teacher") {
+                                  setSelectedTeacherProjectId(project.id);
+                                  setSelectId(project.id);
+                                } else if (type === "student") {
+                                  setSelectedStudentProjectId(project.id);
                                   setSelectId(project.id);
                                 }
                               }}
@@ -183,12 +203,10 @@ const SampleProjectCard = (props) => {
                                 <Dropdown.Item
                                   to="#"
                                   onClick={async () => {
-                                    const protocol = `${
-                                      window.location.href.split("/")[0]
-                                    }//`;
-                                    const url = `${
-                                      protocol + window.location.host
-                                    }/project/${project.id}/shared`;
+                                    const protocol = `${window.location.href.split("/")[0]
+                                      }//`;
+                                    const url = `${protocol + window.location.host
+                                      }/project/${project.id}/shared`;
                                     if (!project.shared) {
                                       Swal.showLoading();
                                       await dispatch(
@@ -384,7 +402,7 @@ const SampleProjectCard = (props) => {
                               </div>
                             )}
                             {project.description &&
-                            project.description.length > 130
+                              project.description.length > 130
                               ? `${project.description.substring(0, 130)} ...`
                               : project.description}
                           </div>
@@ -413,6 +431,12 @@ const SampleProjectCard = (props) => {
               } else if (type === "team") {
                 setSelectedTeamProjectId(null);
                 setSelectId(null);
+              } else if (type === "teacher") {
+                setSelectedTeacherProjectId(null);
+                setSelectId(null);
+              } else if (type === "student") {
+                setSelectedStudentProjectId(null);
+                setSelectId(null);
               }
             }}
           >
@@ -438,6 +462,22 @@ const SampleProjectCard = (props) => {
           {type === "team" && activeTab === "Team Projects" && (
             <ProjectPreviewShared
               sampleId={selectTeamProjectId}
+              setModalShow={setModalShow}
+              setCurrentActivity={setCurrentActivity}
+              mainPageProjectView
+            />
+          )}
+          {type === "teacher" && activeTab === "Teachers Projects" && (
+            <ProjectPreviewShared
+              sampleId={selectTeacherProjectId}
+              setModalShow={setModalShow}
+              setCurrentActivity={setCurrentActivity}
+              mainPageProjectView
+            />
+          )}
+          {type === "student" && activeTab === "Students Projects" && (
+            <ProjectPreviewShared
+              sampleId={selectStudentProjectId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
               mainPageProjectView
