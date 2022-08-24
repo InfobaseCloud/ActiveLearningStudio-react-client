@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Controller from './controller';
 import TableData from './table';
 import Userroles from './userroles';
+// import Media from "./media";
 // import Settings from './settings';
 function Starter(props) {
   const {
@@ -70,8 +71,12 @@ function Starter(props) {
     setrowData,
     setActivePageNumber,
     filteredItems,
+    setCurrentActivity,
+    setModalShowh5p,
     setSearchKey,
     bulkUpload,
+    filterLtiSettings,
+    setfilterLtiSettings,
   } = props;
   return (
     <>
@@ -125,8 +130,10 @@ function Starter(props) {
         filteredItems={filteredItems}
         setSearchKey={setSearchKey}
         bulkUpload={bulkUpload}
+        setfilterLtiSettings={setfilterLtiSettings}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
+      {/* {subTypeState === "Media" && <Media />} */}
       {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
@@ -151,6 +158,9 @@ function Starter(props) {
           setModalShowTeam={setModalShowTeam}
           setrowData={setrowData}
           setActivePageNumber={setActivePageNumber}
+          setCurrentActivity={setCurrentActivity}
+          setModalShowh5p={setModalShowh5p}
+          filterLtiSettings={filterLtiSettings}
         />
       )}
     </>

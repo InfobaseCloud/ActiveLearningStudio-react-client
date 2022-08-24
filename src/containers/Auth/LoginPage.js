@@ -30,6 +30,7 @@ class LoginPage extends React.Component {
       rememberMe: false,
       clicked: true,
       error: null,
+      emailError: null,
       activeTab: 'Log in',
       showPassword: false,
     };
@@ -53,9 +54,10 @@ class LoginPage extends React.Component {
       const { email, password } = this.state;
       const { history, login, domain } = this.props;
 
-      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{1,4}$/i.test(email?.trim())) {
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{1,4}$/i.test(email?.trim()) || email === '') {
         this.setState({
-          error: 'Please input valid email.',
+          emailError: 'Please enter a valid email address.',
+          error: null,
         });
 
         return;
@@ -63,6 +65,7 @@ class LoginPage extends React.Component {
 
       this.setState({
         error: null,
+        emailError: null,
       });
 
       const result = await login({
@@ -111,6 +114,11 @@ class LoginPage extends React.Component {
     const { email, password, rememberMe, error, clicked, activeTab, showPassword } = this.state;
     const { isLoading, domain } = this.props;
     console.log('domain', domain);
+    if (window.location.host.includes('my.currikistudio.org')) {
+      if (window.location.pathname === '/login/' || window.location.pathname === '/login') {
+        window.location.replace('https://currikistudio.org');
+      }
+    }
 
     return (
       <div className="auth-page">
@@ -197,7 +205,8 @@ class LoginPage extends React.Component {
             <div className="d-flex align-items-center justify-content-between">
               <h1 className="auth-title">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'imSparked'}</h1>
             </div>
-            <p className="auth-Pdescrip">Start making a difference in the way learning experiences are created.</p>
+            {/* <p className='auth-Pdescrip'>Start making a difference in the way learning experiences are created.</p> */}
+            <p className="auth-Pdescrip"></p>
             <div className="content-section">
               <Tabs
                 defaultActiveKey={activeTab}
@@ -208,10 +217,10 @@ class LoginPage extends React.Component {
                   if (key === 'Sign up') this.goToRegister();
                 }}
               >
-                <Tab eventKey="Log in" title="Log in">
+                <Tab eventKey="Log in" title="Log In">
                   <div className="module-content">
                     <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
-                      <div className="form-group">
+                      <div className="form-group" id={this.state.emailError && 'email_error_input_field_div'}>
                         {/* <FontAwesomeIcon icon="envelope" /> */}
                         <span>Email</span>
                         <input
@@ -222,7 +231,9 @@ class LoginPage extends React.Component {
                           required
                           value={email}
                           onChange={this.onChangeField}
+                          style={{ border: this.state.emailError ? '1px solid #FF403B' : '', borderColor: this.state.emailError && '#FF403B' }}
                         />
+                        {this.state.emailError && <span className="email-error">{this.state.emailError}</span>}
                       </div>
 
                       <div className="form-group">
@@ -231,14 +242,14 @@ class LoginPage extends React.Component {
                           Password
                           <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
                             <img src={eye} alt="show-password" />
-                            Show
+                            Show Password
                           </div>
                         </span>
                         <input
                           className="password-box"
                           type={showPassword ? 'text' : 'password'}
                           name="password"
-                          placeholder="********"
+                          placeholder="*************"
                           required
                           value={password}
                           onChange={this.onChangeField}
@@ -248,10 +259,10 @@ class LoginPage extends React.Component {
                       <div className="form-group remember-me">
                         <label>
                           <input type="checkbox" name="rememberMe" value={rememberMe} onChange={this.onChangeField} />
-                          Keep me logged in.
+                          Keep me Logged In
                         </label>
                         <div className="forgot-password-box">
-                          <Link to="/forgot-password">Forgot Password ?</Link>
+                          <Link to="/forgot-password">Forgot Your Password?</Link>
                         </div>
                       </div>
                       <div className="form-group">
@@ -259,8 +270,13 @@ class LoginPage extends React.Component {
                       </div>
                       <div className="form-button">
                         <button type="submit" className="btn btn-primary submit" disabled={isLoading || this.isDisabled()}>
-                          {isLoading ? <img src={loader} alt="" /> : 'Log in'}
+                          {isLoading ? <img src={loader} alt="" style={{ marginTop: '-10px' }} /> : 'Log In'}
                         </button>
+                      </div>
+                      <div className="login-separator-box">
+                        <div className="login-separator"></div>
+                        <div className="text-separator">or</div>
+                        <div className="login-separator"></div>
                       </div>
                       {true ? (
                         <>
@@ -277,7 +293,7 @@ class LoginPage extends React.Component {
                             </a>
                           </p> */}
 
-                          <div className="form-group text-center mb-0">
+                          <div className="form-group text-center mb-5">
                             <GoogleLogin
                               clientId={global.config.gapiClientId}
                               theme="dark"
@@ -317,7 +333,7 @@ class LoginPage extends React.Component {
                     </form>
                   </div>
                 </Tab>
-                {domain?.self_registration === true && <Tab eventKey="Sign up" title="Sign up" />}
+                {domain?.self_registration === true && <Tab eventKey="Sign up" title="Register Here!" />}
               </Tabs>
             </div>
           </div>
