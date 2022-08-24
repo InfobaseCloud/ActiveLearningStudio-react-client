@@ -67,7 +67,7 @@ const Project = (props) => {
                   {project.user && (
                     <p className="project-detail-by-author">
                       <label>By:</label>
-                      {` ${project.user.last_name}, ${project.user.first_name} (${project.user.email})`}
+                      {` ${project.user.last_name}, ${project.user.first_name}`}
                       <br />
                       <label>Organization:</label>
                       {project.organization?.name && ` ${project.organization.name}`}
