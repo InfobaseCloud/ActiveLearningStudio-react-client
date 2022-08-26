@@ -94,7 +94,7 @@ function ProjectShareTemplate(props) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link target="_blank" href="https://www.curriki.org/">
-              CurrikiStudio
+              imSparked
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

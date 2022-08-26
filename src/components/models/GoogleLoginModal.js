@@ -62,7 +62,7 @@ const GoogleLoginModal = ({
       setLoading(false);
     }
   }, [dataRedux.share.courses]);
-  
+
   useEffect(() => {
     if (dataRedux.share.topics) {
       setTopics(dataRedux.share.topics);
@@ -76,7 +76,7 @@ const GoogleLoginModal = ({
   };
 
   const callPublishingMethod = (params) => {
-    if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') || 
+    if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') ||
       (params.playlistId === 0 && params.activityId === 0)) {
       if (params.values.course === 'Create a new class') {
         copyProject(params.projectId, null, params.tokenTemp);
@@ -84,8 +84,8 @@ const GoogleLoginModal = ({
         copyProject(params.projectId, params.values.course, params.tokenTemp);
       }
     }
-    else if (params.playlistId != 0 && params.activityId != 0){
-      if(params.playlistId === 999999) {
+    else if (params.playlistId != 0 && params.activityId != 0) {
+      if (params.playlistId === 999999) {
         if (typeof params.values.course == 'undefined') {
           publishIdependentActivity(null, null, params.activityId, params.tokenTemp);
         } else if ((typeof params.values.course == 'undefined') && (typeof params.values.playlist == 'undefined')) {
@@ -104,8 +104,7 @@ const GoogleLoginModal = ({
         }
       }
     }
-    else if (params.playlistId != 0 && params.activityId == 0)
-    {
+    else if (params.playlistId != 0 && params.activityId == 0) {
       if (typeof params.values.course == 'undefined') {
         publishPlaylist(params.projectId, null, null, params.playlistId, params.tokenTemp);
       } else if ((typeof params.values.course == 'undefined') && (typeof params.values.playlist == 'undefined')) {
@@ -121,29 +120,29 @@ const GoogleLoginModal = ({
       open={show}
       onClose={onHide}
       center
-      styles={{borderRadius:"8px", height:"310px", width:"640px"}}
+      styles={{ borderRadius: "8px", height: "310px", width: "640px" }}
     >
       <div className="model-box-google model-box-view">
-        <div style={{textAlign: "center", margin: "32px 146.38px 0 146.38px"}}>
+        <div style={{ textAlign: "center", margin: "32px 146.38px 0 146.38px" }}>
           <img src={logo} alt="" />
         </div>
         <div className="model-body" style={{ maxWidth: '500px' }}>
           <div className="sign-in-google">
             <br />
             {!showForm ? (
-              <div className="content-authorization" style={{textAlign:"center"}}>
-                <div className="alert alert-warning" style={{borderRadius:"8px"}}>
-                  With CurrikiStudio you can publish your {shareType} as a new Google Classroom course.
+              <div className="content-authorization" style={{ textAlign: "center" }}>
+                <div className="alert alert-warning" style={{ borderRadius: "8px" }}>
+                  With imSparked you can publish your {shareType} as a new Google Classroom course.
                 </div>
                 <p>To start, please log into your Google account.</p>
-                <div style={{marginBottom:"32px"}}>
+                <div style={{ marginBottom: "32px" }}>
                   <GoogleLogin
                     clientId={global.config.gapiClientId}
                     render={renderProps => (
-                      <button onClick={renderProps.onClick} 
-                       style={{width:"240px",height:"32px",borderRadius:"16px",background: "#FFFFFF", border: "1px solid #959595", boxShadow: "0px 2px 8px 1px rgba(81, 81, 81, 0.16)",padding:"6px 0"}}
-                       disabled={renderProps.disabled}>
-                        <img src={btnLogo} alt="" style={{padding: "0px 6px 2px 0px"}}/>
+                      <button onClick={renderProps.onClick}
+                        style={{ width: "240px", height: "32px", borderRadius: "16px", background: "#FFFFFF", border: "1px solid #959595", boxShadow: "0px 2px 8px 1px rgba(81, 81, 81, 0.16)", padding: "6px 0" }}
+                        disabled={renderProps.disabled}>
+                        <img src={btnLogo} alt="" style={{ padding: "0px 6px 2px 0px" }} />
                         Login with Google
                       </button>
                     )}
@@ -195,7 +194,7 @@ const GoogleLoginModal = ({
                           className="form-control select-dropdown"
                           name="course"
                           value={values.course}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             handleChange(e);
                             onCourseChange(e);
                           }}
@@ -220,7 +219,7 @@ const GoogleLoginModal = ({
                             ))}
                           </select>
                         )}
-                        
+
                         {/* <input
                           type="text"
                           name="course"
@@ -298,7 +297,7 @@ const GoogleLoginModal = ({
             )}
           </div>
         </div>
-      </div> 
+      </div>
     </Modal>
   );
 };

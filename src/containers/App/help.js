@@ -66,7 +66,7 @@ function Help() {
                 <img src={help2} alt="" />
                 <div className="detail">
                   <h3>Creating Learning Projects</h3>
-                  <p>Learn how to transform your content using CurrikiStudio by building and arranging your content into a Project Playlist.</p>
+                  <p>Learn how to transform your content using imSparked by building and arranging your content into a Project Playlist.</p>
                 </div>
               </div>
             </a>
@@ -74,8 +74,8 @@ function Help() {
               <div className="box">
                 <img src={help3} alt="" />
                 <div className="detail">
-                  <h3>CurrikiStudio Tips and Tricks</h3>
-                  <p>Here are some suggestions from our certified CurrikiStudio Instructional Designers.</p>
+                  <h3>imSparked Tips and Tricks</h3>
+                  <p>Here are some suggestions from our certified imSparked Instructional Designers.</p>
                 </div>
               </div>
             </a>
@@ -83,8 +83,8 @@ function Help() {
               <div className="box">
                 <img src={help4} alt="" />
                 <div className="detail">
-                  <h3>CurrikiStudio in the Classromm</h3>
-                  <p>How can I use CurrikiStudio for... Differentiation, Flipped Classroom, Professional Development, etc.</p>
+                  <h3>imSparked in the Classromm</h3>
+                  <p>How can I use imSparked for... Differentiation, Flipped Classroom, Professional Development, etc.</p>
                 </div>
               </div>
             </a>
@@ -93,7 +93,7 @@ function Help() {
                 <img src={help5} alt="" />
                 <div className="detail">
                   <h3>Publishing and Sharing</h3>
-                  <p>CurrikiGo, our publishing system, takes the hard work out of publishing your content directly to custom microvwebsites and many LMSs.</p>
+                  <p>imSparked, our publishing system, takes the hard work out of publishing your content directly to custom microvwebsites and many LMSs.</p>
                 </div>
               </div>
             </a>
