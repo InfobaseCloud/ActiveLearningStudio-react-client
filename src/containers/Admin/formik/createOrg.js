@@ -744,10 +744,10 @@ export default function CreateOrg(prop) {
                       <h1>Logo</h1>
                       <button
                         onClick={() => {
-                          setFieldValue('favicon', 'https://imsparked-curriki.aws.infobase.com/api/storage/organizations/MNUYusfKyk0u0rsppknB6bJPh7cWxZaJSvaKgzCb.png');
-                          setFieldValue('image', 'https://content.imsparked.com/api/storage/organizations/JIvszCFYeMckdkElPyXjf1wu91gREJymqDXnJ2EP.png');
-                          setFaviconActive('https://imsparked-curriki.aws.infobase.com/api/storage/organizations/MNUYusfKyk0u0rsppknB6bJPh7cWxZaJSvaKgzCb.png');
-                          setImgActive('https://content.imsparked.com/api/storage/organizations/JIvszCFYeMckdkElPyXjf1wu91gREJymqDXnJ2EP.png');
+                          setFieldValue('favicon', `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/organizations/MNUYusfKyk0u0rsppknB6bJPh7cWxZaJSvaKgzCb.png`);
+                          setFieldValue('image', `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/organizations/JIvszCFYeMckdkElPyXjf1wu91gREJymqDXnJ2EP.png`);
+                          setFaviconActive(`${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/organizations/MNUYusfKyk0u0rsppknB6bJPh7cWxZaJSvaKgzCb.png`);
+                          setImgActive(`${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/organizations/JIvszCFYeMckdkElPyXjf1wu91gREJymqDXnJ2EP.png`);
                         }}
                         type="button"
                       >
