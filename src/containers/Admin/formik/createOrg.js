@@ -912,7 +912,7 @@ export default function CreateOrg(prop) {
                             <div>
                               <img
                                 src={
-                                  faviconActive ? (faviconActive.includes('dev.currikistudio') ? faviconActive : `${global.config.resourceUrl}${faviconActive}`) : values.favicon
+                                  faviconActive ? (faviconActive.includes('imsparked') ? faviconActive : `${global.config.resourceUrl}${faviconActive}`) : values.favicon
                                 }
                                 style={{
                                   width: '72px',

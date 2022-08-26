@@ -134,7 +134,7 @@ function App(props) {
         {currentOrganization?.favicon ? (
           <link
             rel="icon"
-            href={currentOrganization.favicon.includes('dev.currikistudio') ? currentOrganization.favicon : global.config.resourceUrl + currentOrganization.favicon}
+            href={currentOrganization.favicon.includes('imsparked') ? currentOrganization.favicon : global.config.resourceUrl + currentOrganization.favicon}
             sizes="16x16"
           />
         ) : (
