@@ -744,10 +744,10 @@ export default function CreateOrg(prop) {
                       <h1>Logo</h1>
                       <button
                         onClick={() => {
-                          setFieldValue('favicon', 'https://dev.currikistudio.org/api/storage/organizations/QqwMYyeWq7WxQHzy7LDdI0mRBBA3g2qnLm2wd4Ib.svg');
-                          setFieldValue('image', 'https://dev.currikistudio.org/api/storage/organizations/H01h34rZGV6gyMayurX8dwpkXZd4X3c0n8NJiUXu.png');
-                          setFaviconActive('https://dev.currikistudio.org/api/storage/organizations/QqwMYyeWq7WxQHzy7LDdI0mRBBA3g2qnLm2wd4Ib.svg');
-                          setImgActive('https://dev.currikistudio.org/api/storage/organizations/H01h34rZGV6gyMayurX8dwpkXZd4X3c0n8NJiUXu.png');
+                          setFieldValue('favicon', 'https://imsparked-curriki.aws.infobase.com/api/storage/organizations/MNUYusfKyk0u0rsppknB6bJPh7cWxZaJSvaKgzCb.png');
+                          setFieldValue('image', 'https://content.imsparked.com/api/storage/organizations/JIvszCFYeMckdkElPyXjf1wu91gREJymqDXnJ2EP.png');
+                          setFaviconActive('https://imsparked-curriki.aws.infobase.com/api/storage/organizations/MNUYusfKyk0u0rsppknB6bJPh7cWxZaJSvaKgzCb.png');
+                          setImgActive('https://content.imsparked.com/api/storage/organizations/JIvszCFYeMckdkElPyXjf1wu91gREJymqDXnJ2EP.png');
                         }}
                         type="button"
                       >
