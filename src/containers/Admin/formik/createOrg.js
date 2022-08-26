@@ -825,7 +825,7 @@ export default function CreateOrg(prop) {
                           >
                             <div>
                               <img
-                                src={imageActive ? (imageActive.includes('dev.currikistudio') ? imageActive : `${global.config.resourceUrl}${imageActive}`) : values.image}
+                                src={imageActive ? (imageActive.includes('imsparked') ? imageActive : `${global.config.resourceUrl}${imageActive}`) : values.image}
                                 style={{
                                   width: '120px',
                                   height: '72px',
