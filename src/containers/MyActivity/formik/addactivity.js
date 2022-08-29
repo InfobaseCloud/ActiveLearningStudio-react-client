@@ -22,26 +22,19 @@ import TagsInput from "react-tagsinput";
 import ReactTags from "react-tag-autocomplete";
 
 const AddActivity = (props) => {
-  const {
-    setActivityMethod,
-    changeScreenHandler,
-    setUploadImageStatus,
-    activtyMethod,
-  } = props;
-  const { layout, selectedLayout, activity, singleLayout } = useSelector(
-    (state) => state.myactivities
-  );
+  const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod, activityPreview } = props;
+  const { layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
 
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
-  const [activeRadio, setActiveRadio] = useState("");
+  const [activeRadio, setActiveRadio] = useState('');
   const organization = useSelector((state) => state.organization);
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
   const dispatch = useDispatch();
   const [existingActivity, setExistingActivity] = useState(false);
-  const [formData, setFormData] = useState("");
+  const [formData, setFormData] = useState('');
   const [subjects, setSubjects] = useState(null);
   const [allTags, setAllTags] = useState([]);
   const [authorTags, setAuthorTags] = useState(null);
@@ -49,29 +42,60 @@ const AddActivity = (props) => {
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
-  const [selectedTags, setSelectedTags] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagId, setTagId] = useState([]);
 
-  function onDelete(i) {
-    console.log("tag", i);
-  }
+  // useEffect(() => {
+  //   console.log('tags', tags);
+  // }, [tags]);
 
-  useEffect(() => {
-    console.log('tags', tags);
-  }, [tags]);
+  // const [tags, setTags] = React.useState([
+  //   { id: 'Thailand', name: 'Thailand' },
+  // ]);
+
+  const onDelete = i => {
+    setTags(tags.filter((tag, index) => index !== i));
+  };
+
+  const handleAddition = tag => {
+    console.log({ tags });
+    setTags([...tags, tag]);
+  };
+
+  const handleDrag = (tag, currPos, newPos) => {
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setTags(newTags);
+  };
+
+  const handleTagClick = index => {
+    console.log('The tag at index ' + index + ' was clicked');
+  };
+
+  const KeyCodes = {
+    comma: 188,
+    enter: 13
+  };
+
+  const delimiters = [KeyCodes.comma, KeyCodes.enter];
+
 
   const formRef = useRef();
   var counter;
-  const parser = new DOMParser()
+  const parser = new DOMParser();
 
   const formatApiData = (data) => {
     let ids = [];
-    data.map(datum => {
+    data.map((datum) => {
       ids.push(datum.id);
     });
     return ids;
-  }
+  };
 
   useEffect(() => {
     if (!subjects) {
@@ -81,7 +105,7 @@ const AddActivity = (props) => {
         data?.data.map((subject) => {
           let sub = { value: subject.id, label: subject.name };
           subj_array.push(sub);
-        })
+        });
         setSubjects(subj_array);
       });
     }
@@ -129,7 +153,6 @@ const AddActivity = (props) => {
   }, [authorTags]);
 
   useEffect(() => {
-    console.log({ activity });
     if (activity?.subjects && !selectedSubjects) {
       let output = subjects?.filter((obj) => formatApiData(activity?.subjects).indexOf(obj.value) !== -1);
       setSelectedSubjects(output);
@@ -143,11 +166,17 @@ const AddActivity = (props) => {
       let output = educationLevels?.filter((obj) => formatApiData(activity?.education_levels).indexOf(obj.value) !== -1);
       setSelectedEducationLevel(output);
     }
-    if (activity?.tag_id && !selectedTags) {
-      let output = tags?.filter((obj) => formatApiData(activity?.tag_id).indexOf(obj.value) !== -1);
-      setSelectedTags(output);
+    if (activity?.tags && tags.length === 0) {
+      let output = activity?.tags?.map((tag) => {
+        return {
+          id: tag.id,
+          name: tag.name
+        }
+      });
+      setIsEdit(true)
+      setTags(output);
     }
-  })
+  }, [activity])
   useEffect(() => {
     if (selectedLayout) {
       setTitle(selectedLayout.title);
@@ -155,17 +184,14 @@ const AddActivity = (props) => {
   }, [selectedLayout]);
   useEffect(() => {
     if (activity && setActivityMethod) {
-      setActivityMethod("create");
+      setActivityMethod('create');
     }
   }, [activity]);
-  useEffect(() => {
-    console.log({ values: formRef.current.values });
-  }, [formRef])
   successMessage &&
     setInterval(() => {
       setSuccessMessage(false);
     }, 5000);
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <PreviewLayoutModel
@@ -173,12 +199,13 @@ const AddActivity = (props) => {
         onHide={() => {
           setModalShow(false);
         }}
+        activityPreview={activityPreview}
         formData={formData}
         searchName="abstract"
         setSuccessMessage={setSuccessMessage}
       />
       <div className="add-activity-form">
-        {activtyMethod === "upload" ? (
+        {activtyMethod === 'upload' ? (
           <div className="add-activity-tabs">
             <Tabs text="1. Describe and upload activity" tabActive={true} />
           </div>
@@ -192,11 +219,7 @@ const AddActivity = (props) => {
                     counter++;
                     return (
                       <>
-                        <Tabs
-                          text="2. Describe and  create layout"
-                          className="ml-10"
-                          tabActive={true}
-                        />
+                        <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
                       </>
                     );
                   }
@@ -204,16 +227,8 @@ const AddActivity = (props) => {
             }
             {counter === 0 && (
               <>
-                <Tabs
-                  text="2. Select activity"
-                  className="ml-10"
-                  tabActive={true}
-                />
-                <Tabs
-                  text="3. Describe and  create activity"
-                  className="ml-10"
-                  tabActive={true}
-                />
+                <Tabs text="2. Select activity" className="ml-10" tabActive={true} />
+                <Tabs text="3. Describe and  create activity" className="ml-10" tabActive={true} />
               </>
             )}
           </div>
@@ -223,46 +238,24 @@ const AddActivity = (props) => {
           <div className="add-activity-title-select upload-back-button">
             <div className="add-activity-title ">
               <div>
-                <HeadingTwo
-                  text={activtyMethod === "upload" ? "Upload activity" : title}
-                  color="#084892"
-                />
+                <HeadingTwo text={activtyMethod === 'upload' ? 'Upload activity' : title} color="#084892" />
               </div>
             </div>
             <div
               className="back-button"
               id="back-button-none-bg"
               onClick={() => {
-                changeScreenHandler("layout", "create");
+                changeScreenHandler('layout', 'create');
               }}
             >
               {/* <img src={BackButton} alt="back button " /> */}
-              <svg
-                width="14"
-                height="10"
-                viewBox="0 0 14 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ marginRight: "8px", marginTop: "4px" }}
-              >
-                <path
-                  d="M13 5L1 5"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5 1L1 5L5 9"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <p className="">Back to options</p>
             </div>
-            {activtyMethod !== "upload" && singleLayout === null && (
+            {activtyMethod !== 'upload' && singleLayout === null && (
               <div className="activity-title-change-layout">
                 <select
                   onChange={(e) => {
@@ -273,10 +266,10 @@ const AddActivity = (props) => {
                   }}
                 >
                   {/* <option value="">Change Layout</option> */}
-                  {layout?.map((data) => {
+                  {layout?.map((data, index) => {
                     return (
                       <option
-                        key=""
+                        key={index}
                         selected={data.title === title ? true : false}
                         value={JSON.stringify(data)}
                       >
@@ -329,16 +322,16 @@ const AddActivity = (props) => {
                 thumb_url: activity?.thumb_url ||
                   'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || "",
-                tag_id: selectedTags || "",
+                tag_id: isEdit ? tags : "",
               }}
               enableReinitialize
               innerRef={formRef}
               validate={(values) => {
                 const errors = {};
                 if (!values.title) {
-                  errors.title = "Required";
+                  errors.title = 'Required';
                 } else if (values.title.length > 255) {
-                  errors.title = "Length should be less then 255";
+                  errors.title = 'Length should be less then 255';
                 }
 
                 return errors;
@@ -365,21 +358,11 @@ const AddActivity = (props) => {
                     handleSubmit();
                   }}
                 >
-                  <h4 className="interactive-video-heading-two">
-                    Describe layout
-                  </h4>
+                  <h4 className="interactive-video-heading-two">Describe layout</h4>
 
                   <div className="layout-title-formik-textField">
-                    <HeadingThree
-                      text="Title"
-                      color="#515151"
-                      className="textField-title"
-                    />
-                    <HeadingText
-                      text="Used for searching, reports and copyright information"
-                      color="#515151"
-                      className="textField-detailText"
-                    />
+                    <HeadingThree text="Title" color="#515151" className="textField-title" />
+                    <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" />
                     <input
                       type="text"
                       name="title"
@@ -388,9 +371,7 @@ const AddActivity = (props) => {
                       onBlur={handleBlur}
                       value={parser.parseFromString(values.title, 'text/html').body.textContent}
                     />
-                    <div style={{ color: "red" }}>
-                      {errors.title && touched.title && errors.title}
-                    </div>
+                    <div style={{ color: 'red' }}>{errors.title && touched.title && errors.title}</div>
                   </div>
                   <div className="layout-formik-select">
                     <div className="formik-select mr-16">
@@ -400,7 +381,7 @@ const AddActivity = (props) => {
                         hideSearch
                         options={subjects}
                         onChange={(e) => {
-                          setFieldValue("subject_id", e)
+                          setFieldValue('subject_id', e);
                         }}
                         value={values.subject_id}
                       />
@@ -413,7 +394,7 @@ const AddActivity = (props) => {
                         hideSearch
                         options={educationLevels}
                         onChange={(e) => {
-                          setFieldValue("education_level_id", e)
+                          setFieldValue('education_level_id', e);
                         }}
                         value={values.education_level_id}
                       />
@@ -426,7 +407,7 @@ const AddActivity = (props) => {
                         hideSearch
                         options={authorTags}
                         onChange={(e) => {
-                          setFieldValue("author_tag_id", e)
+                          setFieldValue('author_tag_id', e);
                         }}
                         value={values.author_tag_id}
                       />
@@ -439,7 +420,7 @@ const AddActivity = (props) => {
                         text="Tags"
                         className="formik-select-title"
                       />
-                      <ReactTags
+                      {/* <ReactTags
                         tags={tags}
                         allowNew
                         suggestions={allTags}
@@ -451,6 +432,20 @@ const AddActivity = (props) => {
                             setFieldValue("tag_id", [...tagId, tag.id]);
                           }
                         }}
+                      /> */}
+                      <ReactTags
+                        tags={tags}
+                        suggestions={allTags}
+                        delimiters={delimiters}
+                        onAddition={(tag) => {
+                          handleAddition(tag);
+                          setFieldValue("tag_id", [...tags, tag]);
+                        }}
+                        handleDrag={handleDrag}
+                        handleTagClick={handleTagClick}
+                        inputFieldPosition="bottom"
+                        onDelete={onDelete}
+                        autocomplete
                       />
                       {/* <TagsInput value={tags} onChange={(e) => {
                         setFieldValue("tags", e);
@@ -460,11 +455,7 @@ const AddActivity = (props) => {
                   </div>
 
                   <div className="formik-uploadimage">
-                    <UploadImageV2
-                      formRef={formRef}
-                      setUploadImageStatus={setUploadImageStatus}
-                      thumb_url={activity?.thumb_url}
-                    />
+                    <UploadImageV2 formRef={formRef} setUploadImageStatus={setUploadImageStatus} thumb_url={activity?.thumb_url} />
                   </div>
                 </form>
               )}
@@ -472,29 +463,23 @@ const AddActivity = (props) => {
           </div>
           <div className="add-activity-layout-videoTag">
             <HeadingThree
-              text={
-                activtyMethod === "upload"
-                  ? "Upload existing activity"
-                  : activity
-                    ? "Edit layout"
-                    : "Create layout"
-              }
+              text={activtyMethod === 'upload' ? 'Upload existing activity' : activity ? 'Edit layout' : 'Create layout'}
               color="#084892"
               className="layout-add-activity-title"
             />
 
             <HeadingText
               text={
-                activtyMethod === "upload"
-                  ? "Upload an activity from an existing H5P file. "
+                activtyMethod === 'upload'
+                  ? 'Upload an activity from an existing H5P file. '
                   : activity
-                    ? "Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results."
-                    : "Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."
+                    ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
+                    : 'Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
               }
               color="#515151"
             />
             <div className="d-flex">
-              {activtyMethod !== "upload" && (
+              {activtyMethod !== 'upload' && (
                 <div className="add-activity-btns">
                   <Buttons
                     text="Open Editor"
@@ -503,10 +488,7 @@ const AddActivity = (props) => {
                     height="35px"
                     onClick={() => {
                       formRef.current.handleSubmit();
-                      if (
-                        formRef.current.values.title &&
-                        formRef.current.values.title.length < 255
-                      ) {
+                      if (formRef.current.values.title && formRef.current.values.title.length < 255) {
                         setModalShow(true);
                       }
                     }}
@@ -524,16 +506,8 @@ const AddActivity = (props) => {
                     height="35px"
                     onClick={async () => {
                       await formRef.current.handleSubmit();
-                      if (
-                        formRef.current.values.title &&
-                        formRef.current.values.title.length < 255
-                      ) {
-                        dispatch(
-                          editResourceMetaDataAction(
-                            activity,
-                            formRef.current.values
-                          )
-                        );
+                      if (formRef.current.values.title && formRef.current.values.title.length < 255) {
+                        dispatch(editResourceMetaDataAction(activity, formRef.current.values));
                       }
                     }}
                     hover={true}
@@ -543,22 +517,16 @@ const AddActivity = (props) => {
               )}
             </div>
 
-            {activtyMethod === "upload" && (
+            {activtyMethod === 'upload' && (
               <div className="existing-activity-dialog">
-                <UploadFile metadata={formData} formRef={formRef} />
+                <UploadFile metadata={formData} formRef={formRef} activityPreview={activityPreview} />
               </div>
             )}
 
             {successMessage && (
               <div className="successMessage">
-                <HeadingThree
-                  text="Changes saved succesfully!"
-                  color="#12B347"
-                />
-                <HeadingText
-                  text="To continue editing Open the editor again."
-                  color="#12B347"
-                />
+                <HeadingThree text="Changes saved succesfully!" color="#12B347" />
+                <HeadingText text="To continue editing Open the editor again." color="#12B347" />
               </div>
             )}
           </div>

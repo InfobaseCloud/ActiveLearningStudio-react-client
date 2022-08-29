@@ -134,6 +134,26 @@ const exportProjectsToNoovo = (subOrgId, projectId, teamId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getAllTeacher = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/teachers`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getOneTeacher = (id, subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/teachers/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getAllStudent = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/students`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getOneStudent = (id, subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/students/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -158,4 +178,8 @@ export default {
   visibilityTypes,
   searchPreviewProject,
   exportProjectsToNoovo,
+  getAllStudent,
+  getAllTeacher,
+  getOneStudent,
+  getOneTeacher
 };

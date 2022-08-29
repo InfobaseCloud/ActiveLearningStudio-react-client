@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 //import Echo from 'laravel-echo';
 import { toast } from 'react-toastify';
 import resourceService from 'services/resource.service';
+import indResourceService from 'services/indActivities.service';
 import videoService from 'services/videos.services';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
@@ -22,6 +23,7 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     const {
       organization: { activeOrganization },
     } = centralizedState;
+    console.log({ centralizedState });
     const result = await resourceService.getTypes(activeOrganization?.id);
 
     dispatch({
@@ -535,9 +537,14 @@ export const createResourceByH5PUploadAction = (
   editor,
   editorType,
   payload,
-  metadata
+  metadata,
+  // activityPreview
   // projectId,
 ) => async (dispatch) => {
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
   try {
     toast.info('Uploading Activity ...', {
       className: 'project-loading',
@@ -552,8 +559,44 @@ export const createResourceByH5PUploadAction = (
     formData.append('action', 'upload');
 
     const responseUpload = await resourceService.h5pToken(formData);
+    // metadata.subject_id = formatSelectBoxData(metadata.subject_id);
+    // metadata.education_level_id = formatSelectBoxData(metadata.education_level_id);
+    // metadata.author_tag_id = formatSelectBoxData(metadata.author_tag_id);
 
     if (responseUpload.id) {
+      // if (activityPreview) {
+      //   const activity = {
+      //     h5p_content_id: responseUpload.id,
+      //     thumb_url: metadata?.thumb_url,
+      //     action: 'create',
+      //     title: metadata?.title,
+      //     type: 'h5p',
+      //     content: 'place_holder',
+      //     subject_id: metadata?.subject_id,
+      //     education_level_id: metadata?.education_level_id,
+      //     author_tag_id: metadata?.author_tag_id,
+      //     description: metadata?.description || undefined,
+      //     source_type: metadata?.source_type || undefined,
+      //     source_url: metadata?.source_url || undefined,
+      //     organization_visibility_type_id: 1,
+      //   };
+
+      //   const result = await indResourceService.create(activeOrganization.id, activity);
+      //   toast.dismiss();
+      //   toast.success('Activity Created', {
+      //     position: toast.POSITION.BOTTOM_RIGHT,
+      //     autoClose: 4000,
+      //   });
+      //   dispatch({
+      //     type: actionTypes.ADD_IND_ACTIVITIES,
+      //     payload: result['independent-activity'],
+      //   });
+
+      //   dispatch({
+      //     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      //     payload: '',
+      //   });
+      // } else {
       const createActivityUpload = {
         h5p_content_id: responseUpload.id,
         playlist_id: playlistId,
@@ -589,6 +632,7 @@ export const createResourceByH5PUploadAction = (
       dispatch({
         type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
       });
+      // }
     } else {
       throw new Error('Error occurred while creating resource');
     }
@@ -715,7 +759,7 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     subject_id: formatSelectBoxData(metadata.subject_id),
     education_level_id: formatSelectBoxData(metadata.education_level_id),
     author_tag_id: formatSelectBoxData(metadata.author_tag_id),
-    tag_id: metadata?.tag_id
+    tag_id: metadata?.tag_id.map(tag => tag.id),
   };
   const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
   await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));

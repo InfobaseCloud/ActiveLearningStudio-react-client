@@ -28,6 +28,7 @@ const PreviewLayoutModel = (props) => {
     reverseType,
     onHide,
     formData,
+    activityPreview
   } = props;
   var counter = 0;
   const [edith5p, setEditH5p] = useState(editVideo?.h5p);
@@ -210,12 +211,12 @@ const PreviewLayoutModel = (props) => {
                     style={{ display: "flex", justifyContent: "center" }}
                   >
                     <Tabs
-                      text="1. Add a video"
+                      text={activityPreview ? '1. Add an activity' : '1. Add a video'}
                       className="m-2"
                       tabActive={true}
                     />
                     <Tabs
-                      text="2. Describe video"
+                      text={activityPreview ? '1. Describe activity' : '2. Describe video'}
                       className="m-2"
                       tabActive={true}
                     />
@@ -242,6 +243,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {platform === "Brightcove" && !editVideo && (
@@ -269,6 +271,7 @@ const PreviewLayoutModel = (props) => {
                       reverseType={reverseType}
                       playlistId={playlist?.id || undefined}
                       submitForm={submitForm}
+                      activityPreview={activityPreview}
                     />
                   </div>
                 )}
@@ -288,6 +291,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {/* Vimeo */}
@@ -307,6 +311,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
 
@@ -326,6 +331,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {editVideo && (
@@ -346,6 +352,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
               </>
@@ -413,6 +420,7 @@ const PreviewLayoutModel = (props) => {
                   submitForm={submitForm}
                   saveButtonCheck={saveButtonCheck}
                   saveOnlyHandlerClose={saveOnlyHandlerClose}
+                  activityPreview={activityPreview}
                 />
               </>
             )}

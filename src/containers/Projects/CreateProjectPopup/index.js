@@ -24,9 +24,14 @@ const maxLength1000 = maxLength(1000);
 
 let imageValidation = '';
 const projectShare = true;
-let project_type = ''
+let project_type = '';
+let projectsTab = null;
 
 const onSubmit = async (values, dispatch, props) => {
+  let labels = [];
+  projectsTab && projectsTab.length > 0 && projectsTab.map((v) => {
+    labels.push(v.value)
+  })
   const {
     history,
     project,
@@ -44,7 +49,8 @@ const onSubmit = async (values, dispatch, props) => {
         is_public: projectShare,
         organization_visibility_type_id: 1,
         team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-        project_type: project_type
+        project_type: project_type,
+        project_for: labels ? labels : []
       })
       : createProjectAction({
         name,
@@ -54,7 +60,8 @@ const onSubmit = async (values, dispatch, props) => {
         team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
         // eslint-disable-next-line max-len
         thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-        project_type: project_type
+        project_type: project_type,
+        project_for: labels ? labels : []
       })
   );
   handleCloseProjectModal(false);
@@ -95,6 +102,11 @@ let CreateProjectPopup = (props) => {
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
+  const [projectFor, setProjectFor] = useState([])
+  const projectForOptions = [
+    { label: 'Student', value: 'student' },
+    { label: 'Teacher', value: 'teacher' },
+  ];
   const [projectType, setProjectType] = useState([{
     value: "Column Layout", label: "Column Layout"
   }]);
@@ -167,6 +179,20 @@ let CreateProjectPopup = (props) => {
               }}
               value={selectedProject.value}
             />
+          </div>
+          <div className="layout-formik-select drop-down-tabs">
+            <div className="formik-select">
+              <HeadingText text="Project For" className="formik-select-title" />
+              <ReactMultiSelectCheckboxes
+                name="project_for"
+                hideSearch
+                options={projectForOptions}
+                onChange={(e) => {
+                  projectsTab = e;
+                  setProjectFor(e);
+                }}
+              />
+            </div>
           </div>
           <div className="upload-thumbnail check">
             <div className="upload_placeholder">

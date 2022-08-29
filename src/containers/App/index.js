@@ -124,7 +124,7 @@ function App(props) {
   return (
     <div>
       <Helmet>
-        <meta name="description" content="CurrikiStudio" />
+        <meta name="description" content="imSparked" />
         <meta name="theme-color" content="#008f68" />
 
         <script type="text/javascript" id="hs-script-loader" async defer src={`//js.hs-scripts.com/${window.__RUNTIME_CONFIG__.REACT_APP_HUBSPOT}.js`} />

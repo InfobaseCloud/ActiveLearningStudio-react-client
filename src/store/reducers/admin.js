@@ -27,6 +27,11 @@ const INITIAL_STATE = {
   education_level: null,
   author_tags: null,
   activity_layouts: null,
+  indActivities: null,
+  exportedActivities: null,
+  allMediaSources: {},
+  orgMediaSources: {},
+  bulkUsers: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -208,6 +213,82 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teams: action.payload,
+      };
+    case actionTypes.ALL_ADMIN_IND_ACTIVITIES:
+      return {
+        ...state,
+        indActivities: action.payload,
+      };
+    case actionTypes.CLEAR_ADMIN_EXPORTED_ACTIVITIES:
+      return {
+        ...state,
+        exportedActivities: action.payload,
+      };
+    case actionTypes.ALL_ADMIN_EXPORTED_ACTIVITIES:
+      return {
+        ...state,
+        exportedActivities: action.payload,
+      };
+    case actionTypes.EDIT_ADMIN_IND_ACTIVITIES:
+      const newIndActivityData = state.indActivities.data.map((data) => {
+        if (data.id === action.payload.id) {
+          return action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: newIndActivityData },
+      };
+    case actionTypes.EDIT_INDEX_ADMIN_IND_ACTIVITIES:
+      const newIndIndexActivityData = state.indActivities.data.map((data) => {
+        if (data.id === action.activityId) {
+          return { ...data, indexing: action.payload.indexing, indexing_text: action.payload.indexing_text };
+        }
+        return data;
+      });
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: newIndIndexActivityData },
+      };
+    case actionTypes.DEL_ADMIN_IND_ACTIVITIES:
+      const delIndActivityData = state.indActivities.data.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: delIndActivityData },
+      };
+
+    case actionTypes.GET_ALL_MEDIA_SOURCE:
+      return {
+        ...state,
+        allMediaSources: action.payload,
+      };
+    case actionTypes.CLEAR_IND_ACTIVITIES:
+      return {
+        ...state,
+        indActivities: null,
+      };
+
+    case actionTypes.GET_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
+      };
+    case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
+      };
+
+    case actionTypes.GET_MEDIA_SOURCES:
+      return {
+        ...state,
+        mediaSources: action.payload,
+      };
+    case actionTypes.BULK_UPLOAD:
+      return {
+        ...state,
+        bulkUsers: action.payload,
       };
     default:
       return state;

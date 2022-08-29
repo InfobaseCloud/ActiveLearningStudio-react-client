@@ -34,17 +34,17 @@ export const columnData = {
   userall: ['Date', 'First Name', 'Last Name', 'Email', 'Organization', 'Org Type', 'Role'],
   userallSortCol: ['First Name'],
 
-  lmssettings: ['URL', 'Type', 'User', 'Email', 'Site Name', 'Description'],
+  lmssettings: ['URL', 'Type', 'User', 'Site Name', 'Description'],
   lmssettingsSortCol: ['Type'],
 
   organization: ['Name', 'Domain', 'Projects', 'Sub Org.', 'Users', 'Teams'],
   organizationSortCol: ['Name'],
 
   IntegrationBrightCove: ['Studio org ID', 'Account ID', 'BrightCove email ID ', 'Account name', 'Description', 'Key', 'Secret', 'CSS'],
-  
+
   defaultsso: ['Site Name', 'URL', 'Type', 'Client Id', 'Description'],
   defaultssoSortCol: ['Site Name'],
-  
+
   ltitool: ['Name', 'URL', 'Tool type', 'User', 'Description', 'Version'],
   ltitoolSortCol: ['Name'],
 
@@ -56,10 +56,16 @@ export const columnData = {
 
   authorTags: ['Name', 'Order', ''],
   authorTagsSortCol: ['Order'],
-  
+
   activityLayouts: ['Name', 'Order', 'Items'],
   activityLayoutsSortCol: ['Order'],
-  
+
   teams: ['Name', 'Created', 'Description', 'Members', 'Projects', 'Updated'],
   teamsSortCol: ['Created'],
+
+  indActivitiesCol: ['Name', 'Created', 'ID', 'Author', 'Library', 'Library preference', 'Sharing', 'Updated'],
+  indActivitiesSortCol: ['Created'],
+
+  indActivitiesExportCol: ['Name', 'Created', 'Expired date', 'Download'],
+  indActivitiesExportSortCol: ['Created'],
 };

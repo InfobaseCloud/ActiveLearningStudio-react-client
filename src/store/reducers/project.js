@@ -195,6 +195,17 @@ export default (state = INITIAL_STATE, action) => {
         searchPreviewProject: action.payload,
         projectSelect: action.payload,
       };
+    case actionTypes.LOAD_ONE_TEACHER_PROJECT:
+      return {
+        ...state,
+        teacherProject: action.data.data,
+      };
+
+    case actionTypes.LOAD_ONE_STUDENT_PROJECT:
+      return {
+        ...state,
+        studentProject: action.data.data,
+      };
     default:
       return state;
   }

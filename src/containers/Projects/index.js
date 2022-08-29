@@ -25,6 +25,8 @@ import {
   loadLmsAction,
   sampleProjects,
   loadMyFavProjectsAction,
+  loadMyTeacherProjectsAction,
+  loadMyStudentProjectsAction
   // allSidebarProjects,
 } from "store/actions/project";
 import Footer from "components/Footer";
@@ -52,6 +54,8 @@ export const ProjectsPage = (props) => {
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
   const [teamProjects, setTeamProjects] = useState([]);
+  const [teacherProjects, setTeacherProjects] = useState([]);
+  const [studentProjects, setStudentsProjects] = useState([]);
   const [activeTab, setActiveTab] = useState("My Projects");
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
@@ -70,6 +74,8 @@ export const ProjectsPage = (props) => {
     // allSidebarProjectsUpdate,
     sampleProjectsData,
     loadMyFavProjectsActionData,
+    loadMyTeacherProjectsActionData,
+    loadMyStudentProjectsActionData,
     location,
     loadMyProjects,
     loadLms,
@@ -138,10 +144,34 @@ export const ProjectsPage = (props) => {
   }, [loadMyFavProjectsActionData, organization?.currentOrganization]);
 
   useEffect(() => {
+    if (organization?.currentOrganization) {
+      loadMyTeacherProjectsActionData();
+    }
+  }, [loadMyTeacherProjectsActionData, organization?.currentOrganization]);
+
+  useEffect(() => {
+    if (organization?.currentOrganization) {
+      loadMyStudentProjectsActionData();
+    }
+  }, [loadMyStudentProjectsActionData, organization?.currentOrganization]);
+
+  useEffect(() => {
     // if (allState.sidebar.updateProject.length > 0) {
     setFavProjects(allState.sidebar.updateProject);
     // }
   }, [allState.sidebar.updateProject]);
+
+  useEffect(() => {
+    if (allState.sidebar.teacherProject) {
+      setTeacherProjects(allState.sidebar.teacherProject);
+    }
+  }, [allState.sidebar.teacherProject]);
+
+  useEffect(() => {
+    if (allState.sidebar.studentProject) {
+      setStudentsProjects(allState.sidebar.studentProject);
+    }
+  }, [allState.sidebar.studentProject]);
 
   useEffect(() => {
     if (allState.sidebar.sampleProject.length > 0) {
@@ -370,6 +400,10 @@ export const ProjectsPage = (props) => {
                     setType("fav");
                   } else if (eventKey === "Team Projects") {
                     setType("team");
+                  } else if (eventKey === "Teachers Projects") {
+                    setType("teacher");
+                  } else if (eventKey === "Students Projects") {
+                    setType("student");
                   }
                 }}
                 className="main-tabs"
@@ -697,6 +731,102 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                 </Tab>
+                <Tab eventKey="Teachers Projects" title="Teachers Projects">
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: "none" }}>
+                      <div className="program-page-title">
+                        <h1>Teachers Projects</h1>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div className="flex-smaple">
+                        {teacherProjects.length > 0 ? (
+                          <SampleProjectCard
+                            projects={teacherProjects}
+                            type={type}
+                            setType={setType}
+                            setTabToggle={setTabToggle}
+                            activeTab={tabToggle}
+                            setShowSampleSort={setShowSampleSort}
+                            handleShow={handleShow}
+                            handleClose={handleClose}
+                            setProjectId={setProjectId}
+                          />
+                        ) : (
+                          <Alert onClick={() => console.log('teache', teacherProjects)} variant="warning">
+                            No Teachers Project found.
+                          </Alert>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pagination-top-team">
+                    <div className="pagination_state">
+                      {showSampleSort && teamProjects.length > 0 && (
+                        <Pagination
+                          activePage={activePage}
+                          pageRangeDisplayed={5}
+                          itemsCountPerPage={Number(meta?.per_page)}
+                          totalItemsCount={Number(meta?.total)}
+                          onChange={(e) => {
+                            // setCurrentTab("index");
+                            window.scrollTo(0, 0);
+                            setActivePage(e);
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </Tab>
+                <Tab eventKey="Students Projects" title="Students Projects">
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: "none" }}>
+                      <div className="program-page-title">
+                        <h1>Students Projects</h1>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div className="flex-smaple">
+                        {studentProjects.length > 0 ? (
+                          <SampleProjectCard
+                            projects={studentProjects}
+                            type={type}
+                            setType={setType}
+                            setTabToggle={setTabToggle}
+                            activeTab={tabToggle}
+                            setShowSampleSort={setShowSampleSort}
+                            handleShow={handleShow}
+                            handleClose={handleClose}
+                            setProjectId={setProjectId}
+                          />
+                        ) : (
+                          <Alert onClick={() => console.log('teache', studentProjects)} variant="warning">
+                            No Students Project found.
+                          </Alert>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pagination-top-team">
+                    <div className="pagination_state">
+                      {showSampleSort && teamProjects.length > 0 && (
+                        <Pagination
+                          activePage={activePage}
+                          pageRangeDisplayed={5}
+                          itemsCountPerPage={Number(meta?.per_page)}
+                          totalItemsCount={Number(meta?.total)}
+                          onChange={(e) => {
+                            // setCurrentTab("index");
+                            window.scrollTo(0, 0);
+                            setActivePage(e);
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </Tab>
               </Tabs>
             ) : (
               <Alert variant="danger">
@@ -747,6 +877,8 @@ ProjectsPage.propTypes = {
   location: PropTypes.object.isRequired,
   sampleProjectsData: PropTypes.func.isRequired,
   loadMyFavProjectsActionData: PropTypes.func.isRequired,
+  loadMyTeacherProjectsActionData: PropTypes.func.isRequired,
+  loadMyStudentProjectsActionData: PropTypes.func.isRequired,
   getTeamProjects: PropTypes.func.isRequired,
 };
 
@@ -778,6 +910,8 @@ const mapDispatchToProps = (dispatch) => ({
   // allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
+  loadMyTeacherProjectsActionData: () => dispatch(loadMyTeacherProjectsAction()),
+  loadMyStudentProjectsActionData: () => dispatch(loadMyStudentProjectsAction()),
   getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),
 });
 

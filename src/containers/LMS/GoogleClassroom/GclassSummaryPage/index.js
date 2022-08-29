@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/logo.png';
 import {
   getSummaryAuthAction,
 } from 'store/actions/gapi';
@@ -39,7 +39,7 @@ function GclassSummaryPage(props) {
         <div className="container">
           <div className="row">
             <div className="col">
-              {student && !errors && <ActivitySummary /> }
+              {student && !errors && <ActivitySummary />}
 
               {(!student || errors || summaryError) && (
                 <div className="auth-container">
