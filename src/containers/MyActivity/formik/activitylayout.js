@@ -23,6 +23,8 @@ import H5PPreview from '../../H5PPreview';
 import AddVideo from '../../Videos/formik/addvideo';
 import DescribeVideo from '../../Videos/formik/describevideo';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import UploadSmSvg from 'iconLibrary/mainContainer/UploadSmSvg';
+import SearchSmSvg from 'iconLibrary/mainContainer/SearchSmSvg';
 
 const ImgLoader = () => <img style={{ width: '100px' }} src={loader} />;
 const ActivityLayout = (props) => {
@@ -34,6 +36,10 @@ const ActivityLayout = (props) => {
   const [key, setKey] = useState('layout');
 
   useMemo(() => {
+    // Clearing course presentation pdf import storage every time activity creation
+    // flow starts to avoid accidentally importing residual data from previous
+    // attempts
+    localStorage.removeItem('coursePresentationFromFile');
     toast.info('Loading Activities ...', {
       className: 'project-loading',
       closeOnClick: false,
@@ -56,11 +62,11 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select layout" tabActive />
-        <Tabs text="2. Describe and create layout" className="ml-10 " />
+        <Tabs text="1. Select Activity" tabActive />
+        <Tabs text="2. Describe and Create Activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Select layout" color="#084892" />
+        <HeadingTwo text="Select layout" color="#084892" className="select_activity_title_style" />
       </div>
 
       {/* <form className="radio-group ">
@@ -87,10 +93,8 @@ const ActivityLayout = (props) => {
         </div>
       </form> */}
       <div className="activity-layout-detail">
-        <HeadingText
-          text="Create multiple activities into a layout or create a single activity."
-          color="#515151"
-        />
+        <h5>Use each Activity's information tabs to find the experience that best suits your content.</h5>
+        <HeadingText text="Combine media and interactive questions by selecting one of our Layout Activity types displayed here." color="#515151" className="activity_layout_des" />
       </div>
       <div className="layout-cards-process-btn">
         <div>
@@ -125,7 +129,7 @@ const ActivityLayout = (props) => {
           </div>
           <div className="explore-upload-buttons">
             <div
-              className="ex-up-button expiore"
+              className="ex-up-button expiore show_activity"
               onClick={() => {
                 setLayout('SingleActivity');
                 dispatch({
@@ -135,18 +139,8 @@ const ActivityLayout = (props) => {
               }}
             >
               {/* <img src={SearchImage} alt="Search" /> */}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
-                  stroke={primaryColor}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path d="M21.0004 21.0004L16.6504 16.6504" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-
-              <p className="">Explore all</p>
+              <SearchSmSvg primaryColor={primaryColor} />
+              <p className="">Show All Activities</p>
             </div>
             <div
               className="ex-up-button"
@@ -160,94 +154,118 @@ const ActivityLayout = (props) => {
               }}
             >
               {/* <img src={UpLoadImage} alt="UpLoad" /> */}
-              <svg width="15" height="12" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M1.5 7V10.2C1.5 10.4122 1.65804 10.6157 1.93934 10.7657C2.22064 10.9157 2.60218 11 3 11H12C12.3978 11 12.7794 10.9157 13.0607 10.7657C13.342 10.6157 13.5 10.4122 13.5 10.2V7"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path d="M10.1499 3.39999L7.5249 1L4.8999 3.39999" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M7.5 1V8.79997" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-
+              <UploadSmSvg primaryColor={primaryColor} />
               <p className="">Upload </p>
             </div>
           </div>
         </div>
 
-        {!!layout && (
-          <div className="layout-process-btn">
-            <Taber.Tabs
-              defaultActiveKey="layout"
-              activeKey={key}
-              onSelect={(k) => {
-                setKey(k);
+        {
+          !!layout && (
+            <div className="layout-process-btn">
+              <Taber.Tabs
+                defaultActiveKey="layout"
+                activeKey={key}
+                onSelect={(k) => {
+                  setKey(k);
 
-                if (k === 'demo') {
-                  let tempStorage = layout;
-                  setLayout();
-                  setTimeout(() => {
-                    setLayout(tempStorage);
-                  }, 300);
-                }
-              }}
-              id="controlled-tab-example"
-            >
-              <Taber.Tab eventKey="layout" title={'How-to video'}>
-                <div className="activity-layout-process-box">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    style={{ borderRadius: '8px' }}
-                    src={layout.demo_video_id || 'https://www.youtube-nocookie.com/embed/lgzsJDcMvPI'}
-                    title={layout.title}
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allow="fullscreen;"
-                  ></iframe>
+                  if (k === 'demo') {
+                    let tempStorage = layout;
+                    setLayout();
+                    setTimeout(() => {
+                      setLayout(tempStorage);
+                    }, 300);
+                  }
+                }}
+                id="controlled-tab-example"
+              >
+                {/* <Taber.Tab eventKey="activity_description" title={'Activity Description'}>
+                <div className="activity-des-taber">
+                  <div className="activity-des-taber-detail">
+                    <h6>Description</h6>
+                    <p>
+                      An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of
+                      interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video in publishing systems like Canvas,
+                      Brightspace, Blackboard, Moodle and WordPress.
+                    </p>
+                  </div>
+                  <div className="activity-des-taber-detail">
+                    <h6>When to Use It</h6>
+                    <p>
+                      An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of
+                      interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video in publishing systems like Canvas,
+                      Brightspace, Blackboard, Moodle and WordPress.
+                    </p>
+                  </div>
+                  <div className="activity-des-taber-useful">
+                    <div>
+                      <span className="useful-title">Useful for</span>
+                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 5L13 5" stroke="#084892" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M9 9L13 5L9 1" stroke="#084892" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </div>
+                    <p>Guided onboardings, Corporated presentations</p>
+                  </div>
                 </div>
-                <HeadingText text={layout.description} color="#515151" />
-              </Taber.Tab>
-              <Taber.Tab eventKey="demo" title="Sample Activity">
-                {layout.demo_activity_id ? (
-                  <H5PPreview activityId={layout.demo_activity_id.trim()} tokenrequire={false} showltipreview />
-                ) : (
-                  <Taber.Alert variant="warning">Demo is not Available.</Taber.Alert>
-                )}
-              </Taber.Tab>
-            </Taber.Tabs>
-            <div className="activity-layout-btns">
-              <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} />
+              </Taber.Tab> */}
+                <Taber.Tab eventKey="layout" title={'How-to video'}>
+                  <div className="activity-layout-process-box">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style={{ borderRadius: '8px' }}
+                      src={layout.demo_video_id || 'https://www.youtube-nocookie.com/embed/lgzsJDcMvPI'}
+                      title={layout.title}
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    ></iframe>
+                  </div>
+                  <HeadingText text={layout.description} color="#515151" />
+                </Taber.Tab>
+                <Taber.Tab eventKey="demo" title="Sample activity">
+                  {layout.demo_activity_id ? (
+                    <>
+                      <H5PPreview activityId={layout.demo_activity_id.trim()} tokenrequire={false} showltipreview />
+                      <HeadingText text={layout.description} color="#515151" />
+                    </>
+                  ) : (
+                    <Taber.Alert variant="warning">Demo is not Available.</Taber.Alert>
+                  )}
+                </Taber.Tab>
+              </Taber.Tabs >
+              <div className="activity-layout-btns">
+                {/* <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} /> */}
 
-              <div className="btns-margin">
-                <Buttons
-                  text="Select Layout"
-                  defaultgrey={!layout}
-                  width="153px"
-                  height="36px"
-                  disabled={!layout}
-                  onClick={() => {
-                    if (layout.title === 'Interactive Video') {
-                      changeScreenHandler('addvideo');
-                    } else {
-                      changeScreenHandler('addactivity');
-                    }
+                <div className="btns-margin">
+                  <Buttons
+                    text="Select"
+                    defaultgrey={!layout}
+                    width="91px"
+                    height="32px"
+                    disabled={!layout}
+                    onClick={() => {
+                      if (layout.title === 'Interactive Video') {
+                        changeScreenHandler('addvideo');
+                      } else if (layout.title === 'Course Presentation') {
+                        changeScreenHandler('coursepresentation');
+                      } else {
+                        changeScreenHandler('addactivity');
+                      }
 
-                    dispatch({
-                      type: actionTypes.SET_SELECTED_ACTIVITY,
-                      payload: layout,
-                    });
-                  }}
-                  hover
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+                      dispatch({
+                        type: actionTypes.SET_SELECTED_ACTIVITY,
+                        payload: layout,
+                      });
+                    }}
+                    hover
+                  />
+                </div>
+              </div >
+            </div >
+          )}
+      </div >
+    </div >
   );
 };
 

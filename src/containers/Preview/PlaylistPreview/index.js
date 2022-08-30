@@ -21,11 +21,9 @@ import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 
 import HeaderLogo from 'assets/images/GCLogo.png';
-import H5PIVSidebar from '../../../containers/H5PIVSidebar'
 import './playlistPreview.scss';
 
 const H5PPreview = lazy(() => import('../../H5PPreview'));
-const H5PIVPreview = lazy(() => import('../../H5PIVPreview'));
 
 function PlaylistPreview(props) {
   const { loading, projectId, playlistId, activityId, playlist, loadHP, loadPlaylist, loadProjectPlaylists } = props;
@@ -146,29 +144,7 @@ function PlaylistPreview(props) {
               <div className="item-container">
                 {currentActivity && (
                   <Suspense fallback={<div>Loading</div>}>
-                    {selectedPlaylist.project.project_type === "Column Layout" ?
-                      (
-                        <div className="row no-space">
-                          <div className="col-md-4 sidebar-wrap no-space">
-                            <H5PIVSidebar
-                              allPlaylists={allPlaylists}
-                              activeActivityId={currentActiveId ? currentActiveId : currentActivity.id}
-                              setCurrentActiveId={setCurrentActiveId}
-                              viewType={query.view}
-                              projectId={projectId}
-                              playlistId={playlistId}
-                              nextResource={nextResource}
-                              selectedPlaylist={selectedPlaylist}
-                            />
-                          </div>
-                          <div className="col-md-8 right-content-wrap no-space">
-                            <H5PIVPreview showLtiPreview activityId={currentActiveId ? currentActiveId : currentActivity.id} selectedPlaylist={selectedPlaylist} />
-                          </div>
-                        </div>
-                      ) : (
-                        <H5PPreview showLtiPreview activityId={currentActivity.id} />
-                      )
-                    }
+                    <H5PPreview showLtiPreview activityId={currentActivity.id} />
                   </Suspense>
                 )}
               </div>

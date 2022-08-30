@@ -134,7 +134,7 @@ function App(props) {
         {currentOrganization?.favicon ? (
           <link
             rel="icon"
-            href={currentOrganization.favicon.includes('dev.currikistudio') ? currentOrganization.favicon : global.config.resourceUrl + currentOrganization.favicon}
+            href={currentOrganization.favicon.includes('imsparked') ? currentOrganization.favicon : global.config.resourceUrl + currentOrganization.favicon}
             sizes="16x16"
           />
         ) : (
@@ -155,7 +155,7 @@ function App(props) {
         <div className="text-description">
           <h2>Please use desktop browser</h2>
 
-          <p>CurrikiStudio doesn’t yet support mobile for authors. To continue, we recommend that you use either a browser on a desktop or laptop computer.</p>
+          <p>imSparked doesn’t yet support mobile for authors. To continue, we recommend that you use either a browser on a desktop or laptop computer.</p>
           <p>
             Why no mobile access for authors? All learning courses built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
             interactive, immersive learning experience, a full browser is required.
@@ -163,7 +163,7 @@ function App(props) {
 
           <p>
             To learn more click here
-            <a href="https://curriki.org"> Curriki</a>
+            <a href="https://curriki.org"> imSparked</a>
           </p>
         </div>
       </div>

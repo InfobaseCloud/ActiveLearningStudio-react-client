@@ -15,6 +15,15 @@ const create = (subOrgId, activity) =>
       Promise.reject(err.response.data);
     });
 
+const sharedIndependentActivity = (id) =>
+  httpService
+    .get(`${apiVersion}/independent-activities/${id}/h5p-activity`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const allIndActivity = (subOrgId, page = 1, size = 10, search) =>
   httpService
     .get(`${apiVersion}/suborganization/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}`)
@@ -26,9 +35,8 @@ const allIndActivity = (subOrgId, page = 1, size = 10, search) =>
 const allAdminExportActivity = (subOrgId, page = 1, size = 10, search, column = '', orderBy = '') =>
   httpService
     .get(
-      `${apiVersion}/suborganization/${subOrgId}/users/notifications/export-list-independent-activities?page=${page}&size=${size}${
-        search && `&query=${search?.replace(/#/, '%23')}`
-      }${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}`
+      `${apiVersion}/suborganization/${subOrgId}/users/notifications/export-list-independent-activities?page=${page}&size=${size}${search && `&query=${search?.replace(/#/, '%23')}`
+      }${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -46,13 +54,10 @@ const allAdminIntActivities = (subOrgId, page = 1, size = 10, search, column = '
   httpService
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}
-    ${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}
-${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${
-        index ? `&indexing=${index}` : ''
+  ${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}
+${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''
       }${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}
-
-
-    `
+  `,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -113,6 +118,15 @@ const indActivityClone = (subOrgId, id) =>
       Promise.reject(err.response.data);
     });
 
+const copyToIndependentActivity = (subOrgId, id) =>
+  httpService
+    .post(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/activity/${id}/copy-to-independent-activity`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const exportIndAvtivity = (subOrgId, id) =>
   httpService
     .post(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}/export`)
@@ -162,4 +176,6 @@ export default {
   allAdminExportActivity,
   renderh5pIndependent,
   h5pResourceSettingsSharedIndActivity,
+  sharedIndependentActivity,
+  copyToIndependentActivity,
 };

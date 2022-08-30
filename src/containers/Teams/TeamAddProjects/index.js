@@ -18,6 +18,7 @@ import { loadMyProjectsAction } from 'store/actions/project';
 import { createTeamAction, loadTeamAction, setNewTeamData, addProjectsAction, loadTeamsAction } from 'store/actions/team';
 import Swal from 'sweetalert2';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
 
 const AddTeamProjects = (props) => {
   const { location, organization, team, newTeam, newTeamData, createTeam, loadTeam, loadTeams, addProjectToTeam } = props;
@@ -78,6 +79,10 @@ const AddTeamProjects = (props) => {
     }
   };
   const primaryColor = getGlobalColor('--main-primary-color');
+
+  const updateTeamProject = async (id) => {
+    await loadTeam(id);
+  };
   return (
     <div className="team-project-page">
       <div className="content">
@@ -116,17 +121,7 @@ const AddTeamProjects = (props) => {
                         <div className="search-and-filters">
                           <div className="search-bar">
                             <input type="text" className="search-input" placeholder="Search project" onChange={searchProjects} />
-                            {/* <img src={searchimg} alt="search" /> */}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" css-inspector-installed="true">
-                              <path
-                                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                                stroke={primaryColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                            <SearchInputMdSvg primaryColor={primaryColor} />
                           </div>
                         </div>
                       )}
@@ -139,22 +134,25 @@ const AddTeamProjects = (props) => {
                           <Buttons
                             icon={faPlus}
                             type="button"
-                            text="Add projects to team"
+                            text="Add project to team"
                             primary
                             width="188px"
                             height="32px"
                             hover
-                            onClick={() => {
+                            onClick={async () => {
                               if (selectProject.length > 0) {
                                 addProjectToTeam(team?.id, selectProject)
                                   .then((result) => {
+                                    // loadTeam(team?.id);
+                                    // updateTeamProject(team?.id);
                                     Swal.fire({
                                       icon: 'success',
                                       title: result?.message,
                                     });
                                     loadTeam(team?.id);
                                     history.push(`/org/${organization?.domain}/teams/${team?.id}`);
-                                  }).catch((err) => {
+                                  })
+                                  .catch((err) => {
                                     Swal.fire({
                                       icon: 'error',
                                       title: err?.message,
@@ -174,7 +172,10 @@ const AddTeamProjects = (props) => {
                             hover
                             onClick={() => {
                               Swal.showLoading();
-                              createTeam({ ...newTeam, organization_id: organization?.id })
+                              createTeam({
+                                ...newTeam,
+                                organization_id: organization?.id,
+                              })
                                 .then(() => {
                                   Swal.fire({
                                     icon: 'success',
@@ -228,24 +229,35 @@ const AddTeamProjects = (props) => {
                         <div className="project-selection">
                           <p>{selectProject?.length} projects have been selected. </p>
                         </div>
-                        <Buttons icon={faPlus} text="Add projects to team" type="button" primary width="188px" height="32px" hover disabled={selectProject?.length === 0} onClick={() => {
-                          if (selectProject.length > 0) {
-                            addProjectToTeam(team?.id, selectProject)
-                              .then((result) => {
-                                Swal.fire({
-                                  icon: 'success',
-                                  title: result?.message,
+                        <Buttons
+                          icon={faPlus}
+                          text="Add project to team"
+                          type="button"
+                          primary
+                          width="188px"
+                          height="32px"
+                          hover
+                          disabled={selectProject?.length === 0}
+                          onClick={() => {
+                            if (selectProject.length > 0) {
+                              addProjectToTeam(team?.id, selectProject)
+                                .then((result) => {
+                                  Swal.fire({
+                                    icon: 'success',
+                                    title: result?.message,
+                                  });
+                                  loadTeam(team?.id);
+                                  history.push(`/org/${organization?.domain}/teams/${team?.id}`);
+                                })
+                                .catch((err) => {
+                                  Swal.fire({
+                                    icon: 'error',
+                                    title: err?.message,
+                                  });
                                 });
-                                loadTeam(team?.id);
-                                history.push(`/org/${organization?.domain}/teams/${team?.id}`);
-                              }).catch((err) => {
-                                Swal.fire({
-                                  icon: 'error',
-                                  title: err?.message,
-                                });
-                              });
-                          }
-                        }} />
+                            }
+                          }}
+                        />
                       </div>
                     </div>
                   </div>

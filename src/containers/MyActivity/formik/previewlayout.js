@@ -34,18 +34,6 @@ const PreviewLayout = (props) => {
         <div className="preview-layout-title">
           <HeadingTwo text="Interactive Video" color="#084892" />
         </div>
-
-        {/* <div className="preview-layout-change-layout">
-          <select>
-            <option>Change Layout</option>
-            <option>Interactive video</option>
-            <option>Column layout</option>
-            <option>Interactive book</option>
-            <option>Course presentation</option>
-            <option>Quiz</option>
-            <option>Single activity</option>
-          </select>
-        </div> */}
       </div>
       <div className="preview-layout-card-project">
         <div className="preview-layout-dialogcard">

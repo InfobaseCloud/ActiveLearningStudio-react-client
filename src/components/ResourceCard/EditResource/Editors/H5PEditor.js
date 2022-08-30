@@ -8,8 +8,8 @@ import Swal from 'sweetalert2';
 
 const H5PEditorEdit = (props) => {
   const {
- h5pParams, match, resource, loadH5pSettings, handleEditResourceSubmit,
-} = props;
+    h5pParams, match, resource, loadH5pSettings, handleEditResourceSubmit,
+  } = props;
 
   const [submitAction, setSubmitAction] = useState('create');
   // const [h5pFile, setH5pFile] = useState(null);

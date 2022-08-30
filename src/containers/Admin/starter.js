@@ -49,6 +49,8 @@ function Starter(props) {
     searchAlertToggler,
     searchAlertTogglerStats,
     setActivePage,
+    searchQueryChangeHandlerLtiTool,
+    searchLtiquery,
     setSearchQueryTeam,
     subType,
     inviteUser,
@@ -74,7 +76,8 @@ function Starter(props) {
     setCurrentActivity,
     setModalShowh5p,
     setSearchKey,
-    bulkUpload,
+    filterLtiSettings,
+    setfilterLtiSettings,
   } = props;
   return (
     <>
@@ -127,40 +130,42 @@ function Starter(props) {
         setSearchQueryTeam={setSearchQueryTeam}
         filteredItems={filteredItems}
         setSearchKey={setSearchKey}
-        bulkUpload={bulkUpload}
+        setfilterLtiSettings={setfilterLtiSettings}
+        filterLtiSettings={filterLtiSettings}
+        searchQueryChangeHandlerLtiTool={searchQueryChangeHandlerLtiTool}
+        searchLtiquery={searchLtiquery}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
       {/* {subTypeState === "Media" && <Media />} */}
-      {
-        subTypeState === 'Manage Roles' ? (
-          <Userroles permissionRender={permissionRender} />
-        ) : (
-          <TableData
-            tableHead={tableHead}
-            sortCol={sortCol}
-            handleSort={handleSort}
-            activePage={activePage}
-            setActivePage={setActivePage}
-            searchAlertToggler={searchAlertToggler}
-            searchAlertTogglerStats={searchAlertTogglerStats}
-            type={type}
-            jobType={jobType}
-            data={data}
-            subType={subType}
-            changeIndexValue={changeIndexValue}
-            setAllProjectIndexTab={setAllProjectIndexTab}
-            subTypeState={subTypeState}
-            setCurrentTab={setCurrentTab}
-            setAllProjectTab={setAllProjectTab}
-            setModalShow={setModalShow}
-            setModalShowTeam={setModalShowTeam}
-            setrowData={setrowData}
-            setActivePageNumber={setActivePageNumber}
-            setCurrentActivity={setCurrentActivity}
-            setModalShowh5p={setModalShowh5p}
-          />
-        )
-      }
+      {subTypeState === 'Manage Roles' ? (
+        <Userroles permissionRender={permissionRender} />
+      ) : (
+        <TableData
+          tableHead={tableHead}
+          sortCol={sortCol}
+          handleSort={handleSort}
+          activePage={activePage}
+          setActivePage={setActivePage}
+          searchAlertToggler={searchAlertToggler}
+          searchAlertTogglerStats={searchAlertTogglerStats}
+          type={type}
+          jobType={jobType}
+          data={data}
+          subType={subType}
+          changeIndexValue={changeIndexValue}
+          setAllProjectIndexTab={setAllProjectIndexTab}
+          subTypeState={subTypeState}
+          setCurrentTab={setCurrentTab}
+          setAllProjectTab={setAllProjectTab}
+          setModalShow={setModalShow}
+          setModalShowTeam={setModalShowTeam}
+          setrowData={setrowData}
+          setActivePageNumber={setActivePageNumber}
+          setCurrentActivity={setCurrentActivity}
+          setModalShowh5p={setModalShowh5p}
+          filterLtiSettings={filterLtiSettings}
+        />
+      )}
     </>
   );
 }

@@ -9,7 +9,7 @@ import updateImg from '../../assets/images/update.svg';
 function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
+  const AdminList = ['Organizations', 'Projects', 'Ref. tables', 'Integrations', 'Users', ' Ind. activities'];
 
   // organization all projects
   const projectEditName = [
@@ -406,46 +406,13 @@ function UserRoles() {
                               <div className="permission">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Organization'}
+                                  type={'Organiziation'}
                                   permissions={values.permissions}
                                   currentFeatureView={orgView}
                                   currentFeatureEdit={orgEdit}
                                   bold
                                 />
                               </div>
-                              {/* Independent activities Start */}
-                              {/* <div className="permission">
-                                <div className="selection-tab-custom">
-                                  <div className="form-group custom-select-style-for-sub">
-                                    <NewEdit
-                                      setFieldValue={setFieldValue}
-                                      type={'Independent activities'}
-                                      permissions={values.permissions}
-                                      currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportView]}
-                                      currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
-                                      bold
-                                    />
-                                  </div>
-                                </div>
-
-                                <div className="permission-about">
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'All independent activities'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={independentactivitiesView}
-                                    currentFeatureEdit={independentactivitiesEdit}
-                                  />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Export / Import activities'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={independentactivitiesExportView}
-                                    currentFeatureEdit={independentactivitiesExportEdit}
-                                  />
-                                </div>
-                              </div> */}
-                              {/* Independent activities End */}
                               <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
@@ -477,12 +444,46 @@ function UserRoles() {
                                   />
                                 </div>
                               </div>
+                              {/* Independent activities Start */}
                               <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
                                       setFieldValue={setFieldValue}
-                                      type={'Activities'}
+                                      type={'Independent activities'}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportView]}
+                                      currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
+                                      bold
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="permission-about">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'All independent activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={independentactivitiesView}
+                                    currentFeatureEdit={independentactivitiesEdit}
+                                  />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Export / Import activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={independentactivitiesExportView}
+                                    currentFeatureEdit={independentactivitiesExportEdit}
+                                  />
+                                </div>
+                              </div>
+                              {/* Independent activities End */}
+
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Reference tables'}
                                       permissions={values.permissions}
                                       currentFeatureView={[...activityTypeView, ...activityItemView]}
                                       currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
@@ -533,7 +534,7 @@ function UserRoles() {
                                   />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Manage Roles'}
+                                    type={'Roles'}
                                     permissions={values.permissions}
                                     currentFeatureView={userRoleView}
                                     currentFeatureEdit={userRolesEdit}
@@ -730,7 +731,7 @@ function UserRoles() {
                             >
                               <NewEdit
                                 setFieldValue={setFieldValue}
-                                type={'Organization'}
+                                type={'Organiziation'}
                                 permissions={values.permissions}
                                 currentFeatureView={orgView}
                                 currentFeatureEdit={orgEdit}

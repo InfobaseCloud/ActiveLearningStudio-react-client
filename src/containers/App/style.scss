@@ -24,7 +24,7 @@
   &.left .modal-dialog,
   &.right .modal-dialog {
     position: relative;
-    max-width: none;
+    max-width: none !important;
     height: 100%;
     margin-top: 0;
     padding-left: 346px;
@@ -33,6 +33,7 @@
 
   &.left .modal-content,
   &.right .modal-content {
+    width: 550px;
     height: 100%;
     overflow-y: auto;
     border: 0;
@@ -785,6 +786,9 @@ body {
 aside.sidebar-all {
   min-height: 100%;
   margin-top: 32px;
+  overflow: auto;
+  height: 100%;
+  padding-bottom: 50px;
 }
 aside.sidebar-all:first-child {
   border-top: none;
@@ -1882,8 +1886,11 @@ a:hover {
   span {
     height: auto;
     padding: 0;
-    max-width: 268px;
+    max-width: 170px;
     word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .list {
@@ -3283,7 +3290,7 @@ a:hover {
 
 .video_activity.modal {
   .modal-xl {
-    max-width: 100% !important;
+    max-width: 1440px !important;
     width: 100% !important;
   }
   nav {
@@ -4056,10 +4063,15 @@ body.collapsed {
   height: 32px;
   padding: 0 !important;
 }
-
+.swal2-cancel,
+.swal2-confirm,
+.swal2-deny {
+  height: 32px;
+  padding: 0 !important;
+}
 .video_activity .interactivevideoreferce {
   margin: 0 auto;
-  height: calc(100vh - 200px);
+  min-height: calc(100vh - 200px);
 }
 .footer-img-section .img- img {
   width: 71px;

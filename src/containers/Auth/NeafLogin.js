@@ -121,7 +121,7 @@ class LoginPage extends React.Component {
           <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
 
           <h3 className="auth-description">
-            CurrikiStudio is changing the way learning experiences are
+            imSparked is changing the way learning experiences are
             designed, created, and delivered to a new generation of learners.
           </h3>
 

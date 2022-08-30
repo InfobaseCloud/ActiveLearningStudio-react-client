@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveAdminForm } from 'store/actions/admin';
+import { ltiToolType, setActiveAdminForm } from 'store/actions/admin';
 import EditProjectModel from './model/editprojectmodel';
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin';
 import CreateActivityItem from './formik/createActivityItem';
@@ -11,7 +11,6 @@ import CreateActivityType from './formik/createActivity';
 import CreateOrg from './formik/createOrg';
 import AddRole from './formik/addRole';
 import CreateUser from './CreateUser';
-import BulkUpload from './BulkUpload';
 import CreateUserForm from 'containers/Admin/formik/createuser';
 import BrightCove from './formik/createBrightCove';
 import Pills from './pills';
@@ -35,6 +34,7 @@ import EditTeamModel from './model/EditTeamModel';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
+import EditSmSvg from 'iconLibrary/mainContainer/EditSmSvg';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -71,10 +71,17 @@ function AdminPanel({ showSSO }) {
         payload: [currentOrganization || []],
       });
     }
-  }, [currentOrganization]);
+    dispatch(getAllMediaSources());
+    if (activeOrganization?.id) {
+      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+    }
+  }, [activeOrganization]);
 
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
-
+  // ltiToolType calling
+  useEffect(() => {
+    dispatch(ltiToolType(activeOrganization?.id || currentOrganization?.id));
+  }, [activeOrganization, currentOrganization]);
   return (
     <div className="admin-panel">
       {true ? (
@@ -110,29 +117,13 @@ function AdminPanel({ showSSO }) {
                               });
                             }}
                           >
-                            {/*<img src={editicon} alt="" />*/}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className="mr-2" viewBox="0 0 14 14" fill="none" css-inspector-installed="true">
-                              <path
-                                d="M6.36842 2.26562H2.19374C1.8774 2.26563 1.57402 2.39129 1.35033 2.61498C1.12664 2.83867 1.00098 3.14205 1.00098 3.45839V11.8078C1.00098 12.1241 1.12664 12.4275 1.35033 12.6512C1.57402 12.8749 1.8774 13.0005 2.19374 13.0005H10.5431C10.8594 13.0005 11.1628 12.8749 11.3865 12.6512C11.6102 12.4275 11.7359 12.1241 11.7359 11.8078V7.63307"
-                                stroke={paragraphColor}
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M10.8404 1.37054C11.0776 1.13329 11.3994 1 11.735 1C12.0705 1 12.3923 1.13329 12.6295 1.37054C12.8668 1.6078 13.0001 1.92959 13.0001 2.26512C13.0001 2.60065 12.8668 2.92244 12.6295 3.15969L6.9639 8.82533L4.57837 9.42172L5.17475 7.03618L10.8404 1.37054Z"
-                                stroke={paragraphColor}
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
+                            <EditSmSvg primaryColor={paragraphColor} className="mr-2" />
                             Edit organization
                           </button>
                         )}
                       </div>
                       <div className="module-content">
-                        <Pills modules={['All Organizations']} type="Organization" subType="All Organizations" />
+                        <Pills modules={['Organizations']} type="Organization" subType="All Organizations" />
                       </div>
                     </Tab>
                   )}
@@ -175,7 +166,7 @@ function AdminPanel({ showSSO }) {
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
                     permission?.Organization?.includes('organization:view-activity-type')) && (
-                      <Tab eventKey="Activities" title="Activities">
+                      <Tab eventKey="Activities" title="Ref. tables">
                         <div className="module-content">
                           <Pills
                             modules={[
@@ -222,6 +213,7 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes('organization:view-lms-setting') && 'LMS settings',
                             permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
                             permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
+                            'Media',
                           ]}
                           type="LMS"
                         />
@@ -422,7 +414,6 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
-          {activeForm === 'bulk_upload' && <BulkUpload mode={activeForm} />}
           {activeForm === 'add_default_sso' && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon

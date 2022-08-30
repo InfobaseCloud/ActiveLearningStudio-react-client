@@ -119,9 +119,7 @@ function ProjectPreview(props) {
                   }
                 }}
               >
-                {currentProject.project_type !== 'Column Layout' &&
-                  <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
-                }
+                <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
                 {editTitle && playlist ? (
                   <>
                     <input name="playlist-title" defaultValue={playlist.title} ref={editFieldRef} />
@@ -165,137 +163,87 @@ function ProjectPreview(props) {
     <div>
       {currentProject && (
         <>
-          {currentProject.project_type === 'Column Layout' ?
-            <div className="container">
-              <div className="banner-block">
-                <div className="custom-container">
-                  <div className='row'>
-                    <div className='col-md-9'>
-                      <div className="project-title-desc">
-                        <div className="project-title">
-                          <h2>{currentProject.name}</h2>
-                        </div>
-                        <div className="project description">
-                          <p className="expandiv">{currentProject.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-3'>
-                      <div className="scene-img">
-                        <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
-                          {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
-                            <img src={currentProject.thumb_url} alt="thumbnail" />
-                          ) : (
-                            <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
-                          )}
-                        </Link>
-                      </div>
-                    </div>
+          <div className="container">
+            <div className="scene flex-wrap">
+              <div className="project-details">
+                <div className="scene-img">
+                  <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
+                    {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
+                      <img src={currentProject.thumb_url} alt="thumbnail" />
+                    ) : (
+                      <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
+                    )}
+                  </Link>
+                </div>
+                <div className="project-title-desc">
+                  <div className="project-title">
+                    <h2>{currentProject.name}</h2>
+                  </div>
+                  <div className="project description">
+                    <p className="expandiv">{currentProject.description}</p>
                   </div>
                 </div>
               </div>
-            </div>
-            :
-            <div className="container">
-              <div className="scene flex-wrap">
-                <div className="project-details">
-                  <div className="scene-img">
-                    <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
-                      {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
-                        <img src={currentProject.thumb_url} alt="thumbnail" />
-                      ) : (
-                        <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
-                      )}
-                    </Link>
-                  </div>
-                  <div className="project-title-desc">
-                    <div className="project-title">
-                      <h2>{currentProject.name}</h2>
-                    </div>
-                    <div className="project description">
-                      <p className="expandiv">{currentProject.description}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="sce_cont">
-                  <ul className="bar_list flex-div check">
-                    <li>
-                      <div className="team-name">{currentProject?.team?.name ? `Team Name: ${currentProject?.team?.name}` : null}</div>
-                      <div className="title_lg check">
-                        <div className="configuration">
-                          <div className="config-content">
-                            <div
-                              onClick={() => {
-                                if (history?.location?.state?.from?.includes('preview')) {
-                                  history.push(`/org/${organization.currentOrganization.domain}`);
-                                } else {
-                                  history.push(`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`);
-                                }
-                              }}
-                              className="go-back-button-preview"
-                            >
-                              {/* <FontAwesomeIcon icon="undo" className="mr-2" /> */}
-                              Close preview mode
-                            </div>
+              <div className="sce_cont">
+                <ul className="bar_list flex-div check">
+                  <li>
+                    <div className="team-name">{currentProject?.team?.name ? `Team Name: ${currentProject?.team?.name}` : null}</div>
+                    <div className="title_lg check">
+                      <div className="configuration">
+                        <div className="config-content">
+                          <div
+                            onClick={() => {
+                              if (history?.location?.state?.from?.includes('preview')) {
+                                history.push(`/org/${organization.currentOrganization.domain}`);
+                              } else {
+                                history.push(`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`);
+                              }
+                            }}
+                            className="go-back-button-preview"
+                          >
+                            {/* <FontAwesomeIcon icon="undo" className="mr-2" /> */}
+                            Close preview mode
                           </div>
-                          {/* {activeShared && ( */}
-                          {permission?.Project?.includes('project:share') && currentProject?.shared && (
-                            <div
-                              className="shared-link link-share"
-                              onClick={() => {
-                                if (window.gapi && window.gapi.sharetoclassroom) {
-                                  window.gapi.sharetoclassroom.go('croom');
-                                }
-                                const protocol = `${window.location.href.split('/')[0]}//`;
-                                const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
-                                return SharePreviewPopup(url, currentProject.name);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="link" className="mr-2" />
-                              Get shared link
-                            </div>
-                          )}
-                          {/* )} */}
                         </div>
+                        {/* {activeShared && ( */}
+                        {permission?.Project?.includes('project:share') && currentProject?.shared && (
+                          <div
+                            className="shared-link link-share"
+                            onClick={() => {
+                              if (window.gapi && window.gapi.sharetoclassroom) {
+                                window.gapi.sharetoclassroom.go('croom');
+                              }
+                              const protocol = `${window.location.href.split('/')[0]}//`;
+                              const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
+                              return SharePreviewPopup(url, currentProject.name);
+                            }}
+                          >
+                            <FontAwesomeIcon icon="link" className="mr-2" />
+                            Get shared link
+                          </div>
+                        )}
+                        {/* )} */}
                       </div>
-                    </li>
-                  </ul>
+                    </div>
+                  </li>
+                </ul>
 
-                  <ul className="rating flex-div" />
+                <ul className="rating flex-div" />
+              </div>
+            </div>
+          </div>
+          <div className="container">
+            <div className="playlist-div">
+              <div className="playlist-title-div">
+                <div className="title-md playlist-title-card">Playlists</div>
+              </div>
+              <div className="all-playlist check-custom">
+                <div className="playlist-accordion" id="custom_accordion">
+                  {playlists}
                 </div>
               </div>
             </div>
-          }
-          {
-            currentProject.project_type === 'Column Layout' ?
-              <div className="container">
-                <div className="playlist-div playlist-card-background">
-                  <div className='custom-container'>
-                    <div className="playlist-title-div">
-                      <div className="title-md playlist-title-card">Playlists</div>
-                    </div>
-                    <div className="all-playlist check-custom">
-                      <div className="slider-block" id="custom_accordi">
-                        {playlists}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              :
-              <div className="container">
-                <div className="playlist-div">
-                  <div className="playlist-title-div">
-                    <div className="title-md playlist-title-card">Playlists</div>
-                  </div>
-                  <div className="all-playlist check-custom">
-                    <div className="playlist-accordion" id="custom_accordion">
-                      {playlists}
-                    </div>
-                  </div>
-                </div>
-              </div>
-          }
+          </div>
 
           {showDeletePlaylistPopup && (
             <DeletePopup

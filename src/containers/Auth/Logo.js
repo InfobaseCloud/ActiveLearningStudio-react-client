@@ -10,7 +10,7 @@ export default function Logo() {
     <div className="auth-leftpane">
       <img
         className="auth-header-logo"
-        src={!!logoState?.image && logoState?.image.includes('dev.currikistudio') ? logoState?.image : global.config.resourceUrl + logoState?.image}
+        src={!!logoState?.image && logoState?.image.includes('imsparked') ? logoState?.image : global.config.resourceUrl + logoState?.image}
         alt="logo"
         title=""
       />

@@ -32,9 +32,10 @@ const H5PEditor = (props) => {
     settingId,
     reverseType,
     submitForm,
-    saveButtonCheck,
-    saveOnlyHandlerClose,
     activityPreview,
+    setisSubmitActivty,
+    saveButtonCheck,
+    saveOnlyHandlerClose
   } = props;
 
   const uploadFile = useRef();
@@ -86,7 +87,7 @@ const H5PEditor = (props) => {
     let ids = [];
     if (data.length > 0) {
       data?.map((datum) => {
-        ids.push(datum.value);
+        ids.push(datum?.value);
       });
     }
     return ids;
@@ -96,10 +97,9 @@ const H5PEditor = (props) => {
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
-    formData.subject_id = formatSelectBoxData(formData.subject_id);
-    formData.education_level_id = formatSelectBoxData(formData.education_level_id);
-    formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
-    formData.tag_id = formData.tag_id.map(tag => tag.id)
+    formData.subject_id = !formData.subject_id.includes(undefined) ? formatSelectBoxData(formData.subject_id) : '';
+    formData.education_level_id = !formData.education_level_id.includes(undefined) ? formatSelectBoxData(formData.education_level_id) : '';
+    formData.author_tag_id = !formData.author_tag_id.includes(undefined) ? formatSelectBoxData(formData.author_tag_id) : '';
     const { metadata } = parameters;
     if (metadata?.title !== undefined) {
       if (editActivity) {
@@ -127,13 +127,20 @@ const H5PEditor = (props) => {
               type: 'h5p',
               content: 'place_holder',
               title: metadata?.title || formData.title,
-            })
+            }),
           );
           setOpenVideo(false);
         } else {
-          await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
+          await dispatch(
+            edith5pVideoActivity(editVideo.id, {
+              ...formData,
+              title: metadata?.title || formData.title,
+            }),
+          );
           setOpenVideo(false);
         }
+        await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
+        setOpenVideo(false);
       } else if (saveOnlyHandler.activity || saveOnlyHandlerClose.current.activity) {
         dispatch(editResourceAction(
           playlistId,
@@ -151,10 +158,11 @@ const H5PEditor = (props) => {
           h5pFile,
         };
         if (activityPreview) {
-          dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide));
+          dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide, accountId, settingId));
         } else {
           handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
         }
+        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType, setSaveOnlyHandler);
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
@@ -284,6 +292,11 @@ const H5PEditor = (props) => {
                 className="saveclosemodel"
                 onClick={() => {
                   submitResource();
+                  if (!editVideo) {
+                    if (setisSubmitActivty) {
+                      setisSubmitActivty(true);
+                    }
+                  }
                 }}
               >
                 Save & Close

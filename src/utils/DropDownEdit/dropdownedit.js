@@ -16,6 +16,12 @@ import indActivityService from 'services/indActivities.service';
 import { visibilityTypes } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
 import { getProjectId, googleShare } from 'store/actions/gapi';
+import ShareLinkSmSvg from 'iconLibrary/dropDown/ShareLinkSmSvg';
+import RightAngleSmSvg from 'iconLibrary/dropDown/RightAngleSmSvg';
+import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
+import LibraryStatusSmSvg from 'iconLibrary/dropDown/LibraryStatusSmSvg';
+import ExportSmSvg from 'iconLibrary/dropDown/ExportSmSvg';
+import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
 
 const DropDownEdit = ({
   iconColor,
@@ -58,7 +64,7 @@ const DropDownEdit = ({
         <Dropdown.Menu>
           {isActivityCard && (
             <>
-              <Dropdown.Item
+              {/* <Dropdown.Item
                 className
                 onClick={() => {
                   setCurrentActivity(data.id);
@@ -67,113 +73,72 @@ const DropDownEdit = ({
               >
                 <FontAwesomeIcon icon={faEye} className="mr-2" />
                 Preview
-              </Dropdown.Item>
-              {permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+              </Dropdown.Item> */}
+              {/* {permission?.["Independent Activity"]?.includes(
+                "independent-activity:edit-author"
+              ) && (
                 <Dropdown.Item
                   className
                   onClick={async () => {
                     toast.dismiss();
-                    toast.info('Loading Activity ...', {
-                      className: 'project-loading',
+                    toast.info("Loading Activity ...", {
+                      className: "project-loading",
                       closeOnClick: false,
                       closeButton: false,
                       position: toast.POSITION.BOTTOM_RIGHT,
                       autoClose: 10000,
-                      icon: '',
+                      icon: "",
                     });
                     if (activities) {
-                      const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
-                      if (result?.['independent-activity']) {
+                      const result = await intActivityServices.intActivityDetail(
+                        activeOrganization.id,
+                        data.id
+                      );
+                      if (result?.["independent-activity"]) {
                         toast.dismiss();
                         dispatch({
-                          type: 'SET_ACTIVE_VIDEO_SCREEN',
-                          payload: result['independent-activity'],
+                          type: "SET_ACTIVE_VIDEO_SCREEN",
+                          payload: result["independent-activity"],
                         });
                         setOpenVideo(true);
-                        setScreenStatus('DescribeVideo');
+                        setScreenStatus("DescribeVideo");
                       }
                     } else {
-                      const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
+                      const result = await videoServices.videoh5pDetail(
+                        activeOrganization.id,
+                        data.id
+                      );
                       if (result.activity?.brightcoveData) {
                         dispatch({
-                          type: 'EDIT_CMS_SCREEN',
+                          type: "EDIT_CMS_SCREEN",
                           payload: result.activity?.brightcoveData.accountId,
                         });
-                        window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+                        window.brightcoveAccountId =
+                          result.activity?.brightcoveData.accountId;
                       }
 
                       toast.dismiss();
                       dispatch({
-                        type: 'ADD_VIDEO_URL',
-                        platform: '',
+                        type: "ADD_VIDEO_URL",
+                        platform: "",
                       });
                       dispatch({
-                        type: 'SET_ACTIVE_VIDEO_SCREEN',
+                        type: "SET_ACTIVE_VIDEO_SCREEN",
                         payload: result.activity,
                       });
 
                       setOpenVideo(true);
-                      setScreenStatus('AddVideo');
+                      setScreenStatus("AddVideo");
                     }
                   }}
                 >
                   <FontAwesomeIcon icon={faEdit} className="mr-2" />
                   Edit
                 </Dropdown.Item>
-              )}
+              )} */}
             </>
           )}
-          {isActivityCard ? (
-            permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
-              <>
-                <Dropdown.Item
-                  onClick={async () => {
-                    toast.info('Duplicating Activity...', {
-                      className: 'project-loading',
-                      closeOnClick: false,
-                      closeButton: false,
-                      position: toast.POSITION.BOTTOM_RIGHT,
-                      autoClose: 10000,
-                      icon: '',
-                    });
-                    const result = await intActivityServices.indActivityClone(activeOrganization.id, data.id);
-                    toast.dismiss();
-                    Swal.fire({
-                      html: result.message,
-                      icon: 'success',
-                    });
-                  }}
-                >
-                  <FontAwesomeIcon icon={faCopy} className="mr-2" />
-                  Duplicate
-                </Dropdown.Item>
-              </>
-            )
-          ) : (
-            <>
-              <Dropdown.Item
-                onClick={async () => {
-                  toast.info('Duplicating project...', {
-                    className: 'project-loading',
-                    closeOnClick: false,
-                    closeButton: false,
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: 10000,
-                    icon: '',
-                  });
-                  const result = await dispatch(cloneh5pvideo(data.id));
-                  toast.dismiss();
-                  Swal.fire({
-                    html: result.message,
-                    icon: 'success',
-                  });
-                }}
-              >
-                <FontAwesomeIcon icon={faCopy} className="mr-2" />
-                Duplicate
-              </Dropdown.Item>
-            </>
-          )}
+
           {/* For activity Card */}
           {isActivityCard && permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
             <>
@@ -191,11 +156,11 @@ const DropDownEdit = ({
               {/*  */}
               <li className="dropdown-submenu send">
                 <a tabIndex="-1">
-                  <FontAwesomeIcon icon={faLink} className="mr-2" />
+                  <ShareLinkSmSvg primaryColor={primaryColor} className="mr-2" />
                   Sharing
                 </a>
                 <div className="faAngleRight-dropdown">
-                  <FontAwesomeIcon icon={faAngleRight} color={primaryColor} />
+                  <RightAngleSmSvg primaryColor={primaryColor} />
                 </div>
 
                 <ul className="dropdown-menu check ">
@@ -259,6 +224,33 @@ const DropDownEdit = ({
                 </ul>
               </li>
 
+              {/* Duplicate For Activity */}
+              {permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                <>
+                  <Dropdown.Item
+                    onClick={async () => {
+                      toast.info('Duplicating Activity...', {
+                        className: 'project-loading',
+                        closeOnClick: false,
+                        closeButton: false,
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 10000,
+                        icon: '',
+                      });
+                      const result = await intActivityServices.indActivityClone(activeOrganization.id, data.id);
+                      toast.dismiss();
+                      Swal.fire({
+                        html: result.message,
+                        icon: 'success',
+                      });
+                    }}
+                  >
+                    <DuplicateSmSvg primaryColor={primaryColor} className="mr-2" />
+                    Duplicate
+                  </Dropdown.Item>
+                </>
+              )}
+
               <li className="dropdown-submenu send">
                 <a
                   tabIndex="-1"
@@ -266,27 +258,11 @@ const DropDownEdit = ({
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {/* <FontAwesomeIcon icon={faLink} className="mr-2" /> */}
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-                    <path
-                      d="M1.33398 2H5.33398C6.04123 2 6.71951 2.28095 7.2196 2.78105C7.7197 3.28115 8.00065 3.95942 8.00065 4.66667V14C8.00065 13.4696 7.78994 12.9609 7.41486 12.5858C7.03979 12.2107 6.53108 12 6.00065 12H1.33398V2Z"
-                      stroke="#084892"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M14.6667 2H10.6667C9.95942 2 9.28115 2.28095 8.78105 2.78105C8.28095 3.28115 8 3.95942 8 4.66667V14C8 13.4696 8.21071 12.9609 8.58579 12.5858C8.96086 12.2107 9.46957 12 10 12H14.6667V2Z"
-                      stroke="#084892"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <LibraryStatusSmSvg primaryColor={primaryColor} className="mr-2" />
                   Library preference
                 </a>
                 <div className="faAngleRight-dropdown">
-                  <FontAwesomeIcon icon={faAngleRight} color={primaryColor} />
+                  <RightAngleSmSvg primaryColor={primaryColor} />
                 </div>
 
                 <ul className="dropdown-menu check">
@@ -298,7 +274,7 @@ const DropDownEdit = ({
                             ...data,
                             data: '',
                             organization_visibility_type_id: element.id,
-                          })
+                          }),
                         );
                       }}
                     >
@@ -319,22 +295,11 @@ const DropDownEdit = ({
 
               <li className="dropdown-submenu send">
                 <a tabIndex="-1">
-                  {/* <FontAwesomeIcon icon={faLink} className="mr-2" /> */}
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-                    <path
-                      d="M5 13H2.33333C1.97971 13 1.64057 12.8595 1.39052 12.6095C1.14048 12.3594 1 12.0203 1 11.6667V2.33333C1 1.97971 1.14048 1.64057 1.39052 1.39052C1.64057 1.14048 1.97971 1 2.33333 1H5"
-                      stroke="#084892"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path d="M9.54492 10.4137L13.0018 6.95686L9.54492 3.5" stroke="#084892" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M12.0645 7H5.06445" stroke="#084892" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <ExportSmSvg primaryColor={primaryColor} className="mr-2" />
                   Export
                 </a>
                 <div className="faAngleRight-dropdown">
-                  <FontAwesomeIcon icon={faAngleRight} color={primaryColor} />
+                  <RightAngleSmSvg primaryColor={primaryColor} />
                 </div>
 
                 <ul className="dropdown-menu check">
@@ -346,7 +311,7 @@ const DropDownEdit = ({
                       }}
                       href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}
                     >
-                      xAPI Download
+                      xAPI Format
                     </a>
                   </li>
                   <li
@@ -369,7 +334,7 @@ const DropDownEdit = ({
                       });
                     }}
                   >
-                    <a>Independent Activity</a>
+                    <a>H5P Format</a>
                   </li>
                 </ul>
               </li>
@@ -399,6 +364,87 @@ const DropDownEdit = ({
               </Dropdown.Item> */}
             </>
           )}
+          {/* {isActivityCard ? (
+            permission?.["Independent Activity"]?.includes(
+              "independent-activity:edit-author"
+            ) && (
+              <>
+                <Dropdown.Item
+                  onClick={async () => {
+                    toast.info("Duplicating Activity...", {
+                      className: "project-loading",
+                      closeOnClick: false,
+                      closeButton: false,
+                      position: toast.POSITION.BOTTOM_RIGHT,
+                      autoClose: 10000,
+                      icon: "",
+                    });
+                    const result = await intActivityServices.indActivityClone(
+                      activeOrganization.id,
+                      data.id
+                    );
+                    toast.dismiss();
+                    Swal.fire({
+                      html: result.message,
+                      icon: "success",
+                    });
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCopy} className="mr-2" />
+                  Duplicate
+                </Dropdown.Item>
+              </>
+            )
+          ) : (
+            <>
+              <Dropdown.Item
+                onClick={async () => {
+                  toast.info("Duplicating project...", {
+                    className: "project-loading",
+                    closeOnClick: false,
+                    closeButton: false,
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 10000,
+                    icon: "",
+                  });
+                  const result = await dispatch(cloneh5pvideo(data.id));
+                  toast.dismiss();
+                  Swal.fire({
+                    html: result.message,
+                    icon: "success",
+                  });
+                }}
+              >
+                <FontAwesomeIcon icon={faCopy} className="mr-2" />
+                Duplicate
+              </Dropdown.Item>
+            </>
+          )} */}
+
+          {!isActivityCard && (
+            <Dropdown.Item
+              onClick={async () => {
+                toast.info('Duplicating project...', {
+                  className: 'project-loading',
+                  closeOnClick: false,
+                  closeButton: false,
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: 10000,
+                  icon: '',
+                });
+                const result = await dispatch(cloneh5pvideo(data.id));
+                toast.dismiss();
+                Swal.fire({
+                  html: result.message,
+                  icon: 'success',
+                });
+              }}
+            >
+              <DuplicateSmSvg primaryColor={primaryColor} className="mr-2" />
+              Duplicate
+            </Dropdown.Item>
+          )}
+
           {isActivityCard ? (
             permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
               <Dropdown.Item
@@ -417,7 +463,7 @@ const DropDownEdit = ({
                   });
                 }}
               >
-                <FontAwesomeIcon icon={faTrash} className="mr-2" />
+                <DeleteSmSvg primaryColor={primaryColor} className="mr-2" />
                 Delete
               </Dropdown.Item>
             )
@@ -438,12 +484,12 @@ const DropDownEdit = ({
                 });
               }}
             >
-              <FontAwesomeIcon icon={faTrash} className="mr-2" />
+              <DeleteSmSvg primaryColor={primaryColor} className="mr-2" />
               Delete
             </Dropdown.Item>
           )}
 
-          {data?.gcr_activity_visibility && (
+          {isActivityCard && permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
             <li className="dropdown-submenu send">
               <a tabIndex="-1" className="dropdown-item">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">

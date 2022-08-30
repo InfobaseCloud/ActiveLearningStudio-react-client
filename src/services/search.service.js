@@ -1,7 +1,7 @@
-/*eslint-disable */
+/* eslint-disable */
 import Swal from 'sweetalert2';
-import { errorCatcher } from './errors';
 import config from 'config';
+import { errorCatcher } from './errors';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -170,6 +170,12 @@ const googleClassPublishIndependentActivity = (courseId, topicId, activityId, to
       return Promise.reject(err.response.data);
     });
 
+const searchIndependentActivities = (searchType, searchData) =>
+  httpService
+    .get(`/${apiVersion}/search/independent-activities?searchType=${searchType}`, '', { ...searchData })
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 export default {
   searchResult,
   cloneProject,
@@ -183,4 +189,5 @@ export default {
   googleClassPublishPlaylist,
   googleClassPublishActivity,
   googleClassPublishIndependentActivity,
+  searchIndependentActivities,
 };

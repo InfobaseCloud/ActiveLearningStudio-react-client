@@ -1,5 +1,5 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
-
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
@@ -31,7 +31,7 @@ const INITIAL_STATE = {
   exportedActivities: null,
   allMediaSources: {},
   orgMediaSources: {},
-  bulkUsers: [],
+  ltiToolsTypes: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -190,7 +190,10 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.NEW_BRIGHTCOVE:
       return {
         ...state,
-        allbrightCove: { ...state.allbrightCove, data: [...state.allbrightCove.data, action.payload] },
+        allbrightCove: {
+          ...state.allbrightCove,
+          data: [...state.allbrightCove.data, action.payload],
+        },
       };
     case actionTypes.DEL_BRIGHTCOVE:
       const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
@@ -275,9 +278,11 @@ export default (state = INITIAL_STATE, action) => {
         orgMediaSources: action.payload,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
       return {
         ...state,
         orgMediaSources: action.payload,
+        ltiToolsTypes: updateLtiTools,
       };
 
     case actionTypes.GET_MEDIA_SOURCES:
@@ -285,10 +290,21 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         mediaSources: action.payload,
       };
-    case actionTypes.BULK_UPLOAD:
+
+    case actionTypes.GET_LTI_TOOLS_TYPES_REQUEST:
       return {
         ...state,
-        bulkUsers: action.payload,
+        ltiToolsTypes: [],
+      };
+    case actionTypes.GET_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
+        ltiToolsTypes: action.payload,
+      };
+
+    case actionTypes.CLONE_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
       };
     default:
       return state;

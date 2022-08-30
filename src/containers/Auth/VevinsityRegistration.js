@@ -86,7 +86,7 @@ class NeafRegister extends React.Component {
         title: 'YOU ARE REGISTERED!',
         html: message,
         showConfirmButton: true,
-        confirmButtonText: 'Login to CurrikiStudio',
+        confirmButtonText: 'Login to imSparked',
       })
         .then((result) => {
           if (result.isConfirmed) {

@@ -10,8 +10,8 @@ import { loadH5pSettingsActivity } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
   const {
- match, h5pParams, resource, loadH5pSettings, handleCreateResourceSubmit, upload,
-} = props;
+    match, h5pParams, resource, loadH5pSettings, handleCreateResourceSubmit, upload,
+  } = props;
 
   const uploadFile = useRef();
   let defaultState = 'create';
@@ -136,7 +136,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                    // style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
