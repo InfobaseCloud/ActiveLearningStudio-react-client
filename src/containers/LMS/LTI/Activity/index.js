@@ -205,7 +205,6 @@ const Activity = (props) => {
             if (customPersonNameGiven) {
               StudentNameCustom = customPersonNameGiven;
             }
-
             sendScreenshot(h5pSettings.organization, jsonStatement, h5pSettings.activity.title, StudentNameCustom || params.studentId);
           
         }
